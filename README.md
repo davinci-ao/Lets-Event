@@ -1,2 +1,2 @@
-# Lets-Event
-Lets Event
+# LetsEvent
+Lets Event project yugioh team
