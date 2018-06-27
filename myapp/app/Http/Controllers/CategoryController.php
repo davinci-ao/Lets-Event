@@ -14,19 +14,21 @@ class CategoryController extends Controller
 {
 
 	/**
-	 *  loads the web page for the categories
+	 * Loads the web page with the corresponding parameter value supplied from $parra
+	 * @param type $parra
+	 * @return type view
 	 */
-	public function index($id)
+	public function index($parra)
 	{
-		if ($id === "all") {
+		if ($parra === "all") {
 			return view('categoryPage');
-		} elseif ($id === "create") {
+		} elseif ($parra === "create") {
 			return view('categoryCreate');
 		}
 	}
 
 	/**
-	 *  Gives the saveCategoryData function the catergoryData
+	 *  Gives the category model the data from the form POST
 	 */
 	public function createCategory()
 	{

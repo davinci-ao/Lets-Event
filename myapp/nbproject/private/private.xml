@@ -4,7 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/LetsEvent/myapp/app/Http/Controllers/CategoryController.php</file>
+            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/resources/views/home.blade.php</file>
             <file>file:/C:/xampp/htdocs/LetsEvent/myapp/app/Http/Category/Category.php</file>
+            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/resources/views/categoryPage.blade.php</file>
+            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/resources/views/categoryCreate.blade.php</file>
+            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/routes/web.php</file>
         </group>
     </open-files>
 </project-private>
