@@ -3,6 +3,7 @@
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
+    
 
     /**
      * Description of CategoryController
@@ -24,6 +25,8 @@
 	     */
 	    public function createCategory() 
 	    {
+		    $catergoryData = $_POST;
+		    
 		    
 	    }
 	    

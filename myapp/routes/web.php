@@ -14,5 +14,8 @@
 Route::get('/', 'EventController@index');
 
 Auth::routes();
-
+// home
 Route::get('/home', 'HomeController@index')->name('home');
+// category
+Route::get('/category/index', 'CategoryController@index')->name('indexCategory');
+Route::post('/category/create', 'CategoryController@createCategory')->name('createCategory');
