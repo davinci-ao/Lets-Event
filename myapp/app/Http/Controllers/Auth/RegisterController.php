@@ -46,8 +46,7 @@ use RegistersUsers;
 	 */
 	protected function validator(array $data) {
 		return Validator::make($data, [
-				'id_number' => 'required|string|max:255',
-				'sector' => 'required|string|max:255',
+				'student_number' => 'required|string|max:255',
 				'email' => 'required|string|email|max:255|unique:users',
 				'password' => 'required|string|min:6|confirmed',
 		]);
@@ -61,10 +60,12 @@ use RegistersUsers;
 	 */
 	protected function create(array $data) {
 		return User::create([
-				'student_number' => $data['student_number'],
-				'sector'=>$data['sector'],
+				'student_nr' => $data['student_number'],
 				'email' => $data['email'],
 				'role' => "leerling",
+				'firstname' => "john", 
+				'lastname' => "doe",
+				'education_location_id' => 0,
 				'password' => Hash::make($data['password']),
 		]);
 	}
