@@ -6,13 +6,10 @@
 		<div class="col-md-8">
 			<div class="card">
 				<div class="card-header">Dashboard</div>
-
+					
 				<div class="card-body">
-					<form action="{{action('CategoryController@createCategory')}}" method="POST">
-						@csrf
-						<p> Category Name  <input type="text" name="categoryName" placeholder="Card Game"></p>
-						<input type="submit" value="Save">
-					</form>
+					<a href="{{ url('/category/createPage/create') }}" >Create Categories</a>
+					<h1>Are categories are being shown here ? who knows</h1>
 				</div>
 			</div>
 		</div>
