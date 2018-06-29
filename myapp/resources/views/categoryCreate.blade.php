@@ -10,7 +10,7 @@
 				<div class="card-body">
 					<form action="{{action('CategoryController@createCategory')}}" method="POST">
 						@csrf
-						<p> Category Name  <input type="text" name="categoryName" placeholder="Card Game"><input type="submit" value="Save"></p>
+						<p> Category Name  <input type="text" name="categoryName" placeholder="Card Game" id="categoryName" required><input type="submit" value="Save"></p>
 					</form>
 					<a href="{{ url('/category/index/all') }}" >Back to categories overview</a>
 				</div>
