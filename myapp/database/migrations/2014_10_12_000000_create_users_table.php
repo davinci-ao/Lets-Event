@@ -19,8 +19,11 @@
 			    $table->string('lastname');
 			    $table->integer('education_location_id');
 			    $table->string('email')->unique();
+			    $table->string('email-hash-user');
+			    $table->datetime('email-hash');
 			    $table->string('password');
 			    $table->enum('role', ['leerling', 'leeraar']);
+			    $table->enum('activated', ['geactivateerd', 'niet geactiveerd']);
 			    $table->rememberToken();
 			    $table->timestamps();
 		    });
