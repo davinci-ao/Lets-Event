@@ -13,6 +13,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        return view('welcome');
+    	$events = DB::table('events')->get();
+         return view('welcome', ['events' => $events]);
     }
 }
