@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Event;
 
 class EventController extends Controller
 {
@@ -13,7 +15,8 @@ class EventController extends Controller
      */
     public function index()
     {
-    	$events = DB::table('events')->get();
-         return view('welcome', ['events' => $events]);
+        $events = Event::all();
+        return view('events', ['events' => $events]);
+
     }
 }

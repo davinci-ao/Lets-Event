@@ -1,0 +1,10 @@
+diff a/myapp/routes/web.php b/myapp/routes/web.php	(rejected hunks)
+@@ -11,7 +11,7 @@
+ |
+ */
+ 
+-Route::get('/', 'EventController@index');
++Route::get('/events/overview', 'EventController@index');
+ 
+ Auth::routes();
+ 

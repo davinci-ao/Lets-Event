@@ -5,10 +5,15 @@
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="card">
-				<div class="card-header">Events</div>
+				<div class="card-header">Lists of Events</div>
 
 				<div class="card-body">
-					Welcome To Lets Event
+                    <ul>
+	                    @foreach ($events as $event)
+	                        <li> {{ $event->name }}</li>
+                        @endforeach
+                    </ul>
+
 				</div>
 			</div>
 		</div>
