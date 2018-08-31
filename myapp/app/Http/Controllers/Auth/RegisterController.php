@@ -62,7 +62,9 @@ use RegistersUsers;
 		return User::create([
 				'student_nr' => $data['student_number'],
 				'email' => $data['email'],
+				'email-hash-user'=>"Esesvsjbuu",
 				'role' => "leerling",
+				'activated'=>'geactivateerd',
 				'firstname' => "john", 
 				'lastname' => "doe",
 				'education_location_id' => 0,
