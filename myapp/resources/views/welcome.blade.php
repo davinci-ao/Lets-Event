@@ -5,10 +5,10 @@
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="card">
-				<div class="card-header">welcome</div>
+				<div class="card-header">Events</div>
 
 				<div class="card-body">
-					Welcome To Lets Laravel
+					Welcome To Lets Event
 				</div>
 			</div>
 		</div>

@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/events/overview', 'EventController@index');
+Route::get('/', 'EventController@index');
 
 Auth::routes();
 

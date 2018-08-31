@@ -16,7 +16,7 @@ class EventCreateTable extends Migration
 			$table->increments('id');
 			$table->string('name');
 			$table->integer('category_id');
-			$table->date('date');
+			$table->date('datum');
 			$table->timestamp('time');
 			$table->double('price');
 			$table->integer('location_id');
