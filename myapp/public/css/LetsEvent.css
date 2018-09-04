@@ -54,3 +54,9 @@ html, body {
 	margin-bottom: 30px;
 }
 
+.message{
+	background-color: blue;
+	height: 30px;
+	width: 100%;
+}
+
