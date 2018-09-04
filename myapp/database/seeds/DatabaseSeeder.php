@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+    	// the factory creats fake data
      	factory(App\Event::class, 50)->create(); 
     }
 }

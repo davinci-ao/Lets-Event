@@ -2,6 +2,7 @@
 
 use Faker\Generator as Faker;
 
+//This functions takes care for generating fake date for the events.
 $factory->define(App\Event::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
