@@ -14,8 +14,6 @@ use Session;
 class CategoryController extends Controller
 {
 
-	private $categoryStatus;
-
 	/**
 	 * Loads the web page with the corresponding parameter value supplied from $parra
 	 * @param type $parra
@@ -34,16 +32,17 @@ class CategoryController extends Controller
 	 */
 	public function createCategory()
 	{
-
-		$catergoryData = $_POST;
-		$category = new Category();
-		$result = $category->saveCategoryData($catergoryData);
-
-		$this->categoryStatus = $result;
-		if ($this->categoryStatus === true) {
-			Session::flash('message', 'Category Added');
+		if (isset($_POST)) {
+			$catergoryData = $_POST;
+			$category = new Category();
 		}
-		$this->categoryStatus = null;
+
+		if ($category->saveCategoryData($catergoryData) === true) {
+			Session::flash('succesmessage', 'Category');
+		}elseif ($category->saveCategoryData($catergoryData) === false) {
+			Session::flash('failmessage', 'Category');
+		}
+
 		return view('categoryPage');
 	}
 
