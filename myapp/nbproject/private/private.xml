@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>app/Http/Controllers/CategoryController.php</url>
+            <bookmark id="1">
+                <name/>
+                <line>25</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/database/migrations/2018_06_12_100936_category_create_table.php</file>
-            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/database/migrations/2018_06_12_101118_participation_create_table.php</file>
-            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/database/migrations/2018_06_12_101204_event_education_direction_create_table.php</file>
-            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/database/migrations/2018_06_12_101204_education_direction_create_table.php</file>
-            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/database/migrations/2014_10_12_100000_create_password_resets_table.php</file>
-            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/database/migrations/2018_06_12_100950_location_create_table.php</file>
-            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/database/migrations/2018_06_12_101204_education_location_create_table.php</file>
-            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/database/migrations/2018_06_12_100840_event_create_table.php</file>
-            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/database/.gitignore</file>
+            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/app/Http/Controllers/CategoryController.php</file>
+            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/resources/views/layouts/app.blade.php</file>
+            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/resources/views/home.blade.php</file>
+            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/resources/views/categoryPage.blade.php</file>
+            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/app/Http/Category/Category.php</file>
+            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/public/css/LetsEvent.css</file>
             <file>file:/C:/xampp/htdocs/LetsEvent/myapp/routes/web.php</file>
-            <file>file:/C:/xampp/htdocs/LetsEvent/myapp/database/migrations/2014_10_12_000000_create_users_table.php</file>
         </group>
     </open-files>
 </project-private>
