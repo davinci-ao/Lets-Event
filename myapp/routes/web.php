@@ -13,10 +13,9 @@
 
 
 Route::get('/events/overview', 'EventController@index');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
 Route::get('/category/index/', 'CategoryController@index')->name('indexCategory');
 Route::post('/category/create', 'CategoryController@createCategory')->name('createCategory');
-
