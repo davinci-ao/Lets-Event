@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Event;
 
 class EventController extends Controller
 {
@@ -11,8 +13,11 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    // show all events
     public function index()
     {
-        return view('welcome');
+        $events = Event::all();
+        return view('events')->with(['events' => $events]);
     }
 }
