@@ -26,8 +26,13 @@
 						<p>  Time  <input type="time" name="eventTime" id="eventTime" step="1" required></p>
 						<p>  Price € <input type="number" name="eventPrice" placeholder="22,50" step="any" id="eventPrice">
 						</p>
-						<p>  Location <input type="text" name="eventLocation" placeholder="Azurro" id="eventLocation" required>
-						</p>
+						<p>	Location		
+			            <select name="eventLocation">
+			              <option value="0">Azurro</option>
+			              <option value="1">Bianco</option>
+			              <option value="2">Celeste</option>
+			            </select>
+			            </p>
 						<p><input type="submit" value="Save"></p>
 					</form>
 				</div>

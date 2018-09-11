@@ -12,7 +12,10 @@ use App\Event;
  */
 class EventsController extends Controller
 {
-	
+	public function __construct()
+    {
+        $this->middleware('auth');
+    }
 	private $eventStatus;
 	
 	/**
@@ -41,7 +44,7 @@ class EventsController extends Controller
 		$result = $event->saveEventData($eventData);
 		
 		$this->eventStatus = $result;
-		return $this->index("create");
+		return $this->index();
 	}
 
 	/**

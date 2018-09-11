@@ -20,3 +20,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/category/index/{name}', 'CategoryController@index')->name('indexCategory');
 Route::get('/category/createPage/{name}', 'CategoryController@index')->name('indexCategory');
 Route::post('/category/create', 'CategoryController@createCategory')->name('createCategory');
+//event
+Route::get('/event/createEvent', 'EventsController@index')->name('indexEvent');
+Route::post('/event/createEvent', 'EventsController@createEvent')->name('createEvent');
