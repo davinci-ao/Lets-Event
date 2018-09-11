@@ -35,12 +35,12 @@ class CategoryController extends Controller
 		if (isset($_POST)) {
 			$catergoryData = $_POST;
 			$category = new Category();
-		}
-
-		if ($category->saveCategoryData($catergoryData) === true) {
-			Session::flash('succesmessage', 'Category');
-		}elseif ($category->saveCategoryData($catergoryData) === false) {
-			Session::flash('failmessage', 'Category');
+			if ($category->saveCategoryData($catergoryData) === true) {
+				Session::flash('succesmessage', 'Category');
+			} elseif ($category->saveCategoryData($catergoryData) === false) {
+				Session::flash('failmessage', 'Category');
+			}
+			
 		}
 
 		return view('categoryPage');
