@@ -23,7 +23,9 @@ class Category extends \Illuminate\Database\Eloquent\Model
 		if ($this->where("name", "=", $catergoryData['categoryName'])->count() > 0) {
 			return false;
 		}
-		
+		if (empty($catergoryData['categoryName'])) {
+			return false;
+		}
 		$this->create([
 		    "name" => $catergoryData['categoryName']
 		]);
