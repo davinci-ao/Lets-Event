@@ -13,7 +13,6 @@
 		<div class="col-md-8">
 			<div class="card">
 				<div class="card-header">Dashboard</div>
-				<a href="{{ url('/home') }}" >Home</a>	
 				<div class="card-body">
 					<form action="{{action('CategoryController@createCategory')}}" method="POST">
 						@csrf
