@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Category\Category;
-use Session;
 
 /**
  * Description of CategoryController
@@ -13,37 +12,41 @@ use Session;
  */
 class CategoryController extends Controller
 {
-
+	
+	private $categoryStatus;
+	
 	/**
 	 * Loads the web page with the corresponding parameter value supplied from $parra
 	 * @param type $parra
 	 * @return type view
 	 */
-	public function index()
+	public function index($parra)
 	{
-		Session::flash('');
-		return view('categoryPage');
+
+		if ($parra === "all") {
+			return view('categoryPage');
+		} elseif ($parra === "create") {
+			if ($this->categoryStatus === true) {
+				echo '<script language="javascript">';
+				echo 'alert("Category Created!")';
+				echo '</script>';
+			}
+			$this->categoryStatus = null;
+			return view('categoryCreate');
+		}
 	}
 
 	/**
-	 * Gives the category model the data from the form POST
-	 * and generates a flash message
-	 * @return type view
+	 *  Gives the category model the data from the form POST
 	 */
 	public function createCategory()
-	{
-		if (isset($_POST)) {
-			$catergoryData = $_POST;
-			$category = new Category();
-		}
-
-		if ($category->saveCategoryData($catergoryData) === true) {
-			Session::flash('succesmessage', 'Category');
-		}elseif ($category->saveCategoryData($catergoryData) === false) {
-			Session::flash('failmessage', 'Category');
-		}
-
-		return view('categoryPage');
+	{	
+		$catergoryData = $_POST;
+		$category = new Category();
+		$result = $category->saveCategoryData($catergoryData);
+		
+		$this->categoryStatus = $result;
+		return $this->index("create");
 	}
 
 	/**

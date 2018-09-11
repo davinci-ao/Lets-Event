@@ -11,11 +11,15 @@
   |
  */
 
-
-Route::get('/events/overview', 'EventController@index');
+Route::get('/', 'EventController@index');
 
 Auth::routes();
-
+// home
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/category/index/', 'CategoryController@index')->name('indexCategory');
+// category
+Route::get('/category/index/{name}', 'CategoryController@index')->name('indexCategory');
+Route::get('/category/createPage/{name}', 'CategoryController@index')->name('indexCategory');
 Route::post('/category/create', 'CategoryController@createCategory')->name('createCategory');
+//event
+Route::get('/events/overview', 'EventController@index');
+
