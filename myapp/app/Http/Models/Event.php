@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Http\Models;
 
 /**
  * Description of Event this is the model for the events
@@ -21,7 +21,7 @@ class Event extends \Illuminate\Database\Eloquent\Model
 	public function saveEventData($eventData)
 	{
 		$this->create([
-			"category_id" => 0,
+		    "category_id" => 0,
 		    "name" => $eventData['eventName'],
 		    "datum" => $eventData['eventDate'],
 		    "time" => $eventData['eventTime'],
@@ -29,7 +29,7 @@ class Event extends \Illuminate\Database\Eloquent\Model
 		    "location_id" => $eventData['eventLocation'],
 		    "user_id" => auth()->user()->id
 		]);
-		
+
 		return true;
 	}
 

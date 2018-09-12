@@ -11,7 +11,7 @@
   |
  */
 
-Route::get('/', 'EventController@index');
+Route::get('/', 'WelcomeController@index');
 
 Auth::routes();
 // home
@@ -20,6 +20,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/category/index/', 'CategoryController@index')->name('indexCategory');
 Route::post('/category/create', 'CategoryController@createCategory')->name('createCategory');
 //event
-Route::get('/event/createEvent', 'EventsController@index')->name('indexEvent');
-Route::post('/event/createEvent', 'EventsController@createEventAction')->name('createEvent');
-Route::get('/events/overview', 'EventController@index');
+Route::get('/event/createEvent', 'EventController@create')->name('indexCreateEvent');
+Route::post('/event/createEvent', 'EventController@createSave')->name('createEvent');
+Route::get('/events/overview', 'EventController@index')->name('eventIndex');

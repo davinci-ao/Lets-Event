@@ -5,8 +5,8 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
-			<div class="alert alert-success">
-			  <strong>Success!</strong> Indicates a successful or positive action.
+			<div id="message" class="alert alert-success">
+				<strong>Success!</strong> Indicates a successful or positive action.
 			</div>
 		</div>
 	</div>
@@ -15,6 +15,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
+			<a  href="{{ route('eventIndex') }}" >Back to overview</a>
 			<div class="card">
 				<div class="card-header">Create Event</div>
 
@@ -27,12 +28,12 @@
 						<p>  Price € <input type="number" name="eventPrice" placeholder="22,50" step="any" id="eventPrice">
 						</p>
 						<p>	Location		
-			            <select name="eventLocation">
-			            	@foreach($locations as $location)
-			            		<option value="{{ $location->id }} ">{{ $location->name }}</option>
-			            	@endforeach
-			            </select>
-			            </p>
+							<select name="eventLocation">
+								@foreach($locations as $location)
+								<option value="{{ $location->id }} ">{{ $location->name }}</option>
+								@endforeach
+							</select>
+						</p>
 						<p><input type="submit" value="Save"></p>
 					</form>
 				</div>
