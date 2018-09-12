@@ -19,7 +19,7 @@
 				<div class="card-header">Create Event</div>
 
 				<div class="card-body">
-					<form action="{{action('EventsController@createEvent')}}" method="POST">
+					<form action="{{ route('createEvent') }}" method="POST">
 						@csrf
 						<p>  Name  <input type="text" name="eventName" placeholder="Masked Gala" id="eventName" required></p>
 						<p>  Date  <input type="date" name="eventDate" id="eventDate" required></p>
