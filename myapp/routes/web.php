@@ -20,5 +20,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/category/index/', 'CategoryController@index')->name('indexCategory');
 Route::post('/category/create', 'CategoryController@createCategory')->name('createCategory');
 //event
+Route::get('/event/createEvent', 'EventsController@index')->name('indexEvent');
+Route::post('/event/createEvent', 'EventsController@createEventAction')->name('createEvent');
 Route::get('/events/overview', 'EventController@index');
-

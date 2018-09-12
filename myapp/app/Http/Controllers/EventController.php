@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Event;
 
-/* parent of 8107349... overzicht van events kunnen worden opgevraagd*/
-
 class EventController extends Controller
 {
     /**
@@ -19,12 +17,7 @@ class EventController extends Controller
     // show all events
     public function index()
     {
-/*
-        $events = Event::all();
-        return view('events')->with(['events' => $events]);
-*/
     	$events = DB::table('events')->get();
-         return view('events', ['events' => $events]);
-         /* parent of 8107349... overzicht van events kunnen worden opgevraagd*/
+        return view('events', ['events' => $events]);
     }
 }
