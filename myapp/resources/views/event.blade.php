@@ -28,9 +28,9 @@
 						</p>
 						<p>	Location		
 			            <select name="eventLocation">
-			              <option value="0">Azurro</option>
-			              <option value="1">Bianco</option>
-			              <option value="2">Celeste</option>
+			            	@foreach($locations as $location)
+			            		<option value="{{ $location->id }} ">{{ $location->name }}</option>
+			            	@endforeach
 			            </select>
 			            </p>
 						<p><input type="submit" value="Save"></p>

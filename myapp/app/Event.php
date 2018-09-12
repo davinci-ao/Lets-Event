@@ -20,12 +20,6 @@ class Event extends \Illuminate\Database\Eloquent\Model
 	 */
 	public function saveEventData($eventData)
 	{
-		if ($this->where("name", "=", $eventData['eventName'])->count() > 0) {
-			return false;
-		}
-		if (empty($eventData['eventName'])) {
-			return false;
-		}
 		$this->create([
 			"category_id" => 0,
 		    "name" => $eventData['eventName'],
