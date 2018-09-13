@@ -37,7 +37,7 @@ class CategoryController extends Controller
 			Session::flash('emptyInputMessage', 'Category');
 			return view('categoryPage');
 		}
-		if (count($catergoryData["categoryName"] > 40)) {
+		if (count($catergoryData["categoryName"]) > 40) {
 			Session::flash('toLongInputMessage', 'Category');
 			return view('categoryPage');
 		}
