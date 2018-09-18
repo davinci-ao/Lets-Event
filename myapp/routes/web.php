@@ -19,6 +19,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 // category
 Route::get('/category/index/', 'CategoryController@index')->name('indexCategory');
 Route::post('/category/create', 'CategoryController@createCategory')->name('createCategory');
+Route::get('/category/delete/{categoryId}', 'CategoryController@deleteCategory')->name('deleteCategory');
 //event
 Route::get('/event/createEvent', 'EventController@create')->name('indexCreateEvent');
 Route::post('/event/createEvent', 'EventController@createSave')->name('createEvent');

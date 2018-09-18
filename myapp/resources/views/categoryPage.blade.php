@@ -25,16 +25,28 @@
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="card">
+
 				<div class="card-header">Dashboard</div>
+
 				<div class="card-body">
-					<form action="{{action('CategoryController@createCategory')}}" method="POST">
+					<ul>
+						@foreach ($categories as $category)
+						<li>
+							{{ $category->name }}
+							<a href="{{ url('/category/delete/' . $category->id) }}">x</a>
+						</li>
+						@endforeach
+					</ul>				
+				</div>
+
+				<div class="card-footer">
+      				<small class="text-muted">
+						<form action="{{action('CategoryController@createCategory')}}" method="POST">
 						@csrf
 						<p> Category Name  <input type="text" name="categoryName" placeholder="Card Game" max="40" id="categoryName" required><input type="submit" value="Save"></p>
 					</form>
-					<h1>Are categories being shown here ? who knows</h1>
-				</div>
-
-
+      				</small>
+    			</div>
 			</div>
 		</div>
 	</div>

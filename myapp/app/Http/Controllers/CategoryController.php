@@ -22,7 +22,8 @@ class CategoryController extends Controller
 	public function index()
 	{
 		Session::flash('');
-		return view('categoryPage');
+		$categories = Category::all();
+		return view('categoryPage', ['categories' => $categories]);
 	}
 
 	/**
@@ -62,9 +63,9 @@ class CategoryController extends Controller
 	/**
 	 * 
 	 */
-	public function deleteCategory()
+	public function deleteCategory(Request $request, $category_id)
 	{
-		
+		echo $category_id;
 	}
 
 }
