@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Event;
 
-/* parent of 8107349... overzicht van events kunnen worden opgevraagd*/
+use App\Http\Models\Event;
+use App\Http\Models\locations;
+
+use Validator;
 
 class EventController extends Controller
 {
