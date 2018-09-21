@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Models\Category;
+use Illuminate\Support\Facades\DB;
 use Session;
 
 /**
@@ -34,6 +35,7 @@ class CategoryController extends Controller
 	public function createCategory()
 	{
 		$catergoryData = $_POST;
+		
 		if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
 			Session::flash('emptyInputMessage', 'Category');
 			return view('categoryPage');
@@ -65,7 +67,7 @@ class CategoryController extends Controller
 	 */
 	public function deleteCategory(Request $request, $category_id)
 	{
-		echo $category_id;
+		Category::where('id', $category_id)->delete();
 	}
 
 }
