@@ -19,8 +19,6 @@
 			    $table->string('lastname');
 			    $table->integer('education_location_id');
 			    $table->string('email')->unique();
-			    $table->string('activation_token');
-			    $table->string('email_send_at');
 			    $table->string('password');
 			    $table->enum('role', ['leerling', 'leeraar']);
 			    $table->enum('activated', ['geactivateerd', 'niet geactiveerd']);

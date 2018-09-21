@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Models\Category;
+use App\Http\Category\Category;
 use Session;
 use Validator;
 
@@ -33,20 +33,15 @@ class CategoryController extends Controller
 	 */
 	public function createCategory()
 	{
-		$catergoryData = $_POST;
-		if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
-			Session::flash('emptyInputMessage', 'Category');
-			return view('categoryPage');
-		}
-		if (count($catergoryData["categoryName"]) > 40) {
-			Session::flash('toLongInputMessage', 'Category');
-			return view('categoryPage');
-		}
-		$category = new Category();
-		if ($category->saveCategoryData($catergoryData) === true) {
-			Session::flash('succesMessage', 'Category');
-		} elseif ($category->saveCategoryData($catergoryData) === false) {
-			Session::flash('failMessage', 'Category');
+		if (isset($_POST)) {
+			$catergoryData = $_POST;
+			$category = new Category();
+			if ($category->saveCategoryData($catergoryData) === true) {
+				Session::flash('succesmessage', 'Category');
+			} elseif ($category->saveCategoryData($catergoryData) === false) {
+				Session::flash('failmessage', 'Category');
+			}
+			
 		}
 
 		return view('categoryPage');

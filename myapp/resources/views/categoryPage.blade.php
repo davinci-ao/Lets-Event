@@ -37,22 +37,15 @@
 		<div class="col-md-8">
 			<div class="card">
 				<div class="card-header">Dashboard</div>
+				<a href="{{ url('/home') }}" >Home</a>	
 				<div class="card-body">
-					<form action="{{action('CategoryController@createCategory')}}" method="POST">
-						@csrf
-						<p> Category Name  <input type="text" name="categoryName" placeholder="Card Game" max="40" id="categoryName" required><input type="submit" value="Save"></p>
-					</form>
+					<a href="{{ url('/category/createPage/create') }}" >Create Categories</a>
 					<h1>Are categories being shown here ? who knows</h1>
 				</div>
-
-
+				
+				
 			</div>
 		</div>
 	</div>
 </div>
-<script>
-	setTimeout(function () {
-		document.getElementById("message").style.display = "none";
-	}, 5000);
-</script>
 @endsection

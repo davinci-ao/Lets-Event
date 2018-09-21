@@ -11,6 +11,7 @@
   |
  */
 
+
 Route::get('/', 'WelcomeController@index');
 //register
 Route::get('/register/setPassword/{token}', 'Auth\RegisterController@completeRegistration')->name('completeRegister');
@@ -29,3 +30,6 @@ Route::post('/category/edit', 'CategoryController@editCategoryAction')->name('ed
 Route::get('/event/createEvent', 'EventController@create')->name('indexCreateEvent');
 Route::post('/event/createEvent', 'EventController@createSave')->name('createEvent');
 Route::get('/events/overview', 'EventController@index')->name('eventIndex');
+Route::get('/events/view/{eventID}', 'EventController@viewEvent')->name('viewEvent');
+
+
