@@ -13,23 +13,26 @@
 
 
 Route::get('/', 'WelcomeController@index');
+
 //register
 Route::get('/register/setPassword/{token}', 'Auth\RegisterController@completeRegistration')->name('completeRegister');
 Route::post('/register/setPassword', 'Auth\RegisterController@SetPassword')->name('setPassword');
 
 Auth::routes();
+
 // home
 Route::get('/home', 'HomeController@index')->name('home');
+
 // category
-Route::get('/category/index', 'CategoryController@index')->name('indexCategory');
+Route::get('/category/index/', 'CategoryController@index')->name('indexCategory');
 Route::post('/category/create', 'CategoryController@createCategory')->name('createCategory');
-Route::get('/category/edit/{id}', 'CategoryController@editCategory')->name('editCategory');
+Route::get('/category/edit/{id}', 'CategoryController@viewEditCategory')->name('editCategory');
 Route::post('/category/edit', 'CategoryController@editCategoryAction')->name('editCategoryAction');
 
 //event
 Route::get('/event/createEvent', 'EventController@create')->name('indexCreateEvent');
 Route::post('/event/createEvent', 'EventController@createSave')->name('createEvent');
-Route::get('/events/overview', 'EventController@index')->name('eventIndex');
-Route::get('/events/view/{eventID}', 'EventController@viewEvent')->name('viewEvent');
+Route::get('/event/overview', 'EventController@index')->name('eventIndex');
+Route::get('/event/view/{eventID}', 'EventController@viewEvent')->name('viewEvent');
 
 

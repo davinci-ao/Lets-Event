@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Category\Category;
+use App\Http\Models\Category;
 use Session;
 use Validator;
 
@@ -22,8 +22,8 @@ class CategoryController extends Controller
 	 */
 	public function index()
 	{
-		Session::flash('');
-		return view('categoryPage');
+		$categories = Category::get();
+		return view('categoryPage', ['categories'=>$categories]);
 	}
 
 	/**
@@ -35,16 +35,26 @@ class CategoryController extends Controller
 	{
 		if (isset($_POST)) {
 			$catergoryData = $_POST;
+			if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
+				Session::flash('emptyInputMessage', 'Category');
+				return view('categoryPage', ['categories'=>$categories]);
+			}
+			if (count($catergoryData["categoryName"]) > 40) {
+				Session::flash('toLongInputMessage', 'Category');
+				return view('categoryPage', ['categories'=>$categories]);
+			}
+
 			$category = new Category();
 			if ($category->saveCategoryData($catergoryData) === true) {
-				Session::flash('succesmessage', 'Category');
+				Session::flash('succesMessage', 'Category');
+				Category::get();
+				return view('categoryPage', [ 'categoryName' => $catergoryData["categoryName"], 'categories'=>Category::get()] );
 			} elseif ($category->saveCategoryData($catergoryData) === false) {
-				Session::flash('failmessage', 'Category');
+				Session::flash('failMessage', 'Category');
+				Category::get();
+				return view('categoryPage', [ 'categoryName' => $catergoryData["categoryName"], 'categories'=>Category::get()] );
 			}
-			
 		}
-
-		return view('categoryPage');
 	}
 
 	/**
@@ -53,16 +63,17 @@ class CategoryController extends Controller
 	 *
 	 * @return type view
 	 */
-	public function editCategory($id)
+	public function viewEditCategory($id)
 	{
+		$catergoryData = $_POST;
 		$category = new Category();
-		$category = $category::find($id);
-
-		if ( !isset($category->id) ) {
-			return redirect('category/index')->with('message', 'Category not found');
+		if ($category->saveCategoryData($catergoryData) === true) {
+			Session::flash('succesMessage', 'Category');
+		} elseif ($category->saveCategoryData($catergoryData) === false) {
+			Session::flash('failMessage', 'Category');
 		}
 
-		return view('categoryEdit', ['category' => $category]);
+		return view('categoryPage');
 	}
 
 	/**
@@ -71,27 +82,27 @@ class CategoryController extends Controller
 	 *
 	 * @return type view
 	 */
-	public function editCategoryAction(Request $request)
+	public function editCategory()
 	{
 		$category = new Category();
 
 		$validator = Validator::make($request->all(), [
-			'id' => 
-				['required',
+			  'id' =>
+			  ['required',
 				function($attribute, $value, $fail) {
 					$category = new Category();
 					$category = $category->find($value);
-						
-					if (! isset($category->id) ) {
+
+					if (!isset($category->id)) {
 						return $fail('Category not found');
 					}
 				}],
-			'categoryName' => 'required|max:40'
+			  'categoryName' => 'required|max:40'
 		]);
 
 		if ($validator->fails()) {
-    		return back()->withErrors($validator);		
-    	}
+			return back()->withErrors($validator);
+		}
 
 		$category = new Category();
 		$category = $category->find($request->input('id'));
