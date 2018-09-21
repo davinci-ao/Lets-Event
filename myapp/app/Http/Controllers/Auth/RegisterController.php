@@ -7,12 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use App\Mail\AcountConfirm;
-use Mail;
-use Session;
 
-class RegisterController extends Controller
-{
+class RegisterController extends Controller {
 	/*
 	  |--------------------------------------------------------------------------
 	  | Register Controller
@@ -38,8 +34,7 @@ use RegistersUsers;
 	 *
 	 * @return void
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		$this->middleware('guest');
 	}
 
@@ -49,104 +44,32 @@ use RegistersUsers;
 	 * @param  array  $data
 	 * @return \Illuminate\Contracts\Validation\Validator
 	 */
-	protected function validator(array $data)
-	{
+	protected function validator(array $data) {
 		return Validator::make($data, [
-			  'student_number' => [
-				'required',
-				'string',
-				'size:8',
-				function($attribute, $value, $fail) {
-					$user = User::where('student_nr', $value)->first();
-					if ($user == null) {
-						return $fail('Student number not found');
-					} else if ($user->user_status == 'active') {
-						return $fail('This acount is arleady active');
-					}
-				}
-			  ],
+				'student_number' => 'required|string|max:255',
+				'email' => 'required|string|email|max:255|unique:users',
+				'password' => 'required|string|min:6|confirmed',
 		]);
 	}
 
 	/**
-	 * Send an email to the user to complete the registration.
+	 * Create a new user instance after a valid registration.
 	 *
 	 * @param  array  $data
 	 * @return \App\User
 	 */
-	protected function create(array $data)
-	{
-		$token = md5(uniqid());
-		$user = User::where('student_nr', $data['student_number'])->first();
-		$user->activation_token = $token;
-		$user->email_send_at = date('Y-m-d');
-		$user->save();
-		Mail::to($user->email)->send(new AcountConfirm($token));
-
-		return $user;
-		//return User::create([
-		//'student_nr' => $data['student_number'],
-		//'email' => $data['email'],
-		//'role' => "leerling",
-		//'firstname' => "john", 
-		//'lastname' => "doe",
-		//'education_location_id' => 0,
-		//'password' => Hash::make($data['password']),
-		//]);
-	}
-
-	/**
-	 * complete the registartion of the user.
-	 * @param token string
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function completeRegistration($token)
-	{
-		$user = User::where('activation_token', $token)->first();
-		if ((strtotime(date('Y-m-d'))) > strtotime($user->email_send_at . " +2 days")) {
-			Session::flash('message', 'This email has expired');
-			return redirect()->route('register');
-		}
-		if ($user == null || $user->user_status == 'active') {
-			if ($user == null)
-				Session::flash('message', 'An unexpected error has accord');
-			if ($user->user_status == 'active')
-				Session::flash('message', 'This acount is already active');
-			return redirect()->route('login');
-		}
-		return view('registration.setPassword', ['token' => $token]);
-	}
-
-	/**
-	 * set the users password
-	 * @param $request request
-	 * 
-	 * @return \Illuminate\Http\Response
-	 */
-	public function SetPassword(Request $Request)
-	{
-		$user = User::where('activation_token', $Request->input('token'))->first();
-		if ((strtotime(date('Y-m-d'))) > strtotime($user->email_send_at . " +2 days")) {
-			Session::flash('message', 'This email has expired');
-			return redirect()->route('register');
-		}
-		if ($user == null || $user->user_status == 'active') {
-			if ($user == null)
-				Session::flash('message', 'An unexpected error has accord');
-			if ($user->user_status == 'active')
-				Session::flash('message', 'This acount is already active');
-			return redirect()->route('login');
-		}
-		$Request->validate([
-		    'password' => 'required|min:8|max:255',
-		    'password_confirmation' => 'same:password',
+	protected function create(array $data) {
+		return User::create([
+				'student_nr' => $data['student_number'],
+				'email' => $data['email'],
+				'email-hash-user'=>"Esesvsjbuu",
+				'role' => "leerling",
+				'activated'=>'geactivateerd',
+				'firstname' => "john", 
+				'lastname' => "doe",
+				'education_location_id' => 0,
+				'password' => Hash::make($data['password']),
 		]);
-		$user->password = Hash::make($Request->input('password'));
-		$user->user_status = 'active';
-		$user->save();
-
-		return redirect('login');
 	}
 
 }
