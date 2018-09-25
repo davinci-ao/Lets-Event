@@ -2,23 +2,36 @@
 
 @section('content')
 <div class="container">
-	@if(session::has('succesmessage'))
-	<p id='message'>Category Created</p>
-	@elseif (session::has('failmessage'))
-	<p id='message'>Category creation failed,  it already exists</p>
-	@else
-	<p id="message" style="background-color: inherit"></p>
+
+	@if(Session::has('succesMessage'))
+	<div id="message" class="alert alert-success">
+		<p>Category Creation is succesfull , '{{$categoryName}}' Created</p> 
+	</div>
+	@elseif (Session::has('failMessage'))
+	<div id="message" class="alert alert-danger">
+		<p>Category creation failed, '{{$categoryName}}' already exists</p>
+	</div>
+	@elseif (Session::has('emptyInputMessage'))
+	<div id="message" class="alert alert-danger">
+		<p>Category creation failed,  You didn't input a name for your category</p>
+	</div>
+	@elseif (Session::has('toLongInputMessage'))
+	<div id="message" class="alert alert-danger">
+		<p>Category creation failed,  the name is above 40 characters</p>
+	</div>
 	@endif
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="card">
 				<div class="card-header">Dashboard</div>
 				<div class="card-body">
-					<form action="{{action('CategoryController@createCategory')}}" method="POST">
+					<form action="{{ route('createCategory')}}" method="POST">
 						@csrf
-						<p> Category Name  <input type="text" name="categoryName" placeholder="Card Game" max="40" id="categoryName" required><input type="submit" value="Save"></p>
+						<p> Category Name  <input type="text" name="categoryName" placeholder="Card Game, Party, tournament, Etc" max="40" id="categoryName" required size="35%;"><input type="submit" value="Save"></p>
 					</form>
-					<h1>Are categories being shown here ? who knows</h1>
+					@foreach($categories as $category)
+					<p>{{$category->name}} <a class="glyphicon glyphicon-pencil"  href="{{ route('editCategory', $category->id)}}">Edit</a></p>
+					@endforeach
 				</div>
 
 
@@ -29,6 +42,6 @@
 <script>
 	setTimeout(function () {
 		document.getElementById("message").style.display = "none";
-	}, 3000);
+	}, 5000);
 </script>
 @endsection

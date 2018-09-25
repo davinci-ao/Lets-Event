@@ -19,7 +19,6 @@
 			    $table->string('lastname');
 			    $table->integer('education_location_id');
 			    $table->string('email')->unique();
-			    $table->string('email-hash-user');
 			    $table->string('password');
 			    $table->enum('role', ['leerling', 'leeraar']);
 			    $table->enum('activated', ['geactivateerd', 'niet geactiveerd']);
@@ -38,7 +37,5 @@
 	    }
 
     }
-<<<<<<< HEAD
    
-=======
->>>>>>> 2d308458dd93fc0610dbf69973a8c7c674d625ce
+
