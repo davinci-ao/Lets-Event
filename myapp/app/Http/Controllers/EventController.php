@@ -148,12 +148,14 @@ class EventController extends Controller
 	 * shows the event with the given id from the database
 	 * @param type $eventID
 	 */
-	public function viewEvent($eventID){
+	public function viewEvent($eventID)
+    {
 		$event = Event::where('id', $eventID)->first();
-		$user = User::where('id', $event->user_id)->first();
+		$organizer = User::where('id', $event->user_id)->first();
 		$location = locations::where('id', $event->location_id)->first();
-		
-		return view('viewEvent', ['event'=>$event, 'user'=>$user, 'location'=>$location]);
+        $guests = User::find([ linked_user_event::where('event_id', $eventID)->pluck('user_id') ]);
+    		
+		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'location' => $location, 'guests' => $guests]);
 	}
 	
 	

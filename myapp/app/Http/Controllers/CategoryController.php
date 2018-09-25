@@ -23,11 +23,10 @@ class CategoryController extends Controller
 	 */
 	public function index()
 	{
-		Session::flash('');
-		$categories = Category::all();
-		return view('categoryPage', ['categories' => $categories]);
+
 		$categories = Category::get();
 		return view('categoryPage', ['categories'=>$categories]);
+
 	}
 
 	/**
@@ -53,6 +52,7 @@ class CategoryController extends Controller
 		} elseif ($category->saveCategoryData($catergoryData) === false) {
 			Session::flash('failMessage', 'Category');
 		}
+
 		if (isset($_POST)) {
 			$catergoryData = $_POST;
 			if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
@@ -74,6 +74,7 @@ class CategoryController extends Controller
 				Category::get();
 				return view('categoryPage', [ 'categoryName' => $catergoryData["categoryName"], 'categories'=>Category::get()] );
 			}
+
 		}
 	}
 
@@ -150,6 +151,7 @@ class CategoryController extends Controller
 		}
 
 		Session::flash('status', 'Category does not exists'); // message
+
 		return redirect('category/index');// return blade
 	}
 
