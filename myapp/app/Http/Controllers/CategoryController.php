@@ -52,6 +52,7 @@ class CategoryController extends Controller
 			Session::flash('succesMessage', 'Category');
 		} elseif ($category->saveCategoryData($catergoryData) === false) {
 			Session::flash('failMessage', 'Category');
+		}
 		if (isset($_POST)) {
 			$catergoryData = $_POST;
 			if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
@@ -141,10 +142,14 @@ class CategoryController extends Controller
 	public function deleteCategory(Request $request, $category_id)
 	{	
 		$category = Category::where('id', '=', $category_id)->first();// get name where id
+
+		if (!isset($category->id)) { // validation
+			Session::flash('status', 'Category not exists'); // message
+			return redirect('category/index');// return blade
+		}
+
 		Category::where('id', $category_id)->delete(); // delete category where id
-
 		Session::flash('status', 'Category '. $category->name . ' successful deleted! '); // message
-
 		return redirect('category/index');// return blade
 	}
 
