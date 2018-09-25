@@ -70,9 +70,42 @@
             </div>
         </nav>
 
+<<<<<<< HEAD
+									<a class="dropdown-item" href="{{ route('logout') }}"
+									   onclick="event.preventDefault();
+									document.getElementById('logout-form').submit();">
+										{{ __('Logout') }}
+									</a>  
+
+									<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+										@csrf
+									</form>
+								</div>
+							</li>
+							@endguest
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<main class="container">
+				@if(session()->has('status'))
+				<div class="alert alert-success" role="alert">
+				 	<h4 class="alert-heading">Succes</h4>
+				  	{{ session()->get('status') }}
+				</div>
+
+				@endif
+
+				@yield('content')
+			</main>
+		</div>
+	</body>
+=======
         <main class="py-4">
             @yield('content')
         </main>
     </div>
 </body>
+>>>>>>> 0582cf575fdf7ff05d23d16bbc6f5181c4c98334
 </html>
