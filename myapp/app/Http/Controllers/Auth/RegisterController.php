@@ -7,14 +7,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 use App\Mail\AcountConfirm;
 use Mail;
 use Session;
 
-class RegisterController extends Controller
-{
+
+class RegisterController extends Controller {
 	/*
 	  |--------------------------------------------------------------------------
 	  | Register Controller
@@ -40,8 +41,7 @@ use RegistersUsers;
 	 *
 	 * @return void
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		$this->middleware('guest');
 	}
 
@@ -51,31 +51,21 @@ use RegistersUsers;
 	 * @param  array  $data
 	 * @return \Illuminate\Contracts\Validation\Validator
 	 */
-	protected function validator(array $data)
-	{
+	protected function validator(array $data) {
 		return Validator::make($data, [
-			  'student_number' => [
-				'required',
-				'string',
-				'size:8',
-				function($attribute, $value, $fail) {
-					$user = User::where('student_nr', $value)->first();
-					if ($user == null) {
-						return $fail('Student number not found');
-					} else if ($user->user_status == 'active') {
-						return $fail('This acount is arleady active');
-					}
-				}
-			  ],
+				'student_number' => 'required|string|max:255',
+				'email' => 'required|string|email|max:255|unique:users',
+				'password' => 'required|string|min:6|confirmed',
 		]);
 	}
 
 	/**
-	 * Send an email to the user to complete the registration.
+	 * Create a new user instance after a valid registration.
 	 *
 	 * @param  array  $data
 	 * @return \App\User
 	 */
+
 	protected function create(array $data)
 	{
 		$token = md5(uniqid());
@@ -149,6 +139,7 @@ use RegistersUsers;
 
 
 		return redirect('login');
+
 	}
 	/***
 	* Handle a registration request for the application.

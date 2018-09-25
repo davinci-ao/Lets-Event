@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Models\Event;
 use App\Http\Models\locations;
-
+use App\Http\Models\User;
 use Validator;
 
 class EventController extends Controller
@@ -19,17 +19,17 @@ class EventController extends Controller
 
 	private $eventStatus;
 
-	/**
-	 * Show the application dashboard.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	// show all events
-	public function index()
-	{
-		$events = DB::table('events')->get();
-		return view('events', ['events' => $events]);
-	}
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    // show all events
+    public function index()
+    {
+    	$events = DB::table('events')->get();
+         return view('events', ['events' => $events]);
+    }
 
 	public function create()
 	{
@@ -39,7 +39,7 @@ class EventController extends Controller
 		if ($this->eventStatus === true) {
 			$this->eventStatus = null;
 			return view('event', ['locations' => $locations, 'status' => 'success']);
-		}
+}
 		if ($this->eventStatus === false) {
 			$this->eventStatus = null;
 			return view('event', ['locations' => $locations, 'status' => 'fail']);
@@ -85,7 +85,20 @@ class EventController extends Controller
 		$this->eventStatus = $result;
 		return $this->create();
 	}
-
+	
+	/**
+	 * shows the event with the given id from the database
+	 * @param type $eventID
+	 */
+	public function viewEvent($eventID){
+		$event = Event::where('id', $eventID)->first();
+		$user = User::where('id', $event->user_id)->first();
+		$location = locations::where('id', $event->location_id)->first();
+		
+		return view('viewEvent', ['event'=>$event, 'user'=>$user, 'location'=>$location]);
+	}
+	
+	
 	/**
 	 * 
 	 */
