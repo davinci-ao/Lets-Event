@@ -4,6 +4,17 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
+
+			@if(Session::has('message'))
+				@if(Session::has('positive'))
+					<div id="message" class="alert alert-success">
+				@else 
+					<div id="message" class="alert alert-danger">
+				@endif		
+					<p> {{ Session('message') }} </p>
+				</div>
+		@endif
+
 			<a  href="{{ route('indexCreateEvent') }}" >Create a Event</a>
 			<div class="card">
 				<div class="card-header">List of events</div>
