@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Category;
+namespace App\Http\Models;
 
 /**
  * Description of Category this is the model for the categories
@@ -19,13 +19,11 @@ class Category extends \Illuminate\Database\Eloquent\Model
 	 * @return type array
 	 */
 	public function saveCategoryData($catergoryData)
-	{
+	{	
 		if ($this->where("name", "=", $catergoryData['categoryName'])->count() > 0) {
 			return false;
 		}
-		if (empty($catergoryData['categoryName'])) {
-			return false;
-		}
+		
 		$this->create([
 		    "name" => $catergoryData['categoryName']
 		]);
