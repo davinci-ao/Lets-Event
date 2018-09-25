@@ -18,10 +18,10 @@ class ImportController extends Controller
     const COL_EMAIL = 'email';
 
 
-	/*public function __construct()
+	public function __construct()
     {
         $this->middleware('auth');
-    }*/
+    }
 
 	//form to import csv files
 	//if csv is invalid, shows error box
