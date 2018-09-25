@@ -23,11 +23,10 @@ class CategoryController extends Controller
 	 */
 	public function index()
 	{
-		Session::flash('');
-		$categories = Category::all();
-		return view('categoryPage', ['categories' => $categories]);
+
 		$categories = Category::get();
 		return view('categoryPage', ['categories'=>$categories]);
+
 	}
 
 	/**
@@ -37,6 +36,7 @@ class CategoryController extends Controller
 	 */
 	public function createCategory()
 	{
+<<<<<<< HEAD
 		$catergoryData = $_POST;
 		
 		if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
@@ -53,6 +53,9 @@ class CategoryController extends Controller
 		} elseif ($category->saveCategoryData($catergoryData) === false) {
 			Session::flash('failMessage', 'Category');
 		}
+=======
+
+>>>>>>> dc2e948e3711117fd2b2435b39e7319ece2a33c8
 		if (isset($_POST)) {
 			$catergoryData = $_POST;
 			if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
@@ -74,6 +77,7 @@ class CategoryController extends Controller
 				Category::get();
 				return view('categoryPage', [ 'categoryName' => $catergoryData["categoryName"], 'categories'=>Category::get()] );
 			}
+
 		}
 	}
 
