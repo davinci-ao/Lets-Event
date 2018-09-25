@@ -145,11 +145,11 @@ class CategoryController extends Controller
 		if (isset($category->id)) {
 			Category::where('id', $categoryId)->delete(); // delete category where id
 			Session::flash('status', 'Category '. $category->name . ' successful deleted! '); // message
+			
 			return redirect('category/index');// return blade
-
 		}
-		Session::flash('status', 'Category does not exists'); // message
 
+		Session::flash('status', 'Category does not exists'); // message
 		return redirect('category/index');// return blade
 	}
 
