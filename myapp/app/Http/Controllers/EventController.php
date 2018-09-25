@@ -23,6 +23,7 @@ class EventController extends Controller
 	}
 
 	private $eventStatus;
+    private $eventName;
 
     /**
      * Show the application dashboard.
@@ -94,43 +95,45 @@ class EventController extends Controller
 
 		if ($this->eventStatus === true) {
 			$this->eventStatus = null;
-			return view('event', ['locations' => $locations, 'status' => 'success']);
-}
+
+			return view('event', ['locations' => $locations, 'status' => 'success', 'success' => $this->eventName]);
+		}
 		if ($this->eventStatus === false) {
 			$this->eventStatus = null;
 			return view('event', ['locations' => $locations, 'status' => 'fail']);
 		}
-		return view('event', ['locations' => $locations, 'status' => '']);
+		return view('event', ['locations' => $locations, 'status' => '', 'success' => $this->eventName]);
 	}
 
 	public function createSave(Request $request)
 	{
 		$eventData = $_POST;
 		$validator = Validator::make($request->all(), [
-			  'eventName' => 'required',
-			  'eventDate' => 'required|date',
-			  'eventTime' => ['required',
-				function($attribute, $value, $fail) {
-					$time = \DateTime::createFromFormat('G:i:s', $value);
-					if ($time == false) {
-						return $fail("YOU LIED TO ME!:Your time is invalid.");
-					}
-				}],
-			  'eventPrice' => 'nullable|regex:/^[0-9]*\.?[0-9]{1,2}+$/',
-			  'eventLocation' => ['required',
-				'numeric',
-				function($attribute, $value, $fail) {
-					$locations = new locations();
-					$locations = $locations::find($value);
-					if (!isset($locations->id)) {
-						return $fail('YOU LIED TO ME!:This location doesn\'t exist');
-					}
-				}],
+		  'eventName' => 'required|max:40',
+		  'eventDate' => 'required|date',
+		  'eventTime' => ['required',
+			function($attribute, $value, $fail) {
+				$time = \DateTime::createFromFormat('G:i', $value);
+				if ($time == false) {
+					return $fail("Your time is invalid.");
+				}
+			}],
+		  'eventPrice' => 'nullable|regex:/^[0-9]*\.?[0-9]{1,2}+$/',
+		  'eventLocation' => ['required',
+			'numeric',
+			function($attribute, $value, $fail) {
+				$locations = new locations();
+				$locations = $locations::find($value);
+				if (!isset($locations->id)) {
+					return $fail('This location doesn\'t exist');
+				}
+			}],
+            'eventDescription' => 'nullable|max:255'
 		]);
 
 		if ($validator->fails()) {
 			$this->eventStatus = false;
-			$this->create();
+			return $this->create();
 		}
 
 		$event = new Event();
@@ -139,6 +142,7 @@ class EventController extends Controller
 		$result = $event->saveEventData($eventData);
 
 		$this->eventStatus = $result;
+        $this->eventName = $eventData['eventName'];
 		return $this->create();
 	}
 	
