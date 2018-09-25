@@ -3,49 +3,45 @@
 @section('content')
 <div class="container">
 
-	@if(session::has('succesMessage'))
+	@if(Session::has('succesMessage'))
 	<div id="message" class="alert alert-success">
-		<p>Category Created</p>
+		<p>Category Creation is succesfull , '{{$categoryName}}' Created</p> 
 	</div>
-	@elseif (session::has('failMessage'))
+	@elseif (Session::has('failMessage'))
 	<div id="message" class="alert alert-danger">
-		<p>Category creation failed,  it already exists</p>
+		<p>Category creation failed, '{{$categoryName}}' already exists</p>
 	</div>
-	@elseif (session::has('emptyInputMessage'))
+	@elseif (Session::has('emptyInputMessage'))
 	<div id="message" class="alert alert-danger">
 		<p>Category creation failed,  You didn't input a name for your category</p>
 	</div>
-	@elseif (session::has('toLongInputMessage'))
+	@elseif (Session::has('toLongInputMessage'))
 	<div id="message" class="alert alert-danger">
 		<p>Category creation failed,  the name is above 40 characters</p>
 	</div>
-	@else
-	<p id="message" style="background-color: inherit"></p>
 	@endif
-
-	@if(Session::has('message'))
-		@if(Session::has('positive'))
-			<div id="message" class="alert alert-success">
-		@else 
-			<div id="message" class="alert alert-danger">
-		@endif		
-			<p> {{ Session('message') }} </p>
-		</div>
-	@endif
-	
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="card">
 				<div class="card-header">Dashboard</div>
-				<a href="{{ url('/home') }}" >Home</a>	
 				<div class="card-body">
-					<a href="{{ url('/category/createPage/create') }}" >Create Categories</a>
-					<h1>Are categories being shown here ? who knows</h1>
+					<form action="{{ route('createCategory')}}" method="POST">
+						@csrf
+						<p> Category Name  <input type="text" name="categoryName" placeholder="Card Game, Party, tournament, Etc" max="40" id="categoryName" required size="35%;"><input type="submit" value="Save"></p>
+					</form>
+					@foreach($categories as $category)
+					<p>{{$category->name}} <a class="glyphicon glyphicon-pencil"  href="{{ route('editCategory', $category->id)}}">Edit</a></p>
+					@endforeach
 				</div>
-				
-				
+
+
 			</div>
 		</div>
 	</div>
 </div>
+<script>
+	setTimeout(function () {
+		document.getElementById("message").style.display = "none";
+	}, 5000);
+</script>
 @endsection
