@@ -19,6 +19,20 @@
 	<div id="message" class="alert alert-danger">
 		<p >Category creation failed,  the name is above 40 characters</p>
 	</div>
+	@elseif (Session::has('succes_deleted'))
+	<div class="`row">
+		<div class="alert alert-success">
+			<strong>Succes</strong>
+			<p > {{ session()->get('succes_deleted') }}</p>
+		</div>
+	</div>
+	@elseif (Session::has('error_deleted'))
+	<div class="`row">
+		<div class="alert alert-danger">
+			<strong>Succes</strong>
+			<p > {{ session()->get('error_deleted') }}</p>
+		</div>
+	</div>
 	@endif
 	<div class="row justify-content-center">
 		<div class="col-md-8">
