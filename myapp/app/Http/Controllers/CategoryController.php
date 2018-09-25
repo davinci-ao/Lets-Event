@@ -23,14 +23,11 @@ class CategoryController extends Controller
 	 */
 	public function index()
 	{
-<<<<<<< HEAD
 		Session::flash('');
 		$categories = Category::all();
 		return view('categoryPage', ['categories' => $categories]);
-=======
 		$categories = Category::get();
 		return view('categoryPage', ['categories'=>$categories]);
->>>>>>> 0582cf575fdf7ff05d23d16bbc6f5181c4c98334
 	}
 
 	/**
@@ -40,7 +37,6 @@ class CategoryController extends Controller
 	 */
 	public function createCategory()
 	{
-<<<<<<< HEAD
 		$catergoryData = $_POST;
 		
 		if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
@@ -56,7 +52,6 @@ class CategoryController extends Controller
 			Session::flash('succesMessage', 'Category');
 		} elseif ($category->saveCategoryData($catergoryData) === false) {
 			Session::flash('failMessage', 'Category');
-=======
 		if (isset($_POST)) {
 			$catergoryData = $_POST;
 			if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
@@ -78,7 +73,6 @@ class CategoryController extends Controller
 				Category::get();
 				return view('categoryPage', [ 'categoryName' => $catergoryData["categoryName"], 'categories'=>Category::get()] );
 			}
->>>>>>> 0582cf575fdf7ff05d23d16bbc6f5181c4c98334
 		}
 	}
 
