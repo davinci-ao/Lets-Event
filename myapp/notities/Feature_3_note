@@ -1,0 +1,17 @@
+Feature_3: Orgnisator kan een minimum en maximum aantal leden aangeven.
+
+- Stap1:
+
+Formulier aanpassen met een input minimum een een input maximum om aan te geven hoeveel leden er mee moeten doen. Op de input moet een validatie.
+
+Validatie eisen:
+
+- minimum input moet minimaal op 1 zijn en niet 0.
+- minimum input moet required zijn, zodra je deze niet invult moet er een melding komen.
+- maximum input is niet required.
+- maximum input mag maar tot 1000 leden.
+- maximum input mag niet lager zijn dan de minimum.
+
+- Stap2:
+
+Als een speler wilt deelnemen aan een event die al vol zit vanwege de aangeven maximale aantal leden. kan hij of zij niet deelnemem aan de event. Deze speler moet dan ook een feedback krijgen om te laten weten waarom hij of zij niet kan deelnemen.
