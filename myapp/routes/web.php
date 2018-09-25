@@ -32,4 +32,7 @@ Route::post('/event/createEvent', 'EventController@createSave')->name('createEve
 Route::get('/events/overview', 'EventController@index')->name('eventIndex');
 Route::get('/events/view/{eventID}', 'EventController@viewEvent')->name('viewEvent');
 
+Route::get('event/register/{eventId}', 'EventController@registerEvent')->name('RegisterEvent');
+Route::post('event/register', 'EventController@registerEventAction')->name('RegisterEventAction');
+
 
