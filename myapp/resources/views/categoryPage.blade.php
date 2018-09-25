@@ -33,7 +33,8 @@
 						@foreach ($categories as $category)
 						<li>
 							{{ $category->name }}
-							<a href="{{ url('/category/delete/' . $category->id) }}" onclick="return confirm('are you sure to delete this category ?')" >x</a>
+							<a href="{{ url('/category/delete/' . $category->id) }}"
+							 onclick="return confirm('are you sure to delete this category ?')" >x</a>
 						</li>
 						@endforeach
 					</ul>				
