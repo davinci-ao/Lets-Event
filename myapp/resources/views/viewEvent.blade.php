@@ -9,7 +9,7 @@
 				<div class="card-header" ><h1 class='headEventName'>{{$event->name}}</h1></div>
 				<div class="card-body">
 					<div class="form-group ">
-						<label class="control-label col-sm-9 eventDataHeader">Host :</label> <p class="eventData">{{$user->firstname . ' ' . $user->lastname}}</p>
+						<label class="control-label col-sm-9 eventDataHeader">Host :</label> <p class="eventData">{{$organizer->firstname . ' ' . $organizer->lastname}}</p>
 					</div>
 					<div class="form-group ">
 						<label class="control-label col-sm-9 eventDataHeader"> Date : </label><p class="eventData">{{$event->datum}}</p>
@@ -37,10 +37,25 @@
 				</div>
 			</div>
 			<div class="card">
-				<div class="card-header" ><h3>Attendees</h3></div>
+				<div class="card-header"><h3>Attendees</h3></div>
 				<div class="card-body">
-					<div class="form-group description ">
-						<p>Attendees would be shown here if there were  any</p>
+					<div class="form-group description">
+						@if($guests->isEmpty())
+							There are no attendees for this event
+						@else
+							<table class="table">
+								<tbody>
+									<tr>
+										<th>Name</th>
+									</tr>
+									@foreach($guests as $guest)
+									<tr>
+										<td>{{ $guest->firstname }} {{ $guest->lastname }}</td>
+									</tr>
+									@endforeach
+								</tbody>
+							</table>
+						@endif
 					</div>
 				</div>
 			</div>
