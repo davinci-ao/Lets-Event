@@ -36,22 +36,6 @@ class CategoryController extends Controller
 	 */
 	public function createCategory()
 	{
-		$catergoryData = $_POST;
-		
-		if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
-			Session::flash('emptyInputMessage', 'Category');
-			return view('categoryPage');
-		}
-		if (count($catergoryData["categoryName"]) > 40) {
-			Session::flash('toLongInputMessage', 'Category');
-			return view('categoryPage');
-		}
-		$category = new Category();
-		if ($category->saveCategoryData($catergoryData) === true) {
-			Session::flash('succesMessage', 'Category');
-		} elseif ($category->saveCategoryData($catergoryData) === false) {
-			Session::flash('failMessage', 'Category');
-		}
 
 		if (isset($_POST)) {
 			$catergoryData = $_POST;
@@ -140,17 +124,12 @@ class CategoryController extends Controller
 	/**
 	 * 
 	 */
-	public function deleteCategory(Request $request, $categoryId)
+	public function deleteCategory(Request $request, $category_id)
 	{	
-		$category = Category::where('id', '=', $categoryId)->first();// get name where id
-		if (isset($category->id)) {
-			Category::where('id', $categoryId)->delete(); // delete category where id
-			Session::flash('status', 'Category '. $category->name . ' successful deleted! '); // message
-			
-			return redirect('category/index');// return blade
-		}
+		$category = Category::where('id', '=', $category_id)->first();// get name where id
+		Category::where('id', $category_id)->delete(); // delete category where id
 
-		Session::flash('status', 'Category does not exists'); // message
+		Session::flash('status', 'Category '. $category->name . ' successful deleted! '); // message
 
 		return redirect('category/index');// return blade
 	}
