@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Models\Category;
+use Illuminate\Support\Facades\DB;
 use Session;
+use Validator;
 
 /**
  * Description of CategoryController
@@ -21,8 +23,14 @@ class CategoryController extends Controller
 	 */
 	public function index()
 	{
+<<<<<<< HEAD
 		Session::flash('');
-		return view('categoryPage');
+		$categories = Category::all();
+		return view('categoryPage', ['categories' => $categories]);
+=======
+		$categories = Category::get();
+		return view('categoryPage', ['categories'=>$categories]);
+>>>>>>> 0582cf575fdf7ff05d23d16bbc6f5181c4c98334
 	}
 
 	/**
@@ -32,7 +40,9 @@ class CategoryController extends Controller
 	 */
 	public function createCategory()
 	{
+<<<<<<< HEAD
 		$catergoryData = $_POST;
+		
 		if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
 			Session::flash('emptyInputMessage', 'Category');
 			return view('categoryPage');
@@ -46,25 +56,102 @@ class CategoryController extends Controller
 			Session::flash('succesMessage', 'Category');
 		} elseif ($category->saveCategoryData($catergoryData) === false) {
 			Session::flash('failMessage', 'Category');
+=======
+		if (isset($_POST)) {
+			$catergoryData = $_POST;
+			if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
+				Session::flash('emptyInputMessage', 'Category');
+				return view('categoryPage', ['categories'=>$categories]);
+			}
+			if (count($catergoryData["categoryName"]) > 40) {
+				Session::flash('toLongInputMessage', 'Category');
+				return view('categoryPage', ['categories'=>$categories]);
+			}
+
+			$category = new Category();
+			if ($category->saveCategoryData($catergoryData) === true) {
+				Session::flash('succesMessage', 'Category');
+				Category::get();
+				return view('categoryPage', [ 'categoryName' => $catergoryData["categoryName"], 'categories'=>Category::get()] );
+			} elseif ($category->saveCategoryData($catergoryData) === false) {
+				Session::flash('failMessage', 'Category');
+				Category::get();
+				return view('categoryPage', [ 'categoryName' => $catergoryData["categoryName"], 'categories'=>Category::get()] );
+			}
+>>>>>>> 0582cf575fdf7ff05d23d16bbc6f5181c4c98334
+		}
+	}
+
+	/**
+	 * @param id  
+	 * load the category according to the id
+	 *
+	 * @return type view
+	 */
+	public function viewEditCategory($id)
+	{
+		$catergoryData = $_POST;
+		$category = new Category();
+		if ($category->saveCategoryData($catergoryData) === true) {
+			Session::flash('succesMessage', 'Category');
+		} elseif ($category->saveCategoryData($catergoryData) === false) {
+			Session::flash('failMessage', 'Category');
 		}
 
 		return view('categoryPage');
 	}
 
 	/**
-	 * 
+	 * Validate the request and edit the category
+	 * @param id  
+	 *
+	 * @return type view
 	 */
 	public function editCategory()
 	{
-		
+		$category = new Category();
+
+		$validator = Validator::make($request->all(), [
+			  'id' =>
+			  ['required',
+				function($attribute, $value, $fail) {
+					$category = new Category();
+					$category = $category->find($value);
+
+					if (!isset($category->id)) {
+						return $fail('Category not found');
+					}
+				}],
+			  'categoryName' => 'required|max:40'
+		]);
+
+		if ($validator->fails()) {
+			return back()->withErrors($validator);
+		}
+
+		$category = new Category();
+		$category = $category->find($request->input('id'));
+
+		$category->name = $request->input('categoryName');
+
+		$category->save();
+
+		Session::flash('positive', true);
+
+		return redirect('category/index')->with('message', 'Category succesvol edited');
 	}
 
 	/**
 	 * 
 	 */
-	public function deleteCategory()
-	{
-		
+	public function deleteCategory(Request $request, $category_id)
+	{	
+		$category = Category::where('id', '=', $category_id)->first();// get name where id
+		Category::where('id', $category_id)->delete(); // delete category where id
+
+		Session::flash('status', 'Category '. $category->name . ' successful deleted! '); // message
+
+		return redirect('category/index');// return blade
 	}
 
 }

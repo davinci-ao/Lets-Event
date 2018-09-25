@@ -19,7 +19,7 @@ class Category extends \Illuminate\Database\Eloquent\Model
 	 * @return type array
 	 */
 	public function saveCategoryData($catergoryData)
-	{
+	{	
 		if ($this->where("name", "=", $catergoryData['categoryName'])->count() > 0) {
 			return false;
 		}
