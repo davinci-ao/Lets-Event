@@ -37,6 +37,7 @@ class CategoryController extends Controller
 	public function createCategory()
 	{
 <<<<<<< HEAD
+<<<<<<< HEAD
 		$catergoryData = $_POST;
 		
 		if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
@@ -53,6 +54,9 @@ class CategoryController extends Controller
 		} elseif ($category->saveCategoryData($catergoryData) === false) {
 			Session::flash('failMessage', 'Category');
 		}
+=======
+
+>>>>>>> dc2e948e3711117fd2b2435b39e7319ece2a33c8
 =======
 
 >>>>>>> dc2e948e3711117fd2b2435b39e7319ece2a33c8
