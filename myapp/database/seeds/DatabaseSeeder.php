@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
 		//     ]
 		// ]);
 
-		 DB::table('categories')->insert([
+		 DB::table('categories')->insert([ // create fake categorie name
             'name' => str_random(10),
         ]);
 	}
