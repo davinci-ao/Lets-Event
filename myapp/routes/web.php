@@ -29,10 +29,14 @@ Route::post('/category/create', 'CategoryController@createCategory')->name('crea
 Route::get('/category/edit/{id}', 'CategoryController@viewEditCategory')->name('editCategory');
 Route::post('/category/edit', 'CategoryController@editCategoryAction')->name('editCategoryAction');
 
+// CSV import
+Route::get('/importcsv', 'ImportController@index')->name('import');
+Route::get('/errorparseimport', 'ImportController@errorParseImport')->name('import_parse_error');
+Route::post('/parseimport', 'ImportController@parseImport')->name('import_parse');
+Route::post('/processimport', 'ImportController@processImport')->name('import_process');
+
 //event
 Route::get('/event/createEvent', 'EventController@create')->name('indexCreateEvent');
 Route::post('/event/createEvent', 'EventController@createSave')->name('createEvent');
 Route::get('/event/overview', 'EventController@index')->name('eventIndex');
 Route::get('/event/view/{eventID}', 'EventController@viewEvent')->name('viewEvent');
-
-
