@@ -25,8 +25,7 @@ class CategoryController extends Controller
 	{
 
 		$categories = Category::get();
-		return view('categoryPage', ['categories'=>$categories]);
-
+		return view('categoryPage', ['categories' => $categories]);
 	}
 
 	/**
@@ -41,24 +40,23 @@ class CategoryController extends Controller
 			$catergoryData = $_POST;
 			if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
 				Session::flash('emptyInputMessage', 'Category');
-				return view('categoryPage', ['categories'=>$categories]);
+				return view('categoryPage', ['categories' => $categories]);
 			}
 			if (count($catergoryData["categoryName"]) > 40) {
 				Session::flash('toLongInputMessage', 'Category');
-				return view('categoryPage', ['categories'=>$categories]);
+				return view('categoryPage', ['categories' => $categories]);
 			}
 
 			$category = new Category();
 			if ($category->saveCategoryData($catergoryData) === true) {
 				Session::flash('succesMessage', 'Category');
 				Category::get();
-				return view('categoryPage', [ 'categoryName' => $catergoryData["categoryName"], 'categories'=>Category::get()] );
+				return view('categoryPage', ['categoryName' => $catergoryData["categoryName"], 'categories' => Category::get()]);
 			} elseif ($category->saveCategoryData($catergoryData) === false) {
 				Session::flash('failMessage', 'Category');
 				Category::get();
-				return view('categoryPage', [ 'categoryName' => $catergoryData["categoryName"], 'categories'=>Category::get()] );
+				return view('categoryPage', ['categoryName' => $catergoryData["categoryName"], 'categories' => Category::get()]);
 			}
-
 		}
 	}
 
@@ -125,13 +123,16 @@ class CategoryController extends Controller
 	 * 
 	 */
 	public function deleteCategory(Request $request, $category_id)
-	{	
-		$category = Category::where('id', '=', $category_id)->first();// get name where id
-		Category::where('id', $category_id)->delete(); // delete category where id
+	{
 
-		Session::flash('status', 'Category '. $category->name . ' successful deleted! '); // message
+		$category = Category::where('id', '=', $category_id)->first(); // get name where id
+		if (isset($category->id)) {
+			Category::where('id', $category_id)->delete(); // delete category where id
 
-		return redirect('category/index');// return blade
+			Session::flash('status', 'Category ' . $category->name . ' successful deleted! '); // message
+
+			return redirect('category/index'); // return blade
+		}
 	}
 
 }
