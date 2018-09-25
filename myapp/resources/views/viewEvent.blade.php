@@ -15,7 +15,7 @@
 						<label class="control-label col-sm-9 eventDataHeader"> Date : </label><p class="eventData">{{$event->datum}}</p>
 					</div>
 					<div class="form-group ">
-						<label class="control-label col-sm-9 eventDataHeader"> Time : </label> <p class="eventData">{{$event->time}}} </p>
+						<label class="control-label col-sm-9 eventDataHeader"> Time : </label> <p class="eventData">{{$event->time}} </p>
 					</div>
 					<div class="form-group ">
 						<label class="control-label col-sm-9 eventDataHeader"> Price : </label> <p class="eventData">@if($event->price != 0) €{{$event->price}} @else Free @endif</p>

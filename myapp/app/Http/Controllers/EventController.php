@@ -86,8 +86,6 @@ class EventController extends Controller
         return redirect()->route('eventIndex')->with('message', 'You have succesvolley registered for the event "'.$event->name.'"' );
     }
 
-    }
-
 	public function create()
 	{
 		$locations = new locations();
