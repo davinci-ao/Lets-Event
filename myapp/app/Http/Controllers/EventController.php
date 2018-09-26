@@ -183,6 +183,7 @@ class EventController extends Controller
 
 		$event = Event::where('id', $eventID)->first();
 		$organizer = User::where('id', $event->user_id)->first();
+		$user = auth()->user()->id;
 		$location = locations::where('id', $event->location_id)->first();
 		$userIds = participations::where('event_id', $eventID)->pluck('user_id');
 
@@ -190,7 +191,8 @@ class EventController extends Controller
 			$userIds = [0];
 		$guests = User::find([$userIds]);
 
-		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'location' => $location, 'guests' => $guests]);
+		
+		return view('viewEvent', ['event' => $event, 'organizer' => $organizer,'user'=>$user, 'location' => $location, 'guests' => $guests]);
 	}
 
 	/**

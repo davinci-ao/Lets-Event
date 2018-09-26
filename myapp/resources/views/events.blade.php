@@ -7,11 +7,11 @@
 
 			@if(Session::has('message'))
 			@if(Session::has('positive'))
-			<div id="message" class="alert alert-success">
+			<div class="alert alert-success">
 				<p> {{ Session('message') }} </p>
 			</div>
 			@else 
-			<div id="message" class="alert alert-danger">
+			<div  class="alert alert-danger">
 				<p> {{ Session('message') }} </p>
 			</div>
 			@endif		
@@ -31,7 +31,7 @@
 
 					<ul>
 						@foreach ($events as $event)
-						<a  href="{{ route('viewEvent', $event->id)}}" > {{ $event->name }}</a>
+						<a  href="{{ route('viewEvent', $event->id)}}" > <li>{{ $event->name }}</a>
 						@endforeach
 					</ul>
 				</div>

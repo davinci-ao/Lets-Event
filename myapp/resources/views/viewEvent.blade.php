@@ -7,16 +7,19 @@
 
 			@if(Session::has('message'))
 			@if(Session::has('positive'))
-			<div id="message" class="alert alert-success">
+			<div  class="alert alert-success">
 				@else 
-				<div id="message" class="alert alert-danger">
+				<div  class="alert alert-danger">
 					@endif		
 					<p> {{ Session('message') }} </p>
 				</div>
 				@endif
 
 				<a  class="btn btn-primary" href="{{ route('eventIndex') }}" >Back to overview</a>
+				
+				@if($organizer->id === $user)
 				<a id="eventDeleteButton" class="btn btn-danger" href="{{ route('deleteEvent', $event->id)}}"onclick="return confirm('are you sure to delete this Event ?')" > Delete Event </a>
+				@endif
 				<div class="card">
 					<div class="card-header" ><h1 class='headEventName'>{{$event->name}}</h1></div>
 					<div class="card-body">
