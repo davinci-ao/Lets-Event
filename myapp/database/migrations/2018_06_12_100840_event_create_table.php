@@ -23,6 +23,8 @@ class EventCreateTable extends Migration
 			$table->integer('location_id');
 			$table->string('description');
 			$table->integer('user_id');
+			$table->integer('minimum_members');
+			$table->integer('maximum_members');
 			$table->timestamps();
 		});
 	}
