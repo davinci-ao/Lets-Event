@@ -65,7 +65,22 @@
 
 				<div class="card-body">
 					<div class="form-group description ">
-						<p>Attendees would be shown here if there were  any</p>
+						@if($guests->isEmpty())
+							There are no attendees for this event
+						@else
+							<table class="table">
+								<tbody>
+									<tr>
+										<th>Name</th>
+									</tr>
+									@foreach($guests as $guest)
+									<tr>
+										<td>{{ $guest->firstname }} {{ $guest->lastname }}</td>
+									</tr>
+									@endforeach
+								</tbody>
+							</table>
+						@endif
 					</div>
 				</div>
 			</div>
