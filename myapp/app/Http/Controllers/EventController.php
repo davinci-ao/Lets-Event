@@ -160,6 +160,7 @@ class EventController extends Controller
 		$event = new Event();
 		if (empty($eventData['eventPrice']))
 			$eventData['eventPrice'] = 0;
+            $eventData['eventTime'] .= ':00';
 		$result = $event->saveEventData($eventData);
 
 		$this->eventStatus = $result;
