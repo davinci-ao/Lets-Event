@@ -3,6 +3,7 @@
 @section('content')
 <div class="container">
 
+
 	@if(Session::has('succesMessage'))
 	<div id="message" class="alert alert-success">
 		<p>Category Creation is succesfull , '{{$categoryName}}' Created</p> 
@@ -33,7 +34,17 @@
 			<p > {{ session()->get('error_deleted') }}</p>
 		</div>
 	</div>
+	@if(Session::has('message'))
+		@if(Session::has('positive'))
+			<div id="message" class="alert alert-success">
+		@else 
+			<div id="message" class="alert alert-danger">
+		@endif		
+				<p> {{ Session('message') }} </p>
+			</div>
+
 	@endif
+	
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="card">

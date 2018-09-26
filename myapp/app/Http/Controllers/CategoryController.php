@@ -23,11 +23,9 @@ class CategoryController extends Controller
 	 */
 	public function index()
 	{
-		Session::flash('');
-		$categories = Category::all();
-		return view('categoryPage', ['categories' => $categories]);
+
 		$categories = Category::get();
-		return view('categoryPage', ['categories'=>$categories]);
+		return view('categoryPage', ['categories' => $categories]);
 	}
 
 	/**
@@ -35,46 +33,24 @@ class CategoryController extends Controller
 	 * and generates a flash message
 	 * @return type view
 	 */
-	public function createCategory()
-	{
-		$catergoryData = $_POST;
-		
-		if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
-			Session::flash('emptyInputMessage', 'Category');
-			return view('categoryPage');
-		}
-		if (count($catergoryData["categoryName"]) > 40) {
-			Session::flash('toLongInputMessage', 'Category');
-			return view('categoryPage');
-		}
-		$category = new Category();
-		if ($category->saveCategoryData($catergoryData) === true) {
-			Session::flash('succesMessage', 'Category');
-		} elseif ($category->saveCategoryData($catergoryData) === false) {
-			Session::flash('failMessage', 'Category');
-		}
-		if (isset($_POST)) {
-			$catergoryData = $_POST;
-			if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
-				Session::flash('emptyInputMessage', 'Category');
-				return view('categoryPage', ['categories'=>$categories]);
-			}
-			if (count($catergoryData["categoryName"]) > 40) {
-				Session::flash('toLongInputMessage', 'Category');
-				return view('categoryPage', ['categories'=>$categories]);
-			}
+	public function createCategory(Request $request)
+	{	
+		$validator = Validator::make($request->all(), [
+			'categoryName' => 'required|max:40'
+		]);
 
-			$category = new Category();
-			if ($category->saveCategoryData($catergoryData) === true) {
-				Session::flash('succesMessage', 'Category');
-				Category::get();
-				return view('categoryPage', [ 'categoryName' => $catergoryData["categoryName"], 'categories'=>Category::get()] );
-			} elseif ($category->saveCategoryData($catergoryData) === false) {
-				Session::flash('failMessage', 'Category');
-				Category::get();
-				return view('categoryPage', [ 'categoryName' => $catergoryData["categoryName"], 'categories'=>Category::get()] );
-			}
+		if ( $validator->fails() ) {
+			return back()->with('message', implode('<br>', $validator->errors()->all() ));
 		}
+
+		$category = new Category();
+		$category->name = $request->input('categoryName');
+
+		$category->save();
+
+		Session('positive', true);
+
+		return back()->with('message', 'Category Creation is succesfull , '.$category->name. ' Created');
 	}
 
 	/**
@@ -85,15 +61,13 @@ class CategoryController extends Controller
 	 */
 	public function viewEditCategory($id)
 	{
-		$catergoryData = $_POST;
-		$category = new Category();
-		if ($category->saveCategoryData($catergoryData) === true) {
-			Session::flash('succesMessage', 'Category');
-		} elseif ($category->saveCategoryData($catergoryData) === false) {
-			Session::flash('failMessage', 'Category');
-		}
+		$category = Category::find($id);
+		
+		if ( ! isset($category->id) ) {
+			return back()->with('message', 'category not found');
+		} 
 
-		return view('categoryPage');
+		return view('categoryEdit', ['category' => $category]);
 	}
 
 	/**
@@ -102,7 +76,7 @@ class CategoryController extends Controller
 	 *
 	 * @return type view
 	 */
-	public function editCategory()
+	public function editCategoryAction(Request $request)
 	{
 		$category = new Category();
 
@@ -139,10 +113,12 @@ class CategoryController extends Controller
 	/**
 	 * 
 	 */
-	public function deleteCategory(Request $request, $categoryId)
-	{	
-		$category = Category::where('id', '=', $categoryId)->first();// get name where id
+	public function deleteCategory(Request $request, $category_id)
+	{
+
+		$category = Category::where('id', '=', $category_id)->first(); // get name where id
 		if (isset($category->id)) {
+
 			Category::where('id', $categoryId)->delete(); // delete category where id
 			Session::flash('succes_deleted', 'Category '. $category->name . ' successful deleted! '); // message
 			
@@ -151,6 +127,7 @@ class CategoryController extends Controller
 
 		Session::flash('error_deleted', 'Category does not exists'); // message
 		return redirect('category/index');// return blade
+
 	}
 
 }
