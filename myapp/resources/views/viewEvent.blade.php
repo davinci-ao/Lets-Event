@@ -20,7 +20,7 @@
 				<div class="card-header" ><h1 class='headEventName'>{{$event->name}}</h1></div>
 				<div class="card-body">
 					<div class="form-group ">
-						<label class="control-label col-sm-9 eventDataHeader">Host :</label> <p class="eventData">{{$user->firstname . ' ' . $user->lastname}}</p>
+						<label class="control-label col-sm-9 eventDataHeader">Host :</label> <p class="eventData">{{$organizer->firstname . ' ' . $organizer->lastname}}</p>
 					</div>
 					<div class="form-group ">
 						<label class="control-label col-sm-9 eventDataHeader"> Date : </label><p class="eventData">{{$event->datum}}</p>
