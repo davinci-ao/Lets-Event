@@ -34,6 +34,8 @@
 			<p > {{ session()->get('error_deleted') }}</p>
 		</div>
 	</div>
+	@endif
+	
 	@if(Session::has('message'))
 		@if(Session::has('positive'))
 			<div id="message" class="alert alert-success">

@@ -113,10 +113,10 @@ class CategoryController extends Controller
 	/**
 	 * 
 	 */
-	public function deleteCategory(Request $request, $category_id)
+	public function deleteCategory(Request $request, $categoryId)
 	{
 
-		$category = Category::where('id', '=', $category_id)->first(); // get name where id
+		$category = Category::where('id', '=', $categoryId)->first(); // get name where id
 		if (isset($category->id)) {
 
 			Category::where('id', $categoryId)->delete(); // delete category where id
