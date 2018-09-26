@@ -135,10 +135,10 @@ class ImportController extends Controller
 		$validationData[self::COL_EMAIL] = $rowData[3];
 
 		$validator = Validator::make($validationData, [
-			  self::COL_STUDENT_NR => 'required',
-			  self::COL_FIRSTNAME => 'required',
-			  self::COL_LASTNAME => 'required',
-			  self::COL_EMAIL => 'required'
+			  self::COL_STUDENT_NR => 'required|integer',
+			  self::COL_FIRSTNAME => 'required|string',
+			  self::COL_LASTNAME => 'required|string',
+			  self::COL_EMAIL => 'required|string'
 		]);
 
 		if ($validator->fails()) {
