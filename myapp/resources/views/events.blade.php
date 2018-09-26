@@ -5,6 +5,7 @@
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 
+
 			@if(Session::has('message'))
 				@if(Session::has('positive'))
 					<div id="message" class="alert alert-success">
@@ -20,8 +21,6 @@
 					<p>That event does not exist</p> 
 				</div>
 				@endif
-
-
 
 				<a  href="{{ route('indexCreateEvent') }}" >Create a Event</a>
 				<div class="card">

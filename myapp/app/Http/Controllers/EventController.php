@@ -23,6 +23,32 @@ class EventController extends Controller
 	private $eventStatus;
 	private $eventName;
 
+
+    public function registerEventAction(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 
+                ['required',
+                function($attribute, $value, $fail) {
+                    $event = new event();
+                    $event = $event::find($value);
+
+                    if ( ! isset( $event->id ) ) {
+                        return $fail('Event not found');
+                    }   
+
+                    $userEventLink = linked_user_event::where('user_id', Auth::user()->id )->where('event_id', $event->id)->first();
+                    
+                    if ( $userEventLink !== null ) {
+                        return $fail('You are already registered for this event');
+                    }                 
+                }],
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('message', implode("<br>", $validator->errors()->all() ) );      
+        }
+
 	/**
 	 * Show the application dashboard.
 	 *
@@ -52,24 +78,7 @@ class EventController extends Controller
 		return view('RegisterEvent', ['event' => $event]);
 	}
 
-	public function registerEventAction(Request $request)
-	{
-		$validator = Validator::make($request->all(), [
-			  'id' =>
-			  ['required',
-				function($attribute, $value, $fail) {
-					$event = new event();
-					$event = $event::find($value);
 
-					if (!isset($event->id)) {
-						return $fail('Event not found');
-					}
-				}],
-		]);
-
-		if ($validator->fails()) {
-			return back()->withErrors($validator);
-		}
 
 		$event = new event();
 		$event = $event::find($request->input('id'));
@@ -83,8 +92,23 @@ class EventController extends Controller
 
 		Session::flash('positive', true);
 
-		return redirect()->route('eventIndex')->with('message', 'You have succesvolley registered for the event "' . $event->name . '"');
-	}
+
+        return back()->with('message', 'You have succesvolley registered for the event "'.$event->name.'"' );
+    }
+
+    public function writeOutOfEvent(Request $request)
+    {
+        $writeOut = linked_user_event::where('user_id', Auth::user()->id )->where('event_id', $request->input('id'))->first();
+
+        if ( ! isset($writeOut->user_id) ) return back()->with('message', 'You are not written in for this event');;
+
+        $writeOut->delete();
+
+        Session::flash('positive', true);
+
+        return back()->with('message', 'You have succesvolley written out for the event');
+    }
+
 
 	public function create()
 	{
@@ -152,16 +176,15 @@ class EventController extends Controller
 	{
 
 		$event = Event::where('id', $eventID)->first();
-		$eventInformation = new Event();
-		if ($eventInformation->hasEvent($event) == false) {
-			$events = Event::get();
-			Session::flash('failMessage', 'Event');
-			return view('events', ['events' => $events]);
-		} else {
-			$user = User::where('id', $event->user_id)->first();
-			$location = locations::where('id', $event->location_id)->first();
-			return view('viewEvent', ['event' => $event, 'user' => $user, 'location' => $location]);
-		}
+		$organizer = User::where('id', $event->user_id)->first();
+		$location = locations::where('id', $event->location_id)->first();
+        $userIds = linked_user_event::where('event_id', $eventID)->pluck('user_id');
+
+        if ( $userIds->isEmpty() ) $userIds = [0];
+        $guests = User::find([ $userIds ]);
+    	
+		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'location' => $location, 'guests' => $guests]);
+
 	}
 
 	/**
