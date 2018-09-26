@@ -99,7 +99,7 @@ class EventController extends Controller
     {
         $writeOut = linked_user_event::where('user_id', Auth::user()->id )->where('event_id', $request->input('id'))->first();
 
-        if ( ! isset($writeOut->user_id) ) return back()->with('message', 'You are not written in for this event');;
+        if ( ! isset($writeOut->user_id) ) return back()->with('message', 'You are not written in for this event');
 
         $writeOut->delete();
 

@@ -33,31 +33,24 @@ class CategoryController extends Controller
 	 * and generates a flash message
 	 * @return type view
 	 */
-	public function createCategory()
-	{
+	public function createCategory(Request $request)
+	{	
+		$validator = Validator::make($request->all(), [
+			'categoryName' => 'required|max:40'
+		]);
 
-		if (isset($_POST)) {
-			$catergoryData = $_POST;
-			if (count($catergoryData["categoryName"]) == 0 || $catergoryData["categoryName"] == "") {
-				Session::flash('emptyInputMessage', 'Category');
-				return view('categoryPage', ['categories' => $categories]);
-			}
-			if (count($catergoryData["categoryName"]) > 40) {
-				Session::flash('toLongInputMessage', 'Category');
-				return view('categoryPage', ['categories' => $categories]);
-			}
-
-			$category = new Category();
-			if ($category->saveCategoryData($catergoryData) === true) {
-				Session::flash('succesMessage', 'Category');
-				Category::get();
-				return view('categoryPage', ['categoryName' => $catergoryData["categoryName"], 'categories' => Category::get()]);
-			} elseif ($category->saveCategoryData($catergoryData) === false) {
-				Session::flash('failMessage', 'Category');
-				Category::get();
-				return view('categoryPage', ['categoryName' => $catergoryData["categoryName"], 'categories' => Category::get()]);
-			}
+		if ( $validator->fails() ) {
+			return back()->with('message', implode('<br>', $validator->errors()->all() ));
 		}
+
+		$category = new Category();
+		$category->name = $request->input('categoryName');
+
+		$category->save();
+
+		Session('positive', true);
+
+		return back()->with('message', 'Category Creation is succesfull , '.$category->name. ' Created');
 	}
 
 	/**
