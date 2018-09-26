@@ -41,7 +41,7 @@ Route::get('/event/createEvent', 'EventController@create')->name('indexCreateEve
 Route::post('/event/createEvent', 'EventController@createSave')->name('createEvent');
 Route::get('/event/overview', 'EventController@index')->name('eventIndex');
 Route::get('/event/view/{eventID}', 'EventController@viewEvent')->name('viewEvent');
-Route::get('event/register/{eventId}', 'EventController@registerEvent')->name('RegisterEvent');
-Route::post('event/register', 'EventController@registerEventAction')->name('RegisterEventAction');
-Route::post('event/writeOut', 'EventController@writeOutOfEvent')->name('WriteOutEvent');
+Route::get('/event/register/{eventId}', 'EventController@registerEvent')->name('RegisterEvent');
+Route::post('/event/register', 'EventController@registerEventAction')->name('RegisterEventAction');
+Route::post('/event/writeOut', 'EventController@writeOutOfEvent')->name('WriteOutEvent');
 
