@@ -118,12 +118,16 @@ class CategoryController extends Controller
 
 		$category = Category::where('id', '=', $category_id)->first(); // get name where id
 		if (isset($category->id)) {
-			Category::where('id', $category_id)->delete(); // delete category where id
 
-			Session::flash('status', 'Category ' . $category->name . ' successful deleted! '); // message
-
-			return redirect('category/index'); // return blade
+			Category::where('id', $categoryId)->delete(); // delete category where id
+			Session::flash('succes_deleted', 'Category '. $category->name . ' successful deleted! '); // message
+			
+			return redirect('category/index');// return blade
 		}
+
+		Session::flash('error_deleted', 'Category does not exists'); // message
+		return redirect('category/index');// return blade
+
 	}
 
 }

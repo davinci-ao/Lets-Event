@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('content')	
 @if ($status == 'success')
 <div class="container">
 	<div class="row justify-content-center">
@@ -8,6 +8,11 @@
 			<div id="message" class="alert alert-success">
 				<strong>Success!</strong> Event '{{ $success }}' is created.
 			</div>
+			@if( Session::has( 'alert-danger' ))
+				<div id="message" class="alert alert-danger">
+					{{ Session::get( 'alert-danger' ) }}
+				</div>
+			@endif
 		</div>
 	</div>
 </div>

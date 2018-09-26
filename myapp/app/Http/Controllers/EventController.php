@@ -114,6 +114,7 @@ class EventController extends Controller
 	{
 		$eventData = $_POST;
 		$validator = Validator::make($request->all(), [
+
 			  'eventName' => 'required|max:40',
 			  'eventDate' => 'required|date',
 			  'eventTime' => ['required',
@@ -134,12 +135,18 @@ class EventController extends Controller
 					}
 				}],
 			  'eventDescription' => 'nullable|max:255'
+
 		]);
 
 		if ($validator->fails()) {
 			$this->eventStatus = false;
 			return $this->create();
 		}
+
+		// if ($eventData['minimum_members'] > $eventData['maximum_members']) {
+		// 	Session::flash('alert-danger', 'Minimum cannot be higher than maximum!');
+		// 	return view('event');	
+		// }
 
 		$event = new Event();
 		if (empty($eventData['eventPrice']))
