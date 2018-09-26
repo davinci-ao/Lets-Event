@@ -189,9 +189,26 @@ class EventController extends Controller
 	/**
 	 * 
 	 */
-	public function deleteEvent()
+	public function deleteEvent(Request $request, $eventId)
 	{
-		
-	}
+        $event = Event::where('id', $eventId)->first(); // get name where id
+        if (!isset($event->id)) {
+
+            Session::flash('message', 'Event does not exists'); // message  
+            return redirect('event/overview');// return blade
+        }
+        if ($event->user_id != Auth::user()->id) {
+            
+            Session::flash('message', 'You are not the owner'); // message  
+            return redirect('event/overview');// return blade
+        }
+
+        participations::where('event_id', $eventId)->delete();
+
+        Event::where('id', $eventId)->delete(); // delete event where id
+        Session::flash('message', 'Event "'. $event->name . '" successful deleted! '); // message
+        Session::flash('positive', ' successful deleted! '); // message
+        return redirect('event/overview');// return blade
+    }
 
 }

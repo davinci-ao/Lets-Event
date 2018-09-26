@@ -44,4 +44,4 @@ Route::get('/event/view/{eventID}', 'EventController@viewEvent')->name('viewEven
 Route::get('/event/register/{eventId}', 'EventController@registerEvent')->name('RegisterEvent');
 Route::post('/event/register', 'EventController@registerEventAction')->name('RegisterEventAction');
 Route::post('/event/writeOut', 'EventController@writeOutOfEvent')->name('WriteOutEvent');
-
+Route::get('/event/delete/{eventID}', 'EventController@deleteEvent')->name('deleteEvent');
