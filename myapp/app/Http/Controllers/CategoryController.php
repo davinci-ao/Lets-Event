@@ -38,7 +38,11 @@ class CategoryController extends Controller
 		$validator = Validator::make($request->all(), [
 			'categoryName' => 'required|max:40'
 		]);
-
+		
+		if (Count(Category::where('name', $request->categoryName)->get()) > 0) {
+			return back()->with('message', 'Category creation failed , "  ' .$request->categoryName. '  " already exists');
+		}
+		
 		if ( $validator->fails() ) {
 			return back()->with('message', implode('<br>', $validator->errors()->all() ));
 		}

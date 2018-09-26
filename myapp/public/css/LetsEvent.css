@@ -53,11 +53,13 @@ html, body {
 .m-b-md {
 	margin-bottom: 30px;
 }
+
 /*
 	category page
 */
 #message{
-	height: 50px;
+	padding: 4px;
+	height:100%;
 	width: 100%;
 	color: black;
 	font-size: 22px;
@@ -72,14 +74,21 @@ html, body {
 	font-weight: bold;
 	float: left;
 }
+
 .eventData{
 	font-size: 24px;
 }
+
 .headEventName{
 	margin: 0 auto;
 }
+
 #eventDesctiption{
 	width: 100%;
 	padding: 9px;
 	font-size: 20px;
 }	
+
+#eventDeleteButton{
+
+}

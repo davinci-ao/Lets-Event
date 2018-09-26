@@ -12,5 +12,4 @@ class Category extends \Illuminate\Database\Eloquent\Model
 
 	public $table = "categories";
 	protected $fillable = ['name'];
-
 }

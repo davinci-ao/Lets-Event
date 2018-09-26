@@ -9,9 +9,9 @@
 				<strong>Success!</strong> Event '{{ $success }}' is created.
 			</div>
 			@if( Session::has( 'alert-danger' ))
-				<div id="message" class="alert alert-danger">
-					{{ Session::get( 'alert-danger' ) }}
-				</div>
+			<div id="message" class="alert alert-danger">
+				{{ Session::get( 'alert-danger' ) }}
+			</div>
 			@endif
 		</div>
 	</div>
@@ -33,7 +33,7 @@
 			<a  href="{{ route('eventIndex') }}" >Back to overview</a>
 			<div class="card">
 				<div class="card-header">Create Event</div>
-			
+
 				<div class="card-body">
 					<form class="form-horizontal" action="{{ route('createEvent') }}" method="POST">
 						@csrf
@@ -50,8 +50,8 @@
 							<label class="control-label col-sm-2" for="price">  Price </label><input type="number" name="eventPrice" style="width:80px" placeholder="€ 22,50" step="any" id="eventPrice">
 						</div>
 						<div class="form-group">
-						<label class="control-label col-sm-2" for="price"> Location* </label>
-		
+							<label class="control-label col-sm-2" for="price"> Location* </label>
+
 							<select name="eventLocation">
 								@foreach($locations as $location)
 								<option value="{{ $location->id }} ">{{ $location->name }}</option>
@@ -62,7 +62,7 @@
 							<label class="control-label col-sm-2" for="description">  Description  </label><textarea name="eventDescription" id="eventDescription" style="width:70%"></textarea>
 						</div>
 						<input type="submit" value="Save">
-						
+
 					</form><br><h6>* = This field is required!</h6>
 				</div>
 			</div>
