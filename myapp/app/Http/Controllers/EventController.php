@@ -49,6 +49,8 @@ class EventController extends Controller
             return back()->with('message', implode("<br>", $validator->errors()->all() ) );      
         }
 
+    }
+
 	/**
 	 * Show the application dashboard.
 	 *
@@ -59,7 +61,6 @@ class EventController extends Controller
 	{
 		$events = DB::table('events')->get();
 		return view('events', ['events' => $events]);
-		/* parent of 8107349... overzicht van events kunnen worden opgevraagd */
 	}
 
 	public function registerEvent($id)
@@ -72,11 +73,9 @@ class EventController extends Controller
 		$registerUserToEvent = new linked_user_event();
 		$registerUserToEvent = $registerUserToEvent::where('user_id', Auth::user()->id)->where('event_id', $id)->first();
 
-		if (isset($registerUserToEvent->event_id))
+		if (isset($registerUserToEvent->event_id)) {
 			return redirect()->route('eventIndex')->with('message', 'You have already signed up for this event');
-
-		return view('RegisterEvent', ['event' => $event]);
-	}
+        }
 
 
 
