@@ -11,7 +11,7 @@ class Event extends \Illuminate\Database\Eloquent\Model
 {
 
 	public $table = "events";
-	protected $fillable = ['name', 'category_id', 'datum', 'time', 'price', 'location_id','description', 'user_id'];
+	protected $fillable = ['name', 'category_id', 'datum', 'time', 'price', 'location_id', 'description', 'user_id'];
 
 	/**
 	 * Saves the event name to the database with the data from eventData array
@@ -32,6 +32,15 @@ class Event extends \Illuminate\Database\Eloquent\Model
 		]);
 
 		return true;
+	}
+
+	public function hasEvent($eventObject)
+	{
+		if ($this->where("id", "=", $eventObject['id'])->count() > 0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }
