@@ -68,15 +68,13 @@ class CategoryController extends Controller
 	 */
 	public function viewEditCategory($id)
 	{
-		$catergoryData = $_POST;
-		$category = new Category();
-		if ($category->saveCategoryData($catergoryData) === true) {
-			Session::flash('succesMessage', 'Category');
-		} elseif ($category->saveCategoryData($catergoryData) === false) {
-			Session::flash('failMessage', 'Category');
-		}
+		$category = Category::find($id);
+		
+		if ( ! isset($category->id) ) {
+			return back()->with('message', 'category not found');
+		} 
 
-		return view('categoryPage');
+		return view('categoryEdit', ['category' => $category]);
 	}
 
 	/**
@@ -85,7 +83,7 @@ class CategoryController extends Controller
 	 *
 	 * @return type view
 	 */
-	public function editCategory()
+	public function editCategoryAction(Request $request)
 	{
 		$category = new Category();
 

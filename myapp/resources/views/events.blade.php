@@ -6,14 +6,14 @@
 		<div class="col-md-8">
 
 			@if(Session::has('message'))
-			@if(Session::has('positive'))
-			<div id="message" class="alert alert-success">
+				@if(Session::has('positive'))
+					<div id="message" class="alert alert-success">
 				@else 
-				<div id="message" class="alert alert-danger">
-					@endif		
+					<div id="message" class="alert alert-danger">
+				@endif		
 					<p> {{ Session('message') }} </p>
 				</div>
-				@endif
+			@endif
 				
 				@if(Session::has('failMessage'))
 				<div id="message" class="alert alert-danger">

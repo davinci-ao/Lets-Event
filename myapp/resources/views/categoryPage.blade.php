@@ -20,6 +20,18 @@
 		<p >Category creation failed,  the name is above 40 characters</p>
 	</div>
 	@endif
+
+
+	@if(Session::has('message'))
+		@if(Session::has('positive'))
+			<div id="message" class="alert alert-success">
+		@else 
+			<div id="message" class="alert alert-danger">
+		@endif		
+				<p> {{ Session('message') }} </p>
+			</div>
+	@endif
+	
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="card">
