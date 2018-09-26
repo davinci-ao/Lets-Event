@@ -30,7 +30,8 @@
 
 						<ul>
 							@foreach ($events as $event)
-							<a  href="{{ route('viewEvent', $event->id) }}" ><li> {{ $event->name }}</li></a>
+							<a  href="{{ route('viewEvent', $event->id)}}" ><li> {{ $event->name }}</a>
+							<a href="{{ route('deleteEvent', $event->id)}}"onclick="return confirm('are you sure to delete this category ?')" >Delete</li></a>
 							@endforeach
 						</ul>
 					</div>
