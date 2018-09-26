@@ -48,7 +48,7 @@ class CategoryController extends Controller
 
 		$category->save();
 
-		Session('positive', true);
+		Session::flash('positive', true);
 
 		return back()->with('message', 'Category Creation is succesfull , '.$category->name. ' Created');
 	}
