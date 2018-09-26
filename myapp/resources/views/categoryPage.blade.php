@@ -3,6 +3,37 @@
 @section('content')
 <div class="container">
 
+
+	@if(Session::has('succesMessage'))
+	<div id="message" class="alert alert-success">
+		<p>Category Creation is succesfull , '{{$categoryName}}' Created</p> 
+	</div>
+	@elseif (Session::has('failMessage'))
+	<div id="message" class="alert alert-danger">
+		<p>Category creation failed, '{{$categoryName}}' already exists</p>
+	</div>
+	@elseif (Session::has('emptyInputMessage'))
+	<div id="message" class="alert alert-danger">
+		<p >Category creation failed,  You didn't input a name for your category</p>
+	</div>
+	@elseif (Session::has('toLongInputMessage'))
+	<div id="message" class="alert alert-danger">
+		<p >Category creation failed,  the name is above 40 characters</p>
+	</div>
+	@elseif (Session::has('succes_deleted'))
+	<div class="`row">
+		<div class="alert alert-success">
+			<strong>Succes</strong>
+			<p > {{ session()->get('succes_deleted') }}</p>
+		</div>
+	</div>
+	@elseif (Session::has('error_deleted'))
+	<div class="`row">
+		<div class="alert alert-danger">
+			<strong>Succes</strong>
+			<p > {{ session()->get('error_deleted') }}</p>
+		</div>
+	</div>
 	@if(Session::has('message'))
 		@if(Session::has('positive'))
 			<div id="message" class="alert alert-success">
@@ -11,6 +42,7 @@
 		@endif		
 				<p> {{ Session('message') }} </p>
 			</div>
+
 	@endif
 	
 	<div class="row justify-content-center">

@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
 		    ]]
 		);
 
+
 		DB::table('locations')->insert([[
 		    'name' => "Azzuro"
 		    ], [
@@ -45,6 +46,7 @@ class DatabaseSeeder extends Seeder
 			  'name' => "Bianco"
 		    ]
 		]);
+
 	}
 
 }
