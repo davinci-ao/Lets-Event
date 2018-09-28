@@ -77,8 +77,6 @@ class EventController extends Controller
 		$registerUserToEvent->save();
 
 		Session::flash('positive', true);
-
-
 		return back()->with('message', 'You have succesvolley registered for the event "' . $event->name . '"');
 	}
 
@@ -227,7 +225,8 @@ class EventController extends Controller
 
 		Event::where('id', $eventId)->delete();
 		Session::flash('message', ' U successfully deleted"' . $event->name . '" ');
-		Session::flash('succesMessage', ' Event ');
+        Session::flash('positive', true);
+
 		return redirect('event/overview');
 	}
 
