@@ -35,6 +35,6 @@ class AcountConfirm extends Mailable
      */
     public function build()
     {
-        return $this->view('registration.register');
+        return $this->view('registration.register', ['token' => $this->token]);
     }
 }
