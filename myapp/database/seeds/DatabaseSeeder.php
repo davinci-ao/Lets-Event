@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
 		    'password' => bcrypt('123456'),
 		    'role' => "leerling",
 		    'activated' => "geactivateerd",
-		    'remember_token' => "str_random(10)"
+		    'remember_token' => str_random(10)
 		    ], [
 			  'student_nr' => "18328730",
 			  'firstname' => "Dev",
@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
 			  'password' => bcrypt('123456'),
 			  'role' => "leeraar",
 			  'activated' => "geactivateerd",
-			  'remember_token' => "str_random(10)"
+			  'remember_token' => str_random(10)
 		    ]]
 		);
 
@@ -46,6 +46,39 @@ class DatabaseSeeder extends Seeder
 			  'name' => "Bianco"
 		    ]
 		]);
+
+		DB::table('categories')->insert([[
+		    'name' => "Yu-Gi-Oh"
+		    ], [
+			  'name' => "Schaken"
+		    ], [
+			  'name' => "Speuren"
+		    ], [
+			  'name' => "bejeweled"
+		    ]
+		]);
+
+		DB::table('events')->insert([
+			[
+		    	'name' => 'Bord spellen avond',
+		    	'category_id' => '0',
+		    	'datum' => '2018-10-05',
+		    	'time' => '20:00:00',	    
+		    	'price' => '0',
+		    	'description' => '',
+		    	'user_id' => '1'
+			], [
+				'name' => 'Bord spellen avond',
+		    	'category_id' => '0',
+		    	'datum' => '2018-10-15',
+		    	'time' => '20:00:00',	    
+		    	'price' => '5',
+		    	'description' => 'Gezelig een dachtje uit',
+		    	'user_id' => '1'
+			]
+		]);
+
+
 
 	}
 
