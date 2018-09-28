@@ -23,76 +23,88 @@ class EventController extends Controller
 	private $eventStatus;
 	private $eventName;
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $events = DB::table('events')->get();
-        return view('events', ['events' => $events]);
-    }
+	/**
+	 * Show the application dashboard.
+	 *
+	 * @return blade
+	 */
+	public function index()
+	{
+		$events = DB::table('events')->get();
+		return view('events', ['events' => $events]);
+	}
+
+	/**
+	 * Lets a user register for a event.
+	 * @param Request $request
+	 * @return type blade
+	 */
+	public function registerEventAction(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			  'id' =>
+			  ['required',
+				function($attribute, $value, $fail) {
+					$event = new event();
+					$event = $event::find($value);
+
+					if (!isset($event->id)) {
+						return $fail('Event not found');
+					}
+
+					$userEventLink = participations::where('user_id', Auth::user()->id)->where('event_id', $event->id)->first();
+
+					if ($userEventLink !== null) {
+						return $fail('You are already registered for this event');
+					}
+				}],
+		]);
+
+		if ($validator->fails()) {
+			return back()->with('message', implode("<br>", $validator->errors()->all()));
+		}
 
 
-    public function registerEventAction(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'id' => 
-                ['required',
-                function($attribute, $value, $fail) {
-                    $event = new event();
-                    $event = $event::find($value);
+		$event = new event();
+		$event = $event::find($request->input('id'));
 
-                    if ( ! isset( $event->id ) ) {
-                        return $fail('Event not found');
-                    }   
+		$registerUserToEvent = new participations();
+		$registerUserToEvent->paid = false;
+		$registerUserToEvent->event_id = $request->input('id');
+		$registerUserToEvent->user_id = Auth::user()->id;
+		$registerUserToEvent->result = '0';
 
-                    $userEventLink = participations::where('user_id', Auth::user()->id )->where('event_id', $event->id)->first();
-                    
-                    if ( $userEventLink !== null ) {
-                        return $fail('You are already registered for this event');
-                    }                 
-                }],
-        ]);
+		$registerUserToEvent->save();
 
-        if ($validator->fails()) {
-            return back()->with('message', implode("<br>", $validator->errors()->all() ) );      
-        }
+		Session::flash('positive', true);
 
 
-        $event = new event();
-        $event = $event::find($request->input('id'));
+		return back()->with('message', 'You have succesvolley registered for the event "' . $event->name . '"');
+	}
 
-        $registerUserToEvent = new participations();
-        $registerUserToEvent->paid = false;
-        $registerUserToEvent->event_id = $request->input('id');
-        $registerUserToEvent->user_id = Auth::user()->id;
-        $registerUserToEvent->result = '0';
+	/**
+	 * Lets the user leave the event he/she registered for.
+	 * @param Request $request
+	 * @return type blade
+	 */
+	public function writeOutOfEvent(Request $request)
+	{
+		$writeOut = participations::where('user_id', Auth::user()->id)->where('event_id', $request->input('id'))->first();
 
-        $registerUserToEvent->save();
+		if (!isset($writeOut->user_id))
+			return back()->with('message', 'You are not written in for this event');
 
-        Session::flash('positive', true);
+		$writeOut->delete();
 
+		Session::flash('positive', true);
 
-        return back()->with('message', 'You have succesvolley registered for the event "'.$event->name.'"' );
+		return back()->with('message', 'You have succesvolley written out for the event');
+	}
 
-    }
-
-    public function writeOutOfEvent(Request $request)
-    {
-        $writeOut = participations::where('user_id', Auth::user()->id )->where('event_id', $request->input('id'))->first();
-
-        if ( ! isset($writeOut->user_id) ) return back()->with('message', 'You are not written in for this event');
-
-        $writeOut->delete();
-
-        Session::flash('positive', true);
-
-        return back()->with('message', 'You have succesvolley written out for the event');
-    }
-
-
+	/**
+	 * shows the blade to make a event.
+	 * @return type blade
+	 */
 	public function create()
 	{
 		$locations = new locations();
@@ -110,11 +122,15 @@ class EventController extends Controller
 		return view('event', ['locations' => $locations, 'status' => '', 'success' => $this->eventName]);
 	}
 
+	/**
+	 * validates the data given from the event create form.
+	 * @param Request $request
+	 * @return type fail or succes
+	 */
 	public function createSave(Request $request)
 	{
 		$eventData = $_POST;
 		$validator = Validator::make($request->all(), [
-
 			  'eventName' => 'required|max:40',
 			  'eventDate' => 'required|date',
 			  'eventTime' => ['required',
@@ -135,7 +151,6 @@ class EventController extends Controller
 					}
 				}],
 			  'eventDescription' => 'nullable|max:255'
-
 		]);
 
 		if ($validator->fails()) {
@@ -151,7 +166,7 @@ class EventController extends Controller
 		$event = new Event();
 		if (empty($eventData['eventPrice']))
 			$eventData['eventPrice'] = 0;
-            $eventData['eventTime'] .= ':00';
+		$eventData['eventTime'] .= ':00';
 		$result = $event->saveEventData($eventData);
 
 		$this->eventStatus = $result;
@@ -160,7 +175,7 @@ class EventController extends Controller
 	}
 
 	/**
-	 * shows the event with the given id from the database
+	 * shows the event data with the given id from the database
 	 * @param type $eventID
 	 */
 	public function viewEvent($eventID)
@@ -168,14 +183,16 @@ class EventController extends Controller
 
 		$event = Event::where('id', $eventID)->first();
 		$organizer = User::where('id', $event->user_id)->first();
+		$user = auth()->user()->id;
 		$location = locations::where('id', $event->location_id)->first();
-        $userIds = participations::where('event_id', $eventID)->pluck('user_id');
+		$userIds = participations::where('event_id', $eventID)->pluck('user_id');
 
-        if ( $userIds->isEmpty() ) $userIds = [0];
-        $guests = User::find([ $userIds ]);
-    	
-		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'location' => $location, 'guests' => $guests]);
+		if ($userIds->isEmpty())
+			$userIds = [0];
+		$guests = User::find([$userIds]);
 
+		
+		return view('viewEvent', ['event' => $event, 'organizer' => $organizer,'user'=>$user, 'location' => $location, 'guests' => $guests]);
 	}
 
 	/**
@@ -187,11 +204,31 @@ class EventController extends Controller
 	}
 
 	/**
-	 * 
+	 *  Deletes the event & users that registered to the event by given id from the database.
+	 * @param Request $request
+	 * @param type $eventId
+	 * @return type blade
 	 */
-	public function deleteEvent()
+	public function deleteEvent(Request $request, $eventId)
 	{
-		
+		$event = Event::where('id', $eventId)->first();
+		if (!isset($event->id)) {
+
+			Session::flash('message', 'Event does not exists');
+			return redirect('event/overview');
+		}
+		if ($event->user_id != Auth::user()->id) {
+
+			Session::flash('message', 'U cant delete "' . $event->name . '" You are not the owner');
+			return redirect('event/overview');
+		}
+
+		participations::where('event_id', $eventId)->delete();
+
+		Event::where('id', $eventId)->delete();
+		Session::flash('message', ' U successfully deleted"' . $event->name . '" ');
+		Session::flash('succesMessage', ' Event ');
+		return redirect('event/overview');
 	}
 
 }

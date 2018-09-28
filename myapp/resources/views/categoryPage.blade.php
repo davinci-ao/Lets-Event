@@ -4,36 +4,16 @@
 <div class="container">
 
 
-	@if(Session::has('succesMessage'))
-	<div id="message" class="alert alert-success">
-		<p>Category Creation is succesfull , '{{$categoryName}}' Created</p> 
-	</div>
-	@elseif (Session::has('failMessage'))
-	<div id="message" class="alert alert-danger">
-		<p>Category creation failed, '{{$categoryName}}' already exists</p>
-	</div>
-	@elseif (Session::has('emptyInputMessage'))
-	<div id="message" class="alert alert-danger">
-		<p >Category creation failed,  You didn't input a name for your category</p>
-	</div>
-	@elseif (Session::has('toLongInputMessage'))
-	<div id="message" class="alert alert-danger">
-		<p >Category creation failed,  the name is above 40 characters</p>
-	</div>
-	@elseif (Session::has('succes_deleted'))
-	<div class="`row">
-		<div class="alert alert-success">
-			<strong>Succes</strong>
+	
+	
+	@if (Session::has('succes_deleted'))
+		<div id="message" class="alert alert-success">
 			<p > {{ session()->get('succes_deleted') }}</p>
 		</div>
-	</div>
 	@elseif (Session::has('error_deleted'))
-	<div class="`row">
-		<div class="alert alert-danger">
-			<strong>Succes</strong>
+		<div id="message" class="alert alert-danger">
 			<p > {{ session()->get('error_deleted') }}</p>
 		</div>
-	</div>
 	@endif
 	
 	@if(Session::has('message'))
@@ -57,7 +37,7 @@
 
 					<form action="{{ route('createCategory')}}" method="POST">
 						@csrf
-						<p> Category Name  <input type="text" name="categoryName" placeholder="Card Game, Party, tournament, Etc" max="40" id="categoryName" required size="35%;"><input type="submit" value="Save"></p>
+						<p> Category Name  <input type="text" name="categoryName" placeholder="Card Game, Party, tournament, Etc" max="40" maxlength="40" id="categoryName" required size="35%;"><input type="submit" value="Save"></p>
 					</form>
 				</div>
 				@foreach($categories as $category)
@@ -72,10 +52,4 @@
 		</div>
 	</div>
 </div>
-</div>
-<script>
-	setTimeout(function () {
-		document.getElementById("message").style.display = "none";
-	}, 5000);
-</script>
 @endsection
