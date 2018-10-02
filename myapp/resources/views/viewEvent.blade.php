@@ -6,8 +6,8 @@
 		<div class="col-md-8">
 
 			@if(Session::has('message'))
-			@if(Session::has('positive'))
-			<div  class="alert alert-success">
+				@if(Session::has('positive'))
+				<div class="alert alert-success">
 				@else 
 				<div  class="alert alert-danger">
 					@endif		
