@@ -38,6 +38,12 @@
 						<div class="form-group ">
 							<label class="control-label col-sm-9 eventDataHeader"> Location : </label><p class="eventData" >{{$location->name}}</p>
 						</div>
+						<div class="form-group ">
+							<label class="control-label col-sm-9 eventDataHeader"> Minimum : </label> <p class="eventData">{{$event->minimum_members}} </p>
+						</div>
+						<div class="form-group ">
+							<label class="control-label col-sm-9 eventDataHeader"> Maximum : </label> <p class="eventData">{{$event->maximum_members}} </p>
+						</div>
 
 					</div>
 				</div>
@@ -60,10 +66,12 @@
 								@endif
 								@csrf
 								<input type="hidden" value="{{ $event->id }}" name="id">
-								@if ( $guests->contains('id', Auth::user()->id) )
-								<button type="submit" class="btn btn-danger">Write out of the event</button>
-								@else 
-								<button type="submit" class="btn btn-primary">Register for the event</button>
+								@if (count($guests) <= $event->maximum_members)
+									@if ( $guests->contains('id', Auth::user()->id) )
+										<button type="submit" class="btn btn-danger">Write out of the event</button>
+									@else 
+										<button type="submit" class="btn btn-primary">Register for the event</button>
+									@endif
 								@endif
 							</form>
 					</div>

@@ -54,6 +54,7 @@ class EventController extends Controller
 
 					$userEventLink = participations::where('user_id', Auth::user()->id)->where('event_id', $event->id)->first();
 
+
 					if ($userEventLink !== null) {
 						return $fail('You are already registered for this event');
 					}
@@ -73,6 +74,7 @@ class EventController extends Controller
 		$registerUserToEvent->event_id = $request->input('id');
 		$registerUserToEvent->user_id = Auth::user()->id;
 		$registerUserToEvent->result = '0';
+
 
 		$registerUserToEvent->save();
 
@@ -188,6 +190,11 @@ class EventController extends Controller
 		if ($userIds->isEmpty())
 			$userIds = [0];
 		$guests = User::find([$userIds]);
+
+        if (empty($event->maximum_members)) {
+            $event->maximum_members = '-';
+        }
+
 
 		
 		return view('viewEvent', ['event' => $event, 'organizer' => $organizer,'user'=>$user, 'location' => $location, 'guests' => $guests]);
