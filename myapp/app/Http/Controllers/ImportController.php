@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Validator;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use App\Http\Models\ImportCsv;
 
 class ImportController extends Controller
@@ -34,6 +31,9 @@ class ImportController extends Controller
 	public function errorParseImport(Request $request)
 	{
 		$importCsv = new ImportCsv;
+		if (null == $importCsv->getTmpCsv($request)) {
+			return view('importCSV');
+		}
 		$db_fields = array(self::COL_STUDENT_NR, self::COL_FIRSTNAME, self::COL_PREFIX, self::COL_LASTNAME);
 		return view('import_fields', ['csv_data' => $importCsv->getTmpCsv($request), 'db_fields' => $db_fields]);
 	}
@@ -69,7 +69,7 @@ class ImportController extends Controller
 			$importCsv->tmpSaveCsv($request, $sheetData);
 			return view('import_fields', ['csv_data' => $sheetData, 'db_fields' => $db_fields]);
 		} else {
-			return redirect('importcsv')->with('status', 'This is not a CSV file!');
+			return back()->with('status', 'This is not a CSV file!');
 		}
 	}
 
@@ -138,7 +138,7 @@ class ImportController extends Controller
 			  self::COL_STUDENT_NR => 'required|integer',
 			  self::COL_FIRSTNAME => 'required|string',
 			  self::COL_LASTNAME => 'required|string',
-			  self::COL_EMAIL => 'required|string'
+			  self::COL_EMAIL => 'required|email'
 		]);
 
 		if ($validator->fails()) {
