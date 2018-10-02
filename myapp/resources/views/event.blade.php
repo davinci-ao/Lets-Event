@@ -59,6 +59,12 @@
 							</select>
 						</div>
 						<div class="form-group">
+							<label class="control-label col-sm-2" for="Minimum_members">  Minimum*  </label><input type="number" name="minimum_members" style="width:50px; text-align: right"  required>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="maximum_members">  Maximum  </label><input type="number" name="maximum_members" style="width:50px; text-align: right"  required>
+						</div>
+						<div class="form-group">
 							<label class="control-label col-sm-2" for="description">  Description  </label><textarea name="eventDescription" id="eventDescription" style="width:70%"></textarea>
 						</div>
 						<input type="submit" value="Save">

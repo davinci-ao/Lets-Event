@@ -54,6 +54,7 @@ class EventController extends Controller
 
 					$userEventLink = participations::where('user_id', Auth::user()->id)->where('event_id', $event->id)->first();
 
+
 					if ($userEventLink !== null) {
 						return $fail('You are already registered for this event');
 					}
@@ -73,6 +74,7 @@ class EventController extends Controller
 		$registerUserToEvent->event_id = $request->input('id');
 		$registerUserToEvent->user_id = Auth::user()->id;
 		$registerUserToEvent->result = '0';
+
 
 		$registerUserToEvent->save();
 
@@ -131,6 +133,9 @@ class EventController extends Controller
 		$validator = Validator::make($request->all(), [
 			  'eventName' => 'required|max:40',
 			  'eventDate' => 'required|date',
+              'minimum_members' => 'required',
+              'maximum_members' => 'nullable',
+
 			  'eventTime' => ['required',
 				function($attribute, $value, $fail) {
 					$time = \DateTime::createFromFormat('G:i', $value);
@@ -156,15 +161,23 @@ class EventController extends Controller
 			return $this->create();
 		}
 
-		// if ($eventData['minimum_members'] > $eventData['maximum_members']) {
-		// 	Session::flash('alert-danger', 'Minimum cannot be higher than maximum!');
-		// 	return view('event');	
-		// }
+        if (!empty($eventData['maximum_members'])) {
+            if ($eventData['minimum_members'] > $eventData['maximum_members']) {
+                Session::flash('alert-danger', 'Minimum cannot be higher than maximum!');
+                $this->eventStatus = false;
+                return $this->create();    
+            }
+        }
+
 
 		$event = new Event();
 		if (empty($eventData['eventPrice']))
 			$eventData['eventPrice'] = 0;
 		$eventData['eventTime'] .= ':00';
+        if (empty($eventData['maximum_members'])) {
+            $eventData['maximum_members'] = NULL;
+        }
+
 		$result = $event->saveEventData($eventData);
 
 		$this->eventStatus = $result;
@@ -188,6 +201,11 @@ class EventController extends Controller
 		if ($userIds->isEmpty())
 			$userIds = [0];
 		$guests = User::find([$userIds]);
+
+        if (empty($event->maximum_members)) {
+            $event->maximum_members = '-';
+        }
+
 
 		
 		return view('viewEvent', ['event' => $event, 'organizer' => $organizer,'user'=>$user, 'location' => $location, 'guests' => $guests]);
