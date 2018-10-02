@@ -66,10 +66,10 @@
 								@endif
 								@csrf
 								<input type="hidden" value="{{ $event->id }}" name="id">
-								@if (count($guests) <= $event->maximum_members)
-									@if ( $guests->contains('id', Auth::user()->id) )
-										<button type="submit" class="btn btn-danger">Write out of the event</button>
-									@else 
+								@if ( $guests->contains('id', Auth::user()->id) )
+									<button type="submit" class="btn btn-danger">Write out of the event</button>
+								@else 
+									@if (count($guests) <= isset($event->maximum_members))
 										<button type="submit" class="btn btn-primary">Register for the event</button>
 									@endif
 								@endif
