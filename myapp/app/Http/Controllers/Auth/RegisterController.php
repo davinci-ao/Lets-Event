@@ -53,7 +53,19 @@ use RegistersUsers;
 	 */
 	protected function validator(array $data) {
 		return Validator::make($data, [
-			'student_number' => 'required|string|max:255'
+			'student_number' => [
+				'required',
+				'string', 
+				'max:255',
+				function($attribute, $value, $fail) {
+					$user = User::where('student_nr', $value)->first();
+					if ($user === null) {
+						return $fail('No user found');
+					} else if ( $user->user_status == 'active' ) { 
+						return $fail('This acount is already active');
+					}
+				}
+			]
 		]);
 	}
 
@@ -68,7 +80,7 @@ use RegistersUsers;
 	{
 		$token = md5(uniqid());
 		$user = User::where('student_nr', $data['student_number'])->first();
-		$user->activation_token = $token;
+		$user->token = $token;
 		$user->email_send_at = date('Y-m-d');
 		$user->save();
 		Mail::to($user->email)->send(new AcountConfirm($token));
@@ -84,11 +96,11 @@ use RegistersUsers;
 	 */
 	public function completeRegistration($token)
 	{
-		$user = User::where('activation_token', $token)->first();
-		if ($user == null || $user->user_status == 'active') {
+		$user = User::where('token', $token)->first();
+		if ($user == null || $user->activated == 'geactivateerd') {
 			if ($user == null) {
 				Session::flash('message', 'An unexpected error has accord');
-			} else if ($user->user_status == 'active') {
+			} else if ($user->activated == 'geactivateerd') {
 				Session::flash('message', 'This acount is already active');
 			}
 			return redirect()->route('login');
@@ -97,6 +109,7 @@ use RegistersUsers;
 			Session::flash('message', 'This email has expired');
 			return redirect()->route('register');
 		}
+
 		return view('registration.setPassword', ['token' => $token]);
 	}
 
@@ -106,14 +119,14 @@ use RegistersUsers;
 	 * 
 	 * @return \Illuminate\Http\Response
 	 */
-	public function SetPassword(Request $Request)
+	public function SetPassword(Request $request)
 	{
-		$user = User::where('activation_token', $Request->input('token'))->first();
+		$user = User::where('token', $request->input('token'))->first();
 
-		if ($user == null || $user->user_status == 'active') {
+		if ($user == null || $user->activated == 'geactivateerd') {
 			if ($user == null) {
 				Session::flash('message', 'An unexpected error has accore6d');
-			} else if ($user->user_status == 'active') {
+			} else if ($user->activated == 'geactivateerd') {
 				Session::flash('message', 'This acount is already active');
 			}
 			return redirect()->route('login');
@@ -124,20 +137,24 @@ use RegistersUsers;
 			return redirect()->route('register');
 		}
 
-		$Request->validate([
-		    'password' => 'required|min:8|max:255',
-		    'password_confirmation' => 'same:password',
+		$validator = Validator::make($request->all(), [
+		    'password' => 'required|min:6|max:255',
+		    'password_confirmation' => 'same:password'
 		]);
-		$user->password = Hash::make($Request->input('password'));
-		$user->user_status = 'active';
+
+		if ($validator->fails()) {
+			return back()->withErrors($validator);
+		}
+
+		$user->password = Hash::make($request->input('password'));
+		$user->activated = 'geactivateerd';
+
 		$user->save();
 
 		Session::flash('positive', true);
 		Session::flash('message', 'Succes you can now log in');
 
-
 		return redirect('login');
-
 	}
 	/***
 	* Handle a registration request for the application.
