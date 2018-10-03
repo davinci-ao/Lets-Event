@@ -198,9 +198,8 @@ class EventController extends Controller
 		$location = locations::where('id', $event->location_id)->first();
 		$userIds = participations::where('event_id', $eventID)->pluck('user_id');
 
-		if ($userIds->isEmpty())
-			$userIds = [0];
-		$guests = User::find([$userIds]);
+		if ($userIds->isEmpty()) $userIds = [0];
+		$guests = User::find($userIds);
 
         if (empty($event->maximum_members)) {
             $event->maximum_members = '-';
