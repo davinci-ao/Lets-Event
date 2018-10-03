@@ -201,11 +201,6 @@ class EventController extends Controller
 		if ($userIds->isEmpty()) $userIds = [0];
 		$guests = User::find($userIds);
 
-        if (empty($event->maximum_members)) {
-            $event->maximum_members = '-';
-        }
-
-
 		
 		return view('viewEvent', ['event' => $event, 'organizer' => $organizer,'user'=>$user, 'location' => $location, 'guests' => $guests]);
 	}

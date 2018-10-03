@@ -42,7 +42,11 @@
 							<label class="control-label col-sm-9 eventDataHeader"> Minimum : </label> <p class="eventData">{{$event->minimum_members}} </p>
 						</div>
 						<div class="form-group ">
-							<label class="control-label col-sm-9 eventDataHeader"> Maximum : </label> <p class="eventData">{{$event->maximum_members}} </p>
+							<label class="control-label col-sm-9 eventDataHeader"> Maximum : </label> 
+							@if (empty($event->maximum_members))
+								<p class="eventData"> - </p>
+							@endif
+							<p class="eventData"> {{ $event->maximum_members }} </p>
 						</div>
 
 					</div>
@@ -59,6 +63,11 @@
 				</div>
 				<div class="card">
 					<div class="card-header"><h3>Attendees</h3>
+						@if (empty($event->maximum_members))
+						{{ count($guests) }}/ -
+						@else
+						{{ count($guests) }}/ {{ $event->maximum_members }}
+						@endif
 						@if ( $guests->contains('id', Auth::user()->id) )
 						<form class="float-right" method="POST" action="{{ route('WriteOutEvent')}}">
 							@else 
@@ -69,8 +78,10 @@
 								@if ( $guests->contains('id', Auth::user()->id) )
 									<button type="submit" class="btn btn-danger">Write out of the event</button>
 								@else 
-									@if (count($guests) <= isset($event->maximum_members))
-										<button type="submit" class="btn btn-primary">Register for the event</button>
+									@if (count($guests) == isset($event->maximum_members))
+										<span class="text-danger">No more free space</span>
+									@else
+										<button type="submit"  class="btn btn-primary">Register for the event</button>
 									@endif
 								@endif
 							</form>
