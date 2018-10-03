@@ -8,6 +8,9 @@
                 <div class="card-header">{{ __('Reset Password') }}</div>
 
                 <div class="card-body">
+
+                    <p>A password has a minimal of 6 charachters and a max of 255 charachters</p>
+
                     <form method="POST" action="{{ route('password.request') }}">
                         @csrf
 
