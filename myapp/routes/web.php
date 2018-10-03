@@ -47,3 +47,5 @@ Route::get('/event/register/{eventId}', 'EventController@registerEvent')->name('
 Route::post('/event/register', 'EventController@registerEventAction')->name('RegisterEventAction');
 Route::post('/event/writeOut', 'EventController@writeOutOfEvent')->name('WriteOutEvent');
 Route::get('/event/delete/{eventID}', 'EventController@deleteEvent')->name('deleteEvent');
+Route::get('/event/edit/{eventID}', 'EventController@editEvent')->name('editEvent');
+Route::post('/event/edit', 'EventController@editSaveEvent')->name('editSaveEvent');

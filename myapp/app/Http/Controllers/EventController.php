@@ -206,12 +206,29 @@ class EventController extends Controller
 	}
 
 	/**
-	 * 
+	 * Edit event data
+	 * @param type $eventId
 	 */
-	public function editEvent()
+	public function editEvent($eventId)
 	{
-		
+		$event = Event::find($eventId);
+		$locations = locations::all();
+
+        return view('eventEdit',['event' => $event, 'locations' => $locations]);
 	}
+
+	/**
+     * Update event
+     *
+     * @param  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function editSaveEvent(Request $request)
+    {
+
+    	
+    	
+    }
 
 	/**
 	 *  Deletes the event & users that registered to the event by given id from the database.
