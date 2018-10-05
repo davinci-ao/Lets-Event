@@ -36,6 +36,30 @@ class Event extends \Illuminate\Database\Eloquent\Model
 		return true;
 	}
 
+	/**
+	 * Saves the event name to the database with the data from eventData array
+	 * @param type $eventData
+	 * @return type array
+	 */
+	public function updateEventData($eventData)
+	{
+		$this->fill([
+		    "category_id" => 0,
+		    "name" => $eventData['eventName'],
+		    "datum" => $eventData['eventDate'],
+		    "time" => $eventData['eventTime'],
+		    "price" => $eventData['eventPrice'],
+		    "minimum_members" => $eventData['minimum_members'],
+            "maximum_members" => $eventData['maximum_members'],
+		    "location_id" => $eventData['eventLocation'],
+		    "description" => $eventData['eventDescription'],
+		    "user_id" => auth()->user()->id
+		]);
+		$this->save();
+
+		return true;
+	}
+
 	public function hasEvent($eventObject)
 	{
 		if ($this->where("id", "=", $eventObject['id'])->count() > 0) {

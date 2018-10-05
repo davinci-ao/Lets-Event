@@ -26,13 +26,13 @@
 							<label class="control-label col-sm-2" for="date">  Date*  </label><input type="text" value="{{ $event->datum }} " name="eventDate" style="width:155px" id="eventDate" onclick="type='date'" required>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="time">  Time*  </label><input type="text" value="{{ $event->time }} " name="eventTime" style="width:100px" id="eventTime" onclick="type='date'" required>
-						</div>
+								<label class="control-label col-sm-2" for="time">  Time*  </label><input type="time" name="eventTime" style="width:100px" id="eventTime" value="{{ $event->time }}"  required>
+							</div>
 						<div class="form-group">
 							<label class="control-label col-sm-2" for="price">  Price </label><input type="number" value="{{ $event->price }}" name="eventPrice" style="width:80px" placeholder="€ 22,50" step="any" id="eventPrice">
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="price"> Location* </label>
+							<label class="control-label col-sm-2" for="location"> Location* </label>
 
 							<select name="eventLocation">
 								@foreach($locations as $location)
@@ -47,7 +47,7 @@
 							<label class="control-label col-sm-2" for="maximum_members">  Maximum  </label><input type="number" value="{{$event->maximum_members}}" name="maximum_members" style="width:50px; text-align: right"  required>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="description">  Description  </label><textarea name="eventDescription" id="eventDescription" value="{{$event->description}}" style="width:70%"></textarea>
+							<label class="control-label col-sm-2" for="description">  Description  </label><textarea name="eventDescription" id="eventDescription" style="width:70%">{{$event->description}}</textarea>
 						</div>
 						<input type="hidden" value="{{$event->id}}" name="id">
 						<button type="submit" class="btn btn-primary">Edit</button>

@@ -209,12 +209,22 @@ class EventController extends Controller
 	 * Edit event data
 	 * @param type $eventId
 	 */
-	public function editEvent($eventId)
+	public function editEvent($id)
 	{
-		$event = Event::find($eventId);
+		$event = Event::find($id);
 		$locations = locations::all();
 
-        return view('eventEdit',['event' => $event, 'locations' => $locations]);
+		if ($this->eventStatus === true) {
+			$this->eventStatus = null;
+
+			return view('eventEdit', ['event' => $event, 'locations' => $locations, 'status' => 'success', 'success' => $this->eventName]);
+		}
+		if ($this->eventStatus === false) {
+			$this->eventStatus = null;
+			return view('eventEdit', ['event' => $event, 'locations' => $locations, 'status' => 'fail']);
+		}
+
+        return view('eventEdit', ['event' => $event, 'locations' => $locations, 'status' => '', 'success' => $this->eventName]);
 	}
 
 	/**
@@ -226,7 +236,64 @@ class EventController extends Controller
     public function editSaveEvent(Request $request)
     {
 
-    	
+    	$eventData = $request->all();
+    	$eventId = $eventData['id'];
+
+		$validator = Validator::make($request->all(), [
+			  'eventName' => 'required|max:40',
+			  'eventDate' => 'required|date',
+              'minimum_members' => 'required',
+              'maximum_members' => 'nullable',
+
+			  'eventTime' => ['required',
+				function($attribute, $value, $fail) {
+					$time = \DateTime::createFromFormat('G:i', $value);
+					if ($time == false) {
+						return $fail("Your time is invalid.");
+					}
+				}],
+			  'eventPrice' => 'nullable|regex:/^[0-9]*\.?[0-9]{1,2}+$/',
+			  'eventLocation' => ['required',
+				'numeric',
+				function($attribute, $value, $fail) {
+					$locations = new locations();
+					$locations = $locations::find($value);
+					if (!isset($locations->id)) {
+						return $fail('This location doesn\'t exist');
+					}
+				}],
+			  'eventDescription' => 'required|max:255'
+		]);
+
+		if ($validator->fails()) {
+			$this->eventStatus = false;
+			return $this->editEvent($eventId);
+		}
+
+        if (!empty($eventData['maximum_members'])) {
+            if ($eventData['minimum_members'] > $eventData['maximum_members']) {
+                Session::flash('alert-danger', 'Minimum cannot be higher than maximum!');
+                $this->eventStatus = false;
+                return $this->editEvent($eventId);    
+            }
+        }
+
+
+		$event = Event::find($eventId);
+
+
+
+		if (empty($eventData['eventPrice']))
+			$eventData['eventPrice'] = 0;	
+        if (empty($eventData['maximum_members'])) {
+            $eventData['maximum_members'] = NULL;
+        }
+
+		$result = $event->updateEventData($eventData);
+
+		$this->eventStatus = $result;
+		$this->eventName = $eventData['eventName'];
+		return $this->editEvent($eventId);
     	
     }
 
