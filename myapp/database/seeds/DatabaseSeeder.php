@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
 		    'education_location_id' => "1",
 		    'email' => "99021508@mydavinci.nl",
 		    'password' => bcrypt('123456'),
-		    'role' => "leerling",
-		    'activated' => "geactivateerd",
+		    'role' => "student",
+		    'activated' => "not activated",
 		    'remember_token' => str_random(10)
 		    ], [
 			  'student_nr' => "18328730",
@@ -29,8 +29,8 @@ class DatabaseSeeder extends Seeder
 			  'education_location_id' => "3",
 			  'email' => "Test@mydavinci.nl",
 			  'password' => bcrypt('123456'),
-			  'role' => "leeraar",
-			  'activated' => "geactivateerd",
+			  'role' => "teacher",
+			  'activated' => "activated",
 			  'remember_token' => str_random(10)
 		    ]]
 		);
@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
 
 		DB::table('events')->insert([
 		    [
-			  'name' => 'Bord spellen avond',
+			  'name' => 'Bord spellen avond 2.0',
 			  'category_id' => '0',
 			  'datum' => '2018-10-05',
 			  'time' => '20:00:00',
