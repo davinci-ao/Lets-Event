@@ -17,7 +17,7 @@
 
 				<a  class="btn btn-primary" href="{{ route('eventIndex') }}" >Back to overview</a>
 				
-				@if($organizer->id === $user)
+				@if($organizer->id === $user->id || $user->role == 'teacher')
 				<a id="eventDeleteButton" class="btn btn-danger" href="{{ route('deleteEvent', $event->id)}}"onclick="return confirm('are you sure to delete this Event ?')" > Delete Event </a>
 				@endif
 				<div class="card">
