@@ -244,14 +244,7 @@ class EventController extends Controller
 			  'eventDate' => 'required|date',
               'minimum_members' => 'required',
               'maximum_members' => 'nullable',
-
-			  'eventTime' => ['required',
-				function($attribute, $value, $fail) {
-					$time = \DateTime::createFromFormat('G:i', $value);
-					if ($time == false) {
-						return $fail("Your time is invalid.");
-					}
-				}],
+			  'eventTime' => 'date_format:"G:i"|required',
 			  'eventPrice' => 'nullable|regex:/^[0-9]*\.?[0-9]{1,2}+$/',
 			  'eventLocation' => ['required',
 				'numeric',
@@ -277,11 +270,7 @@ class EventController extends Controller
                 return $this->editEvent($eventId);    
             }
         }
-
-
 		$event = Event::find($eventId);
-
-
 
 		if (empty($eventData['eventPrice']))
 			$eventData['eventPrice'] = 0;	
