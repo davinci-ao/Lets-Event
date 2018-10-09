@@ -65,6 +65,8 @@ class DatabaseSeeder extends Seeder
 			  'datum' => '2018-10-05',
 			  'time' => '20:00:00',
 			  'location_id' => '1',
+			  'minimum_members' => 1,
+			  'maximum_members'=>null,
 			  'price' => '0',
 			  'description' => '',
 			  'user_id' => '1'
@@ -74,6 +76,8 @@ class DatabaseSeeder extends Seeder
 			  'datum' => '2018-10-15',
 			  'location_id' => '1',
 			  'time' => '20:00:00',
+			  'minimum_members' => 1,
+			  'maximum_members'=>null,
 			  'price' => '5',
 			  'description' => 'Gezelig een dachtje uit',
 			  'user_id' => '1'
