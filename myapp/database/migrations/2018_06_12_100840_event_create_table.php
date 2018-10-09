@@ -25,6 +25,7 @@ class EventCreateTable extends Migration
 			$table->integer('user_id');
 			$table->integer('minimum_members');
 			$table->integer('maximum_members')->nullable();
+			$table->enum('status', ['accepted', 'tobechecked']);
 			$table->timestamps();
 		});
 	}

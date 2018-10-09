@@ -30,8 +30,61 @@ class EventController extends Controller
 	 */
 	public function index()
 	{
-		$events = DB::table('events')->get();
-		return view('events', ['events' => $events]);
+		$events = $events = Event::where('status', 'accepted')->get();
+		$user = auth()->user();
+		return view('events', ['events' => $events, 'user' => $user]);
+	}
+
+	/**
+	 *  loads in the view with the given objects
+	 *  @return type view
+	 */
+	public function eventApprovalIndex()
+	{
+
+		$events = Event::where('status', 'tobechecked')->get();
+		return view('eventsApproval', ['events' => $events]);
+	}
+
+	/**
+	 *  @param type $eventID
+	 *  Changes the event status to "accepted" where the $eventID  the same is in de database  when this function is called to.
+	 *  @return back to blade with message
+	 */
+	public function eventApproval($eventID)
+	{
+		if (count(Event::where('id', $eventID)->get()) > 0) {
+
+			$event = Event::where('id', $eventID)->first();
+			$event->status = 'accepted';
+			$event->save();
+
+			Session::flash('positive', true);
+			return back()->with('message', ' "' . $event->name . '" has been accepted and is added to the events list');
+		} else {
+
+			return back()->with('message', 'This event doesn\'t exist !');
+		}
+	}
+
+	/**
+	 *  @param type $eventID
+	 *  Deletes the database entry where the $eventID  the same is in de database  when this function is called to.
+	 *  @return back to blade with message
+	 */
+	public function eventDecline($eventID)
+	{
+		if (count(Event::where('id', $eventID)->get()) > 0) {
+
+			$event = Event::where('id', $eventID)->first();
+			$event->delete();
+
+			Session::flash('positive', true);
+			return back()->with('message', ' "' . $event->name . '" has been asuccesfully deleted');
+		} else {
+
+			return back()->with('message', 'This event doesn\'t exist !');
+		}
 	}
 
 	/**
@@ -133,9 +186,8 @@ class EventController extends Controller
 		$validator = Validator::make($request->all(), [
 			  'eventName' => 'required|max:40',
 			  'eventDate' => 'required|date',
-              'minimum_members' => 'required',
-              'maximum_members' => 'nullable',
-
+			  'minimum_members' => 'required',
+			  'maximum_members' => 'nullable',
 			  'eventTime' => ['required',
 				function($attribute, $value, $fail) {
 					$time = \DateTime::createFromFormat('G:i', $value);
@@ -161,22 +213,22 @@ class EventController extends Controller
 			return $this->create();
 		}
 
-        if (!empty($eventData['maximum_members'])) {
-            if ($eventData['minimum_members'] > $eventData['maximum_members']) {
-                Session::flash('alert-danger', 'Minimum cannot be higher than maximum!');
-                $this->eventStatus = false;
-                return $this->create();    
-            }
-        }
+		if (!empty($eventData['maximum_members'])) {
+			if ($eventData['minimum_members'] > $eventData['maximum_members']) {
+				Session::flash('alert-danger', 'Minimum cannot be higher than maximum!');
+				$this->eventStatus = false;
+				return $this->create();
+			}
+		}
 
 
 		$event = new Event();
 		if (empty($eventData['eventPrice']))
 			$eventData['eventPrice'] = 0;
 		$eventData['eventTime'] .= ':00';
-        if (empty($eventData['maximum_members'])) {
-            $eventData['maximum_members'] = NULL;
-        }
+		if (empty($eventData['maximum_members'])) {
+			$eventData['maximum_members'] = NULL;
+		}
 
 		$result = $event->saveEventData($eventData);
 
@@ -194,20 +246,22 @@ class EventController extends Controller
 
 		$event = Event::where('id', $eventID)->first();
 		$organizer = User::where('id', $event->user_id)->first();
-		$user = auth()->user()->id;
+		$user = auth()->user();
+		$admin = User::where('role', 'teacher')->get();
 		$location = locations::where('id', $event->location_id)->first();
 		$userIds = participations::where('event_id', $eventID)->pluck('user_id');
 
-		if ($userIds->isEmpty()) $userIds = [0];
+		if ($userIds->isEmpty())
+			$userIds = [0];
 		$guests = User::find($userIds);
 
-        if (empty($event->maximum_members)) {
-            $event->maximum_members = '-';
-        }
+		if (empty($event->maximum_members)) {
+			$event->maximum_members = '-';
+		}
 
 
-		
-		return view('viewEvent', ['event' => $event, 'organizer' => $organizer,'user'=>$user, 'location' => $location, 'guests' => $guests]);
+
+		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'user' => $user, 'location' => $location, 'guests' => $guests, 'admin' => $admin]);
 	}
 
 	/**
@@ -241,8 +295,8 @@ class EventController extends Controller
 		participations::where('event_id', $eventId)->delete();
 
 		Event::where('id', $eventId)->delete();
-		Session::flash('message', ' U successfully deleted"' . $event->name . '" ');
-        Session::flash('positive', true);
+		Session::flash('message', ' "' . $event->name . '" has been deleted succesfully');
+		Session::flash('positive', true);
 
 		return redirect('event/overview');
 	}

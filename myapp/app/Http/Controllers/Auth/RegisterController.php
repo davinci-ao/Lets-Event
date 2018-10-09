@@ -97,10 +97,10 @@ use RegistersUsers;
 	public function completeRegistration($token)
 	{
 		$user = User::where('token', $token)->first();
-		if ($user == null || $user->activated == 'geactivateerd') {
+		if ($user == null || $user->activated == 'activated') {
 			if ($user == null) {
 				Session::flash('message', 'An unexpected error has accord');
-			} else if ($user->activated == 'geactivateerd') {
+			} else if ($user->activated == 'activated') {
 				Session::flash('message', 'This acount is already active');
 			}
 			return redirect()->route('login');
@@ -123,10 +123,10 @@ use RegistersUsers;
 	{
 		$user = User::where('token', $request->input('token'))->first();
 
-		if ($user == null || $user->activated == 'geactivateerd') {
+		if ($user == null || $user->activated == 'activated') {
 			if ($user == null) {
 				Session::flash('message', 'An unexpected error has accore6d');
-			} else if ($user->activated == 'geactivateerd') {
+			} else if ($user->activated == 'activated') {
 				Session::flash('message', 'This acount is already active');
 			}
 			return redirect()->route('login');
@@ -147,7 +147,7 @@ use RegistersUsers;
 		}
 
 		$user->password = Hash::make($request->input('password'));
-		$user->activated = 'geactivateerd';
+		$user->activated = 'activated';
 
 		$user->save();
 

@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
 		]);
 
 		DB::table('categories')->insert([[
-		    'name' => "Yu-Gi-Oh"
+			  'name' => "Yu-Gi-Oh@!"
 		    ], [
 			  'name' => "Schaken"
 		    ], [
@@ -66,8 +66,9 @@ class DatabaseSeeder extends Seeder
 			  'time' => '20:00:00',
 			  'location_id' => '1',
 			  'minimum_members' => 1,
-			  'maximum_members'=>null,
+			  'maximum_members' => null,
 			  'price' => '0',
+			  'status' => 'accepted',
 			  'description' => '',
 			  'user_id' => '1'
 		    ], [
@@ -77,10 +78,47 @@ class DatabaseSeeder extends Seeder
 			  'location_id' => '1',
 			  'time' => '20:00:00',
 			  'minimum_members' => 1,
-			  'maximum_members'=>null,
+			  'maximum_members' => null,
 			  'price' => '5',
+			  'status' => 'accepted',
 			  'description' => 'Gezelig een dachtje uit',
 			  'user_id' => '1'
+		    ], [
+			  'name' => 'Yu-Gi-Oh! YCS',
+			  'category_id' => '0',
+			  'datum' => '2018-12-31',
+			  'location_id' => '1',
+			  'time' => '20:00:00',
+			  'minimum_members' =>12,
+			  'maximum_members' => 2500,
+			  'price' => '20',
+			  'status' => 'accepted',
+			  'description' => 'YUGIOH! YCS DORDRECHT pre registers get sick loot',
+			  'user_id' => '2'
+		    ], [
+			  'name' => 'Vanguard Championship Davinci',
+			  'category_id' => '0',
+			  'datum' => '2022-01-22',
+			  'location_id' => '1',
+			  'time' => '08:30:00',
+			  'minimum_members' => 20,
+			  'maximum_members' => 40000,
+			  'price' => '18',
+			  'status' => 'accepted',
+			  'description' => 'VANGUARD ! YAEH !',
+			  'user_id' => '1'
+		    ], [
+			  'name' => 'Help ian zn kaarten te soorteren',
+			  'category_id' => '0',
+			  'datum' => '2018-10-15',
+			  'location_id' => '1',
+			  'time' => '20:00:00',
+			  'minimum_members' => 1,
+			  'maximum_members' => null,
+			  'price' => '0',
+			  'status' => 'accepted',
+			  'description' => 'hij moet zn kaarten een keer sorteren',
+			  'user_id' => '2'
 		    ]
 		]);
 	}

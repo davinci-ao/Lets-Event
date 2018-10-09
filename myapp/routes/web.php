@@ -43,6 +43,11 @@ Route::group(['middleware' => ['checkRole']], function () {
 	Route::get('/Users/viewAll', 'UserController@index')->name('userIndex');
 	Route::get('/Users/view/singleUser/{userID}', 'UserController@viewUser')->name('editUser');
 	Route::post('/users/updateUser', 'UserController@updateUser')->name('updateUser');
+
+	//approve events
+	Route::get('/event/approveEvent/index', 'EventController@eventApprovalIndex')->name('eventApprovalIndex');
+	Route::get('/event/approveEvent/approve/{eventID}', 'EventController@eventApproval')->name('eventApproval');
+	Route::get('/event/approveEvent/decline/{eventID}', 'EventController@eventDecline')->name('eventDecline');
 });
 
 //event
