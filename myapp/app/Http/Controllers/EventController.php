@@ -244,24 +244,23 @@ class EventController extends Controller
 			  'eventDate' => 'required|date',
               'minimum_members' => 'required',
               'maximum_members' => 'nullable',
-			  'eventTime' => 'date_format:"G:i"|required',
+			  'eventTime' => 'required|date_format:G:i:s',
 			  'eventPrice' => 'nullable|regex:/^[0-9]*\.?[0-9]{1,2}+$/',
 			  'eventLocation' => ['required',
 				'numeric',
 				function($attribute, $value, $fail) {
-					$locations = new locations();
-					$locations = $locations::find($value);
+					$locations = locations::find($value);
 					if (!isset($locations->id)) {
 						return $fail('This location doesn\'t exist');
 					}
 				}],
 			  'eventDescription' => 'required|max:255'
 		]);
-
 		if ($validator->fails()) {
 			$this->eventStatus = false;
 			return $this->editEvent($eventId);
 		}
+
 
         if (!empty($eventData['maximum_members'])) {
             if ($eventData['minimum_members'] > $eventData['maximum_members']) {
@@ -279,7 +278,7 @@ class EventController extends Controller
         }
 
 		$result = $event->updateEventData($eventData);
-
+		
 		$this->eventStatus = $result;
 		$this->eventName = $eventData['eventName'];
 		return $this->editEvent($eventId);

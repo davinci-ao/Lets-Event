@@ -36,7 +36,7 @@
 
 							<select name="eventLocation">
 								@foreach($locations as $location)
-								<option value="{{ $location->id }} ">{{ $location->name }}</option>
+									<option value="{{ $location->id }}" @if($location->id == $event->location_id) selected @endif>{{ $location->name }}</option>
 								@endforeach
 							</select>
 						</div>
