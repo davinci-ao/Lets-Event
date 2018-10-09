@@ -18,9 +18,24 @@
 				<div class="card">
 					<div class="card-header" ><h1 class='headEventName'>Users</h1></div>
 					<div class="card-body">
-						@foreach($users as $user)
-						<p>{{$user->firstname . " " . $user->lastname}} </p> <a href="{{ route('editUser', $user->id) }}">Edit this user</a>
-						@endforeach
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Options</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								@foreach($users as $user)
+								<tr >
+									<td><p>{{$user->firstname . " " . $user->lastname}} </p></td>
+									<td><a class="btn btn-primary" href="{{ route('editUser', $user->id) }}">Edit this user</a></td>
+								</tr>
+								@endforeach
+
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>

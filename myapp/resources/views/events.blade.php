@@ -23,17 +23,19 @@
 			</div>
 			@endif
 
-			<a  href="{{ route('indexCreateEvent') }}" >Create a Event</a>
+			<a class="btn btn-primary"  href="{{ route('indexCreateEvent') }}" >Create a Event</a> @if($user->role == 'teacher')  <a class="btn btn-info"  href="{{ route('eventApprovalIndex') }}" >Approve events</a> @endif
 			<div class="card">
 				<div class="card-header">List of events</div>
-
 				<div class="card-body">
+					<table class="table">
+						<tbody>
 
-					<ul>
-						@foreach ($events as $event)
-						<a  href="{{ route('viewEvent', $event->id)}}" > <li>{{ $event->name }}</a>
-						@endforeach
-					</ul>
+							@foreach ($events as $event)
+							<tr class="row"><td><a  href="{{ route('viewEvent', $event->id)}}" > {{ $event->name }}</a></td></tr>
+							@endforeach
+
+						</tbody>
+					</table>
 				</div>
 			</div>
 
