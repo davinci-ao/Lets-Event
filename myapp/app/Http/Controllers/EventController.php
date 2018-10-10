@@ -320,7 +320,7 @@ class EventController extends Controller
 						return $fail('This location doesn\'t exist');
 					}
 				}],
-			  'eventDescription' => 'required|max:255'
+			  'eventDescription' => 'nullable|max:255'
 		]);
 
         if (!empty($eventData['maximum_members'])) {
