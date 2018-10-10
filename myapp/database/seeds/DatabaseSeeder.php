@@ -60,6 +60,7 @@ class DatabaseSeeder extends Seeder
 
 		DB::table('events')->insert([
 		    [
+
 			  'name' => 'Bord spellen avond 2.0',
 			  'category_id' => '0',
 			  'datum' => '2018-10-05',
@@ -70,10 +71,11 @@ class DatabaseSeeder extends Seeder
 			  'price' => '0',
 			  'status' => 'accepted',
 			  'description' => '',
-			  'user_id' => '1'
+			  'user_id' => '1',
+			  'minimum_members' => 0,
+			  'maximum_members' => 0
 		    ], [
 			  'name' => 'Bord spellen avond',
-			  'category_id' => '0',
 			  'datum' => '2018-10-15',
 			  'location_id' => '1',
 			  'time' => '20:00:00',
@@ -119,6 +121,7 @@ class DatabaseSeeder extends Seeder
 			  'status' => 'accepted',
 			  'description' => 'hij moet zn kaarten een keer sorteren',
 			  'user_id' => '2'
+
 		    ]
 		]);
 	}

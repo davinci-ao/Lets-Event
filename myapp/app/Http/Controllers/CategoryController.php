@@ -47,8 +47,10 @@ class CategoryController extends Controller
 			return back()->with('message', implode('<br>', $validator->errors()->all() ));
 		}
 
+		$catName = $request->categoryName;
+		$catName = ucfirst(strtolower($catName));//any string to lower case, then first letter to upper
 		$category = new Category();
-		$category->name = $request->input('categoryName');
+		$category->name = $catName;
 
 		$category->save();
 

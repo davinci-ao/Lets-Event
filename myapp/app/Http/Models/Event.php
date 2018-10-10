@@ -11,7 +11,16 @@ class Event extends \Illuminate\Database\Eloquent\Model
 {
 
 	public $table = "events";
+	/**
+	 *
+	 */
+	public function categories()
+	{
+		return $this->belongsToMany('App\Http\Models\Category');
+	}
+
 	protected $fillable = ['name', 'category_id', 'datum', 'time', 'price', 'minimum_members', 'maximum_members', 'location_id', 'status', 'description', 'user_id'];
+
 
 	/**
 	 * Saves the event name to the database with the data from eventData array
@@ -21,14 +30,14 @@ class Event extends \Illuminate\Database\Eloquent\Model
 	public function saveEventData($eventData)
 	{
 
+		return $this->create([
+
 		if (auth()->user()->role == "teacher" || auth()->user()->role == "organisator") {
 			$status = "accepted";
 		} else {
 			$status = "tobechecked";
 		}
 		
-
-		$this->create([
 		    "status"=>$status,
 		    "category_id" => 0,
 		    "name" => $eventData['eventName'],
@@ -41,7 +50,6 @@ class Event extends \Illuminate\Database\Eloquent\Model
 		    "description" => $eventData['eventDescription'],
 		    "user_id" => auth()->user()->id
 		]);
-		return true;
 	}
 
 	public function hasEvent($eventObject)
