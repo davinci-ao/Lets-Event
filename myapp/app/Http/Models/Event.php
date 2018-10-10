@@ -11,7 +11,15 @@ class Event extends \Illuminate\Database\Eloquent\Model
 {
 
 	public $table = "events";
-	protected $fillable = ['name', 'category_id', 'datum', 'time', 'price', 'minimum_members', 'maximum_members', 'location_id', 'description', 'user_id'];
+	protected $fillable = ['name', 'datum', 'time', 'price', 'minimum_members', 'maximum_members', 'location_id', 'description', 'user_id'];
+
+	/**
+	 *
+	 */
+	public function categories()
+	{
+		return $this->belongsToMany('App\Http\Models\Category');
+	}
 
 	/**
 	 * Saves the event name to the database with the data from eventData array
@@ -20,8 +28,7 @@ class Event extends \Illuminate\Database\Eloquent\Model
 	 */
 	public function saveEventData($eventData)
 	{
-		$this->create([
-		    "category_id" => 0,
+		return $this->create([
 		    "name" => $eventData['eventName'],
 		    "datum" => $eventData['eventDate'],
 		    "time" => $eventData['eventTime'],
@@ -32,15 +39,13 @@ class Event extends \Illuminate\Database\Eloquent\Model
 		    "description" => $eventData['eventDescription'],
 		    "user_id" => auth()->user()->id
 		]);
-
-		return true;
 	}
 
 	public function hasEvent($eventObject)
 	{
 		if ($this->where("id", "=", $eventObject['id'])->count() > 0) {
 			return true;
-		}else{
+		} else{
 			return false;
 		}
 	}

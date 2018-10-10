@@ -13,12 +13,14 @@
 		<!-- Scripts -->
 		<script src="{{ asset('js/app.js') }}" defer></script>
 		<script src="{{ asset('js/custom.js') }}" defer></script>
+		<script src="{{ asset('js/select2.min.js') }}" defer></script>
 		<!-- Fonts -->
 		<link rel="dns-prefetch" href="https://fonts.gstatic.com">
 		<link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 		<!-- Styles -->
 		<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 		<link href="{{ asset('css/LetsEvent.css') }}" rel="stylesheet">
+		<link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
 	</head>
 	<body>
 		<div id="app">
@@ -72,10 +74,9 @@
 					</div>
 				</div>
 			</nav>
-
-    <main class="py-4">
-		@yield('content')
-	</main>
-</div>
+	    <main class="py-4">
+			@yield('content')
+		</main>
+	</div>
 </body>
 </html>

@@ -61,22 +61,24 @@ class DatabaseSeeder extends Seeder
 		DB::table('events')->insert([
 		    [
 			  'name' => 'Bord spellen avond',
-			  'category_id' => '0',
 			  'datum' => '2018-10-05',
 			  'time' => '20:00:00',
 			  'location_id' => '1',
 			  'price' => '0',
 			  'description' => '',
-			  'user_id' => '1'
+			  'user_id' => '1',
+			  'minimum_members' => 0,
+			  'maximum_members' => 0
 		    ], [
 			  'name' => 'Bord spellen avond',
-			  'category_id' => '0',
 			  'datum' => '2018-10-15',
 			  'location_id' => '1',
 			  'time' => '20:00:00',
 			  'price' => '5',
 			  'description' => 'Gezelig een dachtje uit',
-			  'user_id' => '1'
+			  'user_id' => '1',
+			  'minimum_members' => 1,
+			  'maximum_members' => 15
 		    ]
 		]);
 	}
