@@ -242,9 +242,15 @@ class EventController extends Controller
 		$validator = Validator::make($request->all(), [
 			  'eventName' => 'required|max:40',
 			  'eventDate' => 'required|date',
-              'minimum_members' => 'required',
+              'minimum_members' => 'nullable',
               'maximum_members' => 'nullable',
-			  'eventTime' => 'required|date_format:G:i:s',
+			  'eventTime' => ['required',
+				function($attribute, $value, $fail) {
+					$time = \DateTime::createFromFormat('G:i', $value);
+					if ($time == false) {
+						return $fail("Your time is invalid.");
+					}
+				}],
 			  'eventPrice' => 'nullable|regex:/^[0-9]*\.?[0-9]{1,2}+$/',
 			  'eventLocation' => ['required',
 				'numeric',
@@ -256,11 +262,6 @@ class EventController extends Controller
 				}],
 			  'eventDescription' => 'required|max:255'
 		]);
-		if ($validator->fails()) {
-			$this->eventStatus = false;
-			return $this->editEvent($eventId);
-		}
-
 
         if (!empty($eventData['maximum_members'])) {
             if ($eventData['minimum_members'] > $eventData['maximum_members']) {
@@ -269,13 +270,16 @@ class EventController extends Controller
                 return $this->editEvent($eventId);    
             }
         }
+
+		if ($validator->fails()) {
+			$this->eventStatus = false;
+			return $this->editEvent($eventId);
+		}
+
 		$event = Event::find($eventId);
 
 		if (empty($eventData['eventPrice']))
 			$eventData['eventPrice'] = 0;	
-        if (empty($eventData['maximum_members'])) {
-            $eventData['maximum_members'] = NULL;
-        }
 
 		$result = $event->updateEventData($eventData);
 		
