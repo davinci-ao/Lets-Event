@@ -266,7 +266,8 @@ class EventController extends Controller
 	}
 
 }
-#https://select2.org/tagging
-#multi select
+#API used for multi select
+#https://select2.org/programmatic-control/add-select-clear-items
 
+#tutorial on tags
 #https://www.youtube.com/watch?v=BNUYaLWdR04
