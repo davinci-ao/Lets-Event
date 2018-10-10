@@ -44,9 +44,6 @@
 						</div>
 						<div class="form-group ">
 							<label class="control-label col-sm-9 eventDataHeader"> Maximum : </label> 
-							@if (empty($event->maximum_members))
-								<p class="eventData"> - </p>
-							@endif
 							<p class="eventData"> {{ $event->maximum_members }} </p>
 						</div>
 
@@ -79,10 +76,12 @@
 								@if ( $guests->contains('id', Auth::user()->id) )
 									<button type="submit" class="btn btn-danger">Write out of the event</button>
 								@else 
-									@if (count($guests) == isset($event->maximum_members))
-										<span class="text-danger">No more free space</span>
+									@if(!empty($event->maximum_members))
+	                                    @if (count($guests) == $event->maximum_members)
+											<span class="text-danger">No more free space</span>
+										@endif
 									@else
-										<button type="submit"  class="btn btn-primary">Register for the event</button>
+									<button type="submit"  class="btn btn-primary">Register for the event</button>
 									@endif
 								@endif
 							</form>

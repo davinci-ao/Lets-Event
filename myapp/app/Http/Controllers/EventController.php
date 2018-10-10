@@ -115,8 +115,11 @@ class EventController extends Controller
 					
 					$userIds = participations::where('event_id', $event->id)->pluck('user_id');
 					$guests = User::find($userIds);
-					if (count($guests) == isset($event->maximum_members)){
-						return $fail('no more free space');
+					if (!empty($event->maximum_members)) {
+						
+						if (count($guests) == $event->maximum_members){
+							return $fail('no more free space');
+						}	
 					}
 
 				}],
@@ -261,7 +264,7 @@ class EventController extends Controller
 			$userIds = [0];
 		$guests = User::find($userIds);
 
-		
+	
 		return view('viewEvent', ['event' => $event, 'organizer' => $organizer,'user'=>$user, 'location' => $location, 'guests' => $guests]);
 		if (empty($event->maximum_members)) {
 			$event->maximum_members = '-';
