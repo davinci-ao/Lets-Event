@@ -30,7 +30,7 @@ class EventController extends Controller
 	 */
 	public function index()
 	{
-		$events = $events = Event::where('status', 'accepted')->get();
+		$events = Event::where('status', 'accepted')->get();
 		$user = auth()->user();
 		return view('events', ['events' => $events, 'user' => $user]);
 	}
