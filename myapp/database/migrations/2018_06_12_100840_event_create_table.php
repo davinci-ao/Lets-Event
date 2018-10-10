@@ -20,7 +20,7 @@ class EventCreateTable extends Migration
 			$table->time('time');
 			$table->double('price');
 			$table->integer('location_id');
-			$table->string('description');
+			$table->string('description')->nullable();
 			$table->integer('user_id');
 			$table->integer('minimum_members')->nullable();
 			$table->integer('maximum_members')->nullable();

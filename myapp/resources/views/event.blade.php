@@ -59,7 +59,7 @@
 						</select>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="Minimum_members">  Minimum*  </label><input min="0" type="number" name="minimum_members" style="width:50px; text-align: right" required>
+							<label class="control-label col-sm-2" for="Minimum_members">  Minimum  </label><input min="0" type="number" name="minimum_members" style="width:50px; text-align: right">
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-2" for="maximum_members">  Maximum  </label><input min="0" type="number" name="maximum_members" style="width:50px; text-align: right">
@@ -77,9 +77,6 @@
 								@endforeach
 							</select>
 						</div>
-						<input type="submit" value="Save">
-
-
 						<input class="btn btn-primary" type="submit" value="Save">
 
 					</form>

@@ -30,16 +30,15 @@ class Event extends \Illuminate\Database\Eloquent\Model
 	public function saveEventData($eventData)
 	{
 
-		return $this->create([
+		
 
 		if (auth()->user()->role == "teacher" || auth()->user()->role == "organisator") {
 			$status = "accepted";
 		} else {
 			$status = "tobechecked";
 		}
-		
+		return $this->create([
 		    "status"=>$status,
-		    "category_id" => 0,
 		    "name" => $eventData['eventName'],
 		    "datum" => $eventData['eventDate'],
 		    "time" => $eventData['eventTime'],

@@ -6,8 +6,8 @@
 		<div class="col-md-8">
 
 			@if(Session::has('message'))
-				@if(Session::has('positive'))
-				<div class="alert alert-success">
+			@if(Session::has('positive'))
+			<div class="alert alert-success">
 				@else 
 				<div  class="alert alert-danger">
 					@endif		
@@ -16,7 +16,7 @@
 				@endif
 
 				<a  class="btn btn-primary" href="{{ route('eventIndex') }}" >Back to overview</a>
-				
+
 				@if($organizer->id === $user->id || $user->role == 'teacher')
 				<a id="eventDeleteButton" class="btn btn-danger" href="{{ route('deleteEvent', $event->id)}}"onclick="return confirm('are you sure to delete this Event ?')" > Delete Event </a>
 				@endif
@@ -44,9 +44,31 @@
 						<div class="form-group ">
 							<label class="control-label col-sm-9 eventDataHeader"> Maximum : </label> <p class="eventData">{{$event->maximum_members}} </p>
 						</div>
-
 					</div>
 				</div>
+				<div class="card">
+					<div class="card-header" ><h3>Tags:</h3></div>
+					<div class="card-body">
+						<div  class="EventTags" class="form-group description ">
+							<table class="table">
+								<tbody>
+									@foreach($categoriesIDFromCategoryEvent as $cifce)
+									@if($cifce->event_id == $event->id) 
+									@foreach($categories as $category)
+									@if( $cifce->category_id == $category->id)
+									<tr><td><p  class="eventData">{{$category->name}}</p></td></tr>
+									@endif
+									@endforeach	
+									@endif
+									@endforeach
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>	
+
+
+
 				<div class="card">
 					<div class="card-header" ><h3>Description</h3></div>
 					<div class="card-body">
@@ -67,11 +89,11 @@
 								@csrf
 								<input type="hidden" value="{{ $event->id }}" name="id">
 								@if ( $guests->contains('id', Auth::user()->id) )
-									<button type="submit" class="btn btn-danger">Write out of the event</button>
+								<button type="submit" class="btn btn-danger">Write out of the event</button>
 								@else 
-									@if (count($guests) <= isset($event->maximum_members))
-										<button type="submit" class="btn btn-primary">Register for the event</button>
-									@endif
+								@if (count($guests) <= isset($event->maximum_members))
+								<button type="submit" class="btn btn-primary">Register for the event</button>
+								@endif
 								@endif
 							</form>
 					</div>
