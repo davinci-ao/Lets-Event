@@ -111,6 +111,14 @@ class EventController extends Controller
 					if ($userEventLink !== null) {
 						return $fail('You are already registered for this event');
 					}
+
+					
+					$userIds = participations::where('event_id', $event->id)->pluck('user_id');
+					$guests = User::find($userIds);
+					if (count($guests) == isset($event->maximum_members)){
+						return $fail('no more free space');
+					}
+
 				}],
 		]);
 
@@ -121,7 +129,6 @@ class EventController extends Controller
 
 		$event = new event();
 		$event = $event::find($request->input('id'));
-
 		$registerUserToEvent = new participations();
 		$registerUserToEvent->paid = false;
 		$registerUserToEvent->event_id = $request->input('id');
