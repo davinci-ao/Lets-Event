@@ -20,8 +20,8 @@
 			    $table->integer('education_location_id');
 			    $table->string('email')->unique();
 			    $table->string('password');
-			    $table->enum('role', ['leerling', 'leeraar']);
-			    $table->enum('activated', ['geactivateerd', 'niet geactiveerd']);
+			    $table->enum('role', ['teacher','organisator','student']);
+			    $table->enum('activated', ['activated', 'not activated']);
 			    $table->rememberToken();
 			    $table->timestamps();
 		    });

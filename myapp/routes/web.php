@@ -23,8 +23,10 @@ Auth::routes();
 // home
 Route::get('/home', 'HomeController@index')->name('home');
 
-// category
+
 Route::group(['middleware' => ['checkRole']], function () {
+
+	// category
 	Route::get('/category/index/', 'CategoryController@index')->name('indexCategory');
 	Route::post('/category/create', 'CategoryController@createCategory')->name('createCategory');
 	Route::get('/category/delete/{categoryId}', 'CategoryController@deleteCategory')->name('deleteCategory');
@@ -36,6 +38,16 @@ Route::group(['middleware' => ['checkRole']], function () {
 	Route::get('/errorparseimport', 'ImportController@errorParseImport')->name('import_parse_error');
 	Route::post('/parseimport', 'ImportController@parseImport')->name('import_parse');
 	Route::post('/processimport', 'ImportController@processImport')->name('import_process');
+
+	//Users
+	Route::get('/Users/viewAll', 'UserController@index')->name('userIndex');
+	Route::get('/Users/view/singleUser/{userID}', 'UserController@viewUser')->name('editUser');
+	Route::post('/users/updateUser', 'UserController@updateUser')->name('updateUser');
+
+	//approve events
+	Route::get('/event/approveEvent/index', 'EventController@eventApprovalIndex')->name('eventApprovalIndex');
+	Route::get('/event/approveEvent/approve/{eventID}', 'EventController@eventApproval')->name('eventApproval');
+	Route::get('/event/approveEvent/decline/{eventID}', 'EventController@eventDecline')->name('eventDecline');
 });
 
 //event

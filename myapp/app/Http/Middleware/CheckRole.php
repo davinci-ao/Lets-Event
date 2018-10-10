@@ -16,7 +16,7 @@ class CheckRole
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() == false || Auth::user()->role !== 'leeraar') {
+        if (Auth::check() == false || Auth::user()->role !== 'teacher') {
             return redirect('home');
         }
         return $next($request);

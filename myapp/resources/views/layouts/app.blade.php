@@ -14,6 +14,7 @@
 		<script src="{{ asset('js/app.js') }}" defer></script>
 		<script src="{{ asset('js/custom.js') }}" defer></script>
 		<script src="{{ asset('js/select2.min.js') }}" defer></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<!-- Fonts -->
 		<link rel="dns-prefetch" href="https://fonts.gstatic.com">
 		<link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
@@ -53,9 +54,10 @@
 
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 									<a class="dropdown-item" href="{{ route('home') }}" >Home</a>
-									@if ( Auth::user()->role == "leeraar" ) 
+									@if ( Auth::user()->role == "teacher" ) 
 										<a class="dropdown-item" href="{{ route('indexCategory') }}" >View Categories</a>
 										<a class="dropdown-item" href="{{ route('import') }}" >Import CSV</a>
+										<a class="dropdown-item" href="{{ route('userIndex') }}" >View Users</a>
 									@endif
 									<a class="dropdown-item" href="{{ route('eventIndex') }}" >View Events</a>
 									<a class="dropdown-item" href="{{ route('logout') }}"

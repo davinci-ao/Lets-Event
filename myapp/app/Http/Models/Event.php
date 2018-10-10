@@ -11,8 +11,6 @@ class Event extends \Illuminate\Database\Eloquent\Model
 {
 
 	public $table = "events";
-	protected $fillable = ['name', 'datum', 'time', 'price', 'minimum_members', 'maximum_members', 'location_id', 'description', 'user_id'];
-
 	/**
 	 *
 	 */
@@ -21,6 +19,9 @@ class Event extends \Illuminate\Database\Eloquent\Model
 		return $this->belongsToMany('App\Http\Models\Category');
 	}
 
+	protected $fillable = ['name', 'category_id', 'datum', 'time', 'price', 'minimum_members', 'maximum_members', 'location_id', 'status', 'description', 'user_id'];
+
+
 	/**
 	 * Saves the event name to the database with the data from eventData array
 	 * @param type $eventData
@@ -28,13 +29,23 @@ class Event extends \Illuminate\Database\Eloquent\Model
 	 */
 	public function saveEventData($eventData)
 	{
+
 		return $this->create([
+
+		if (auth()->user()->role == "teacher" || auth()->user()->role == "organisator") {
+			$status = "accepted";
+		} else {
+			$status = "tobechecked";
+		}
+		
+		    "status"=>$status,
+		    "category_id" => 0,
 		    "name" => $eventData['eventName'],
 		    "datum" => $eventData['eventDate'],
 		    "time" => $eventData['eventTime'],
 		    "price" => $eventData['eventPrice'],
 		    "minimum_members" => $eventData['minimum_members'],
-            "maximum_members" => $eventData['maximum_members'],
+		    "maximum_members" => $eventData['maximum_members'],
 		    "location_id" => $eventData['eventLocation'],
 		    "description" => $eventData['eventDescription'],
 		    "user_id" => auth()->user()->id
@@ -45,7 +56,7 @@ class Event extends \Illuminate\Database\Eloquent\Model
 	{
 		if ($this->where("id", "=", $eventObject['id'])->count() > 0) {
 			return true;
-		} else{
+		} else {
 			return false;
 		}
 	}
