@@ -33,17 +33,21 @@
 							<label class="control-label col-sm-9 eventDataHeader"> Time : </label> <p class="eventData">{{$event->time}} </p>
 						</div>
 						<div class="form-group ">
-							<label class="control-label col-sm-9 eventDataHeader"> Price : </label> <p class="eventData">@if($event->price != 0) €{{$event->price}} @else Free @endif</p>
+							<label class="control-label col-sm-9 eventDataHeader"> Price : </label> <p class="eventData">@if($event->price != 0) €{{$event->price}}.- @else Free @endif</p>
 						</div>
 						<div class="form-group ">
 							<label class="control-label col-sm-9 eventDataHeader"> Location : </label><p class="eventData" >{{$location->name}}</p>
 						</div>
+						@if($event->minimum_members != null)
 						<div class="form-group ">
-							<label class="control-label col-sm-9 eventDataHeader"> Minimum : </label> <p class="eventData">{{$event->minimum_members}} </p>
+							<label class="control-label col-sm-9 eventDataHeader"> Minimum : </label> <p class="eventData">{{$event->minimum_members}}</p>
 						</div>
+						@endif
+						@if($event->maximum_members != null)
 						<div class="form-group ">
-							<label class="control-label col-sm-9 eventDataHeader"> Maximum : </label> <p class="eventData">{{$event->maximum_members}} </p>
+							<label class="control-label col-sm-9 eventDataHeader"> Maximum : </label> <p class="eventData">{{$event->maximum_members}}</p>
 						</div>
+						@endif
 					</div>
 				</div>
 				<div class="card">
@@ -91,8 +95,10 @@
 								@if ( $guests->contains('id', Auth::user()->id) )
 								<button type="submit" class="btn btn-danger">Write out of the event</button>
 								@else 
-								@if (count($guests) <= isset($event->maximum_members))
+								@if( $event->maximum_members != null)
+								@if (count($guests) <= $event->maximum_members)
 								<button type="submit" class="btn btn-primary">Register for the event</button>
+								@endif
 								@endif
 								@endif
 							</form>
