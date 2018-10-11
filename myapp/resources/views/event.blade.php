@@ -50,11 +50,11 @@
 							<label class="control-label col-sm-2" for="price">  Price </label><input min="0" type="number" name="eventPrice" style="width:80px" placeholder="€ 22,50" step="any" id="eventPrice">
 						</div>
 						<div class="form-group">
-						<label class="control-label col-sm-2" for="price"> Location* </label>
+						<label class="control-label col-sm-2" style="width:110px" for="price"> Location* </label>
 
 						<select name="eventLocation">
 							@foreach($locations as $location)
-							<option value="{{ $location->id }} ">{{ $location->name }}</option>
+							<option value="{{ $location->id }} ">{{$location->name}}</option>
 							@endforeach
 						</select>
 						</div>
