@@ -32,7 +32,7 @@ class EventController extends Controller
 	 */
 	public function index()
 	{
-		$events = $events = Event::where('status', 'accepted')->get();
+		$events = Event::where('status', 'accepted')->get();
 		$user = auth()->user();
 		return view('events', ['events' => $events, 'user' => $user]);
 	}
@@ -43,7 +43,6 @@ class EventController extends Controller
 	 */
 	public function eventApprovalIndex()
 	{
-
 		$events = Event::where('status', 'tobechecked')->get();
 		return view('eventsApproval', ['events' => $events]);
 	}
@@ -62,7 +61,7 @@ class EventController extends Controller
 			$event->save();
 
 			Session::flash('positive', true);
-			return back()->with('message', ' "' . $event->name . '" has been accepted and is added to the events list');
+			return back()->with('message', ' "' . $event->name  . '" has been accepted and is added to the events list');
 		} else {
 
 			return back()->with('message', 'This event doesn\'t exist !');
@@ -124,7 +123,13 @@ class EventController extends Controller
 		$event = new event();
 		$event = $event::find($request->input('id'));
 
+
 		$registerUserToEvent = new participations();
+
+		if ($event->maximum_members !== null && $event->maximum_members <= count( $registerUserToEvent::where('event_id', $event->id)->get()  ) ) {
+			return back()->with('message', 'This event is full');
+		}
+
 		$registerUserToEvent->paid = false;
 		$registerUserToEvent->event_id = $request->input('id');
 		$registerUserToEvent->user_id = Auth::user()->id;
@@ -189,8 +194,8 @@ class EventController extends Controller
 		$validator = Validator::make($request->all(), [
 			  'eventName' => 'required|max:40',
 			  'eventDate' => 'required|date',
-			  'minimum_members' => 'nullable',
-			  'maximum_members' => 'nullable',
+			  'minimum_members' => 'nullable|min:0',
+			  'maximum_members' => 'nullable|min:0',
 			  'eventTime' => ['required',
 				function($attribute, $value, $fail) {
 					$time = \DateTime::createFromFormat('G:i', $value);
@@ -237,23 +242,24 @@ class EventController extends Controller
 			$eventData['maximum_members'] = NULL;
 		}
 
+		$event = $event->saveEventData($eventData);
 
 		$tags = $request->tags;
+		if ($tags !== null) {
+			foreach ($tags as $key => $value) {
+				if (is_numeric($value)) {
+					continue;
+				}
+				$tags[$key] = ucfirst(strtolower($tags[$key]));
+				$category = new Category();
+				$category->name = $tags[$key];
+				$category->save();
 
-		foreach ($tags as $key => $value) {
-			if (is_numeric($value)) {
-				continue;
+				$tags[$key] = $category->id;
 			}
-			$tags[$key] = ucfirst(strtolower($tags[$key]));
-			$category = new Category();
-			$category->name = $tags[$key];
-			$category->save();
 
-			$tags[$key] = $category->id;
+			$event->categories()->sync($tags);
 		}
-
-		$event = $event->saveEventData($eventData);
-		$event->categories()->sync($tags);
 
 		$this->eventStatus = true;
 		$this->eventName = $eventData['eventName'];
@@ -266,8 +272,16 @@ class EventController extends Controller
 	 */
 	public function viewEvent($eventID)
 	{
-
 		$event = Event::where('id', $eventID)->first();
+
+		if ($event === null ) {
+			return redirect('event/overview');
+		}
+
+		if ( $event->status === 'tobechecked' || auth()->user()->role !== 'teacher' ) {
+			return back();
+		}
+
 		$organizer = User::where('id', $event->user_id)->first();
 		$user = auth()->user();
 		$categoriesIDFromCategoryEvent = CategoryEvent::get();
