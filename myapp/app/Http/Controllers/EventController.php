@@ -249,11 +249,8 @@ class EventController extends Controller
 		$user = auth()->user();
 		$admin = User::where('role', 'teacher')->get();
 		$location = locations::where('id', $event->location_id)->first();
-		$userIds = participations::where('event_id', $eventID)->pluck('user_id');
-
-		if ($userIds->isEmpty())
-			$userIds = [0];
-		$guests = User::find($userIds);
+		$guests = participations::get();
+		$users = User::get();
 
 		if (empty($event->maximum_members)) {
 			$event->maximum_members = '-';
@@ -261,7 +258,7 @@ class EventController extends Controller
 
 
 
-		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'user' => $user, 'location' => $location, 'guests' => $guests, 'admin' => $admin]);
+		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'user' => $user, 'location' => $location, 'users' => $users, 'admin' => $admin, 'guests'=>$guests]);
 	}
 
 	/**
