@@ -85,15 +85,15 @@
 				</div>
 				<div class="card">
 					<div class="card-header"><h3>Attendees</h3>
-						@if ( $guests->contains('id', Auth::user()->id) )
+						@if ( $guests->contains('user_id', Auth::user()->id) )
 						<form class="float-right" method="POST" action="{{ route('WriteOutEvent')}}">
 							@else 
 							<form class="float-right" method="POST" action="{{ route('RegisterEventAction')}}">
 								@endif
 								@csrf
 								<input type="hidden" value="{{ $event->id }}" name="id">
-								@if ( $guests->contains('id', Auth::user()->id) )
-								<button type="submit" class="btn btn-danger">Write out of the event</button>
+								@if ( $guests->contains('user_id', Auth::user()->id) )
+									<button type="submit" class="btn btn-danger">Write out of the event</button>
 								@else 
 								@if( $event->maximum_members != null)
 								@if (count($guests) <= $event->maximum_members)
@@ -114,9 +114,17 @@
 										<th>Name</th>
 									</tr>
 									@foreach($guests as $guest)
+									@if($guest->event_id == $event->id)
+									@foreach($users as $user)
+									@if($guest->user_id == $user->id)
 									<tr>
-										<td>{{ $guest->firstname }} {{ $guest->lastname }}</td>
+										<td>
+										{{ $user->firstname }} {{ $user->lastname }}@if ($organizer->id === $guest->user_id) <img title="Host" src="{{ asset('misc/CROWN_OG.jpg') }}" height="35" width="35" defer style="float:right"> @endif
+										</td>
 									</tr>
+									@endif
+									@endforeach
+									@endif
 									@endforeach
 								</tbody>
 							</table>
