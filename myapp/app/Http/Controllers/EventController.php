@@ -151,6 +151,7 @@ class EventController extends Controller
 	{
 		$writeOut = participations::where('user_id', Auth::user()->id)->where('event_id', $request->input('id'))->first();
 
+
 		if (!isset($writeOut->user_id))
 			return back()->with('message', 'You are not written in for this event');
 
@@ -288,11 +289,11 @@ class EventController extends Controller
 		$categories = Category::get();
 		$admin = User::where('role', 'teacher')->get();
 		$location = locations::where('id', $event->location_id)->first();
-		$guests = participations::get();
+		$guests = participations::where('event_id', $eventID)->get();
 		$users = User::get();
 
 		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'user' => $user, 'location' => $location,'guests' => $guests, 'admin' => $admin,
-             'categories' => $categories, 'categoriesIDFromCategoryEvent' => $categoriesIDFromCategoryEvent, 'users' => $users,'guests'=>$guests]);
+			 'categories' => $categories, 'categoriesIDFromCategoryEvent' => $categoriesIDFromCategoryEvent, 'users' => $users,'guests'=>$guests]);
 
 	}
 
