@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Models\Event;
+use App\Http\Models\Category;
+use App\Http\Models\CategoryEvent;
 use App\Http\Models\locations;
 use App\Http\Models\participations;
 use Auth;
@@ -132,7 +134,7 @@ class EventController extends Controller
 		$registerUserToEvent->save();
 
 		Session::flash('positive', true);
-		return back()->with('message', 'You have succesvolley registered for the event "' . $event->name . '"');
+		return back()->with('message', 'You have succesfully registered for the event "' . $event->name . '"');
 	}
 
 	/**
@@ -162,17 +164,18 @@ class EventController extends Controller
 	{
 		$locations = new locations();
 		$locations = $locations::all();
+		$categories = Category::all();
 
 		if ($this->eventStatus === true) {
 			$this->eventStatus = null;
 
-			return view('event', ['locations' => $locations, 'status' => 'success', 'success' => $this->eventName]);
+			return view('event', ['locations' => $locations, 'categories' => $categories, 'status' => 'success', 'success' => $this->eventName]);
 		}
 		if ($this->eventStatus === false) {
 			$this->eventStatus = null;
-			return view('event', ['locations' => $locations, 'status' => 'fail']);
+			return view('event', ['locations' => $locations, 'categories' => $categories, 'status' => 'fail']);
 		}
-		return view('event', ['locations' => $locations, 'status' => '', 'success' => $this->eventName]);
+		return view('event', ['locations' => $locations, 'categories' => $categories, 'status' => '', 'success' => $this->eventName]);
 	}
 
 	/**
@@ -186,7 +189,7 @@ class EventController extends Controller
 		$validator = Validator::make($request->all(), [
 			  'eventName' => 'required|max:40',
 			  'eventDate' => 'required|date',
-			  'minimum_members' => 'required',
+			  'minimum_members' => 'nullable',
 			  'maximum_members' => 'nullable',
 			  'eventTime' => ['required',
 				function($attribute, $value, $fail) {
@@ -205,7 +208,8 @@ class EventController extends Controller
 						return $fail('This location doesn\'t exist');
 					}
 				}],
-			  'eventDescription' => 'nullable|max:255'
+			  'eventDescription' => 'nullable|max:255',
+			  'tags.*' => 'nullable|max:40'//validates the array, each item in array is max 40
 		]);
 
 		if ($validator->fails()) {
@@ -221,18 +225,37 @@ class EventController extends Controller
 			}
 		}
 
-
 		$event = new Event();
 		if (empty($eventData['eventPrice']))
 			$eventData['eventPrice'] = 0;
 		$eventData['eventTime'] .= ':00';
+
+		if (empty($eventData['minimum_members'])) {
+			$eventData['minimum_members'] = NULL;
+		}
 		if (empty($eventData['maximum_members'])) {
 			$eventData['maximum_members'] = NULL;
 		}
 
-		$result = $event->saveEventData($eventData);
 
-		$this->eventStatus = $result;
+		$tags = $request->tags;
+
+		foreach ($tags as $key => $value) {
+			if (is_numeric($value)) {
+				continue;
+			}
+			$tags[$key] = ucfirst(strtolower($tags[$key]));
+			$category = new Category();
+			$category->name = $tags[$key];
+			$category->save();
+
+			$tags[$key] = $category->id;
+		}
+
+		$event = $event->saveEventData($eventData);
+		$event->categories()->sync($tags);
+
+		$this->eventStatus = true;
 		$this->eventName = $eventData['eventName'];
 		return $this->create();
 	}
@@ -247,18 +270,16 @@ class EventController extends Controller
 		$event = Event::where('id', $eventID)->first();
 		$organizer = User::where('id', $event->user_id)->first();
 		$user = auth()->user();
+		$categoriesIDFromCategoryEvent = CategoryEvent::get();
+		$categories = Category::get();
 		$admin = User::where('role', 'teacher')->get();
 		$location = locations::where('id', $event->location_id)->first();
 		$guests = participations::get();
 		$users = User::get();
 
-		if (empty($event->maximum_members)) {
-			$event->maximum_members = '-';
-		}
+		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'user' => $user, 'location' => $location,'guests' => $guests, 'admin' => $admin,
+             'categories' => $categories, 'categoriesIDFromCategoryEvent' => $categoriesIDFromCategoryEvent, 'users' => $users,'guests'=>$guests]);
 
-
-
-		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'user' => $user, 'location' => $location, 'users' => $users, 'admin' => $admin, 'guests'=>$guests]);
 	}
 
 	/**
@@ -283,13 +304,16 @@ class EventController extends Controller
 			Session::flash('message', 'Event does not exists');
 			return redirect('event/overview');
 		}
-		if ($event->user_id != Auth::user()->id) {
+		if (Auth::user()->role != "teacher") {
+			if ($event->user_id != Auth::user()->id) {
 
-			Session::flash('message', 'U cant delete "' . $event->name . '" You are not the owner');
-			return redirect('event/overview');
+				Session::flash('message', 'U cant delete "' . $event->name . '" You are not the owner');
+				return redirect('event/overview');
+			}
 		}
 
 		participations::where('event_id', $eventId)->delete();
+		CategoryEvent::where('event_id', $eventId)->delete();
 
 		Event::where('id', $eventId)->delete();
 		Session::flash('message', ' "' . $event->name . '" has been deleted succesfully');
@@ -299,3 +323,9 @@ class EventController extends Controller
 	}
 
 }
+
+#API used for multi select
+#https://select2.org/programmatic-control/add-select-clear-items
+
+#tutorial on tags
+#https://www.youtube.com/watch?v=BNUYaLWdR04

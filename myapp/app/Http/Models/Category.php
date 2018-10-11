@@ -12,4 +12,9 @@ class Category extends \Illuminate\Database\Eloquent\Model
 
 	public $table = "categories";
 	protected $fillable = ['name'];
+
+	public function events()
+	{
+		return $this->belongsToMany('App\Http\Models\Event');
+	}
 }

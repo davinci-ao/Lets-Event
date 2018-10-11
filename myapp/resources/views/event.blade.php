@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')	
+@section('content')
 @if ($status == 'success')
 <div class="container">
 	<div class="row justify-content-center">
@@ -47,7 +47,7 @@
 							<label class="control-label col-sm-2" for="time">  Time*  </label><input type="time" name="eventTime" style="width:100px" id="eventTime"  required>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="price">  Price </label><input type="number" name="eventPrice" style="width:80px" placeholder="€ 22,50" step="any" id="eventPrice">
+							<label class="control-label col-sm-2" for="price">  Price </label><input min="0" type="number" name="eventPrice" style="width:80px" placeholder="€ 22,50" step="any" id="eventPrice">
 						</div>
 						<div class="form-group">
 						<label class="control-label col-sm-2" style="width:110px" for="price"> Location* </label>
@@ -59,15 +59,24 @@
 						</select>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="Minimum_members">  Minimum*  </label><input type="number" name="minimum_members" style="width:50px; text-align: right"  required>
+							<label class="control-label col-sm-2" for="Minimum_members">  Minimum  </label><input min="0" type="number" name="minimum_members" style="width:50px; text-align: right">
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="maximum_members">  Maximum  </label><input type="number" name="maximum_members" style="width:50px; text-align: right">
+							<label class="control-label col-sm-2" for="maximum_members">  Maximum  </label><input min="0" type="number" name="maximum_members" style="width:50px; text-align: right">
+
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-2" for="description">  Description  </label><textarea name="eventDescription" id="eventDescription" style="width:70%"></textarea>
 						</div>
 
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="tags">Add tags</label>
+							<select class="multi-tag" name="tags[]" multiple="multiple" style="width:70%">
+								@foreach ($categories as $category)
+								<option value="{{ $category->id }}">{{ $category->name }}</option>
+								@endforeach
+							</select>
+						</div>
 						<input class="btn btn-primary" type="submit" value="Save">
 
 					</form>
@@ -79,4 +88,6 @@
 		</div>
 	</div>
 </div>
+
+
 @endsection

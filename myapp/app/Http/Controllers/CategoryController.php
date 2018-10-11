@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Models\Category;
+use App\Http\Models\CategoryEvent;
 use Illuminate\Support\Facades\DB;
 use Session;
 use Validator;
@@ -34,27 +35,27 @@ class CategoryController extends Controller
 	 * @return type view
 	 */
 	public function createCategory(Request $request)
-	{	
+	{
 		$validator = Validator::make($request->all(), [
-			'categoryName' => 'required|max:40'
+			  'categoryName' => 'required|max:40'
 		]);
-		
+
 		if (Count(Category::where('name', $request->categoryName)->get()) > 0) {
-			return back()->with('message', 'Category creation failed , "  ' .$request->categoryName. '  " already exists');
-		}
-		
-		if ( $validator->fails() ) {
-			return back()->with('message', implode('<br>', $validator->errors()->all() ));
+			return back()->with('message', 'Category creation failed , "  ' . $request->categoryName . '  " already exists');
 		}
 
+		if ($validator->fails()) {
+			return back()->with('message', implode('<br>', $validator->errors()->all()));
+		}
+
+		$catName = $request->categoryName;
+		$catName = ucfirst(strtolower($catName)); //any string to lower case, then first letter to upper
 		$category = new Category();
-		$category->name = $request->input('categoryName');
-
+		$category->name = $catName;
 		$category->save();
 
 		Session::flash('positive', true);
-
-		return back()->with('message', 'Category Creation is succesfull , '.$category->name. ' Created');
+		return back()->with('message', 'Category Creation is succesfull , ' . $category->name . ' Created');
 	}
 
 	/**
@@ -66,10 +67,10 @@ class CategoryController extends Controller
 	public function viewEditCategory($id)
 	{
 		$category = Category::find($id);
-		
-		if ( ! isset($category->id) ) {
+
+		if (!isset($category->id)) {
 			return back()->with('message', 'category not found');
-		} 
+		}
 
 		return view('categoryEdit', ['category' => $category]);
 	}
@@ -90,27 +91,24 @@ class CategoryController extends Controller
 				function($attribute, $value, $fail) {
 					$category = new Category();
 					$category = $category->find($value);
-
+					
 					if (!isset($category->id)) {
 						return $fail('Category not found');
 					}
 				}],
 			  'categoryName' => 'required|max:40'
 		]);
-
+				
 		if ($validator->fails()) {
 			return back()->withErrors($validator);
 		}
 
 		$category = new Category();
 		$category = $category->find($request->input('id'));
-
 		$category->name = $request->input('categoryName');
-
 		$category->save();
-
+		
 		Session::flash('positive', true);
-
 		return redirect('category/index')->with('message', 'Category succesvol edited');
 	}
 
@@ -120,18 +118,16 @@ class CategoryController extends Controller
 	public function deleteCategory(Request $request, $categoryId)
 	{
 
-		$category = Category::where('id', '=', $categoryId)->first(); // get name where id
+		$category = Category::where('id', '=', $categoryId)->first();
 		if (isset($category->id)) {
-
-			Category::where('id', $categoryId)->delete(); // delete category where id
-			Session::flash('succes_deleted', 'Category '. $category->name . ' successful deleted! '); // message
 			
-			return redirect('category/index');// return blade
+			CategoryEvent::where('category_id', $categoryId)->delete();
+			Category::where('id', $categoryId)->delete();
+			Session::flash('succes_deleted', 'Category ' . $category->name . ' successful deleted! ');
+			return redirect('category/index');
 		}
-
-		Session::flash('error_deleted', 'Category does not exists'); // message
-		return redirect('category/index');// return blade
-
+		Session::flash('error_deleted', 'Category does not exists');
+		return redirect('category/index');
 	}
 
 }
