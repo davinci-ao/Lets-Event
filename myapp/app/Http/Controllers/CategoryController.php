@@ -1,19 +1,19 @@
 <?php
 
+/**
+ * Description of CategoryController
+ * 
+ * @author team Yugioh
+ */
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Models\Category;
 use App\Http\Models\CategoryEvent;
-use Illuminate\Support\Facades\DB;
 use Session;
 use Validator;
 
-/**
- * Description of CategoryController
- *
- * @author Peter Verhaar
- */
 class CategoryController extends Controller
 {
 
@@ -91,14 +91,14 @@ class CategoryController extends Controller
 				function($attribute, $value, $fail) {
 					$category = new Category();
 					$category = $category->find($value);
-					
+
 					if (!isset($category->id)) {
 						return $fail('Category not found');
 					}
 				}],
 			  'categoryName' => 'required|max:40'
 		]);
-				
+
 		if ($validator->fails()) {
 			return back()->withErrors($validator);
 		}
@@ -107,7 +107,7 @@ class CategoryController extends Controller
 		$category = $category->find($request->input('id'));
 		$category->name = $request->input('categoryName');
 		$category->save();
-		
+
 		Session::flash('positive', true);
 		return redirect('category/index')->with('message', 'Category succesvol edited');
 	}
@@ -120,7 +120,7 @@ class CategoryController extends Controller
 
 		$category = Category::where('id', '=', $categoryId)->first();
 		if (isset($category->id)) {
-			
+
 			CategoryEvent::where('category_id', $categoryId)->delete();
 			Category::where('id', $categoryId)->delete();
 			Session::flash('succes_deleted', 'Category ' . $category->name . ' successful deleted! ');

@@ -1,12 +1,12 @@
 <?php
-
-namespace App\Http\Models;
-
 /**
  * Description of Category this is the model for the categories
  *
- * @author Peter Verhaar
+ * @author team Yugioh
  */
+
+namespace App\Http\Models;
+
 class Category extends \Illuminate\Database\Eloquent\Model
 {
 

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Description of UserController
+ *
+ * @author Team yugioh
+ */
+
 namespace App\Http\Controllers;
 
 use App\Http\Models\locations;
@@ -8,11 +14,6 @@ use App\Http\Models\User;
 use Session;
 use Validator;
 
-/**
- * Description of UserController
- *
- * @author Peter Verhaar
- */
 class UserController extends Controller
 {
 
@@ -29,7 +30,7 @@ class UserController extends Controller
 	public function viewUser($userID)
 	{
 		$user = User::where('id', $userID)->first();
-		
+
 		$locations = new locations();
 		$locations = $locations::all();
 
@@ -60,7 +61,7 @@ class UserController extends Controller
 
 			$user = new User();
 			$user = $user->find($request->id);
-			
+
 			if ($user->role == 'teacher' && $request->role != 'teacher') {
 				if (Count($user->where('role', 'teacher')->get()) == 1) {
 

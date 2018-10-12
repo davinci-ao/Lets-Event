@@ -56,14 +56,8 @@
 						<div  class="EventTags" class="form-group description ">
 							<table class="table">
 								<tbody>
-									@foreach($categoriesIDFromCategoryEvent as $cifce)
-									@if($cifce->event_id == $event->id) 
 									@foreach($categories as $category)
-									@if( $cifce->category_id == $category->id)
 									<tr><td><p  class="eventData">{{$category->name}}</p></td></tr>
-									@endif
-									@endforeach	
-									@endif
 									@endforeach
 								</tbody>
 							</table>
@@ -86,7 +80,7 @@
 				<div class="card">
 					<div class="card-header"><h3>Attendees</h3>
 						@if ( $guests->contains('user_id', Auth::user()->id) )
-						<form class="float-right" method="POST" action="{{ route('WriteOutEvent', $event->id)}}">
+						<form class="float-right" method="POST" action="{{ route('WriteOutEvent')}}">
 							@else 
 							<form class="float-right" method="POST" action="{{ route('RegisterEventAction')}}">
 								@endif
@@ -95,9 +89,9 @@
 								@if ( $guests->contains('user_id', Auth::user()->id) )
 								<button type="submit" class="btn btn-danger">Write out of the event</button>
 								@else 
-					
+
 								<button type="submit" class="btn btn-primary">Register for the event</button>
-						
+
 								@endif
 							</form>
 					</div>

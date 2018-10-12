@@ -1,9 +1,14 @@
 <?php
 
+/**
+ * Event controller
+ *
+ * @author team Yugioh
+ */
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Models\Event;
 use App\Http\Models\Category;
 use App\Http\Models\CategoryEvent;
@@ -61,7 +66,7 @@ class EventController extends Controller
 			$event->save();
 
 			Session::flash('positive', true);
-			return back()->with('message', ' "' . $event->name  . '" has been accepted and is added to the events list');
+			return back()->with('message', ' "' . $event->name . '" has been accepted and is added to the events list');
 		} else {
 
 			return back()->with('message', 'This event doesn\'t exist !');
@@ -101,14 +106,11 @@ class EventController extends Controller
 				function($attribute, $value, $fail) {
 					$event = new event();
 					$event = $event::find($value);
-
 					if (!isset($event->id)) {
 						return $fail('Event not found');
 					}
 
 					$userEventLink = participations::where('user_id', Auth::user()->id)->where('event_id', $event->id)->first();
-
-
 					if ($userEventLink !== null) {
 						return $fail('You are already registered for this event');
 					}
@@ -119,14 +121,11 @@ class EventController extends Controller
 			return back()->with('message', implode("<br>", $validator->errors()->all()));
 		}
 
-
 		$event = new event();
 		$event = $event::find($request->input('id'));
-
-
 		$registerUserToEvent = new participations();
 
-		if ($event->maximum_members !== null && $event->maximum_members <= count( $registerUserToEvent::where('event_id', $event->id)->get()  ) ) {
+		if ($event->maximum_members !== null && $event->maximum_members <= count($registerUserToEvent::where('event_id', $event->id)->get())) {
 			return back()->with('message', 'This event is full');
 		}
 
@@ -134,8 +133,6 @@ class EventController extends Controller
 		$registerUserToEvent->event_id = $request->input('id');
 		$registerUserToEvent->user_id = Auth::user()->id;
 		$registerUserToEvent->result = '0';
-
-
 		$registerUserToEvent->save();
 
 		Session::flash('positive', true);
@@ -151,15 +148,13 @@ class EventController extends Controller
 	{
 		$writeOut = participations::where('user_id', Auth::user()->id)->where('event_id', $request->input('id'))->first();
 
-
-		if (!isset($writeOut->user_id))
+		if (!isset($writeOut->user_id)) {
 			return back()->with('message', 'You are not written in for this event');
+		}
 
 		$writeOut->delete();
-
 		Session::flash('positive', true);
-
-		return back()->with('message', 'You have succesvolley written out for the event');
+		return back()->with('message', 'You have succesfully written out for the event');
 	}
 
 	/**
@@ -275,26 +270,19 @@ class EventController extends Controller
 	{
 		$event = Event::where('id', $eventID)->first();
 
-		if ($event === null ) {
+		if ($event === null) {
 			return redirect('event/overview');
-		}
-
-		if ( $event->status === 'tobechecked' || auth()->user()->role !== 'teacher' ) {
-			return back();
 		}
 
 		$organizer = User::where('id', $event->user_id)->first();
 		$user = auth()->user();
-		$categoriesIDFromCategoryEvent = CategoryEvent::get();
-		$categories = Category::get();
+		$categories = $event->categories()->where('event_id', $eventID)->get();
 		$admin = User::where('role', 'teacher')->get();
 		$location = locations::where('id', $event->location_id)->first();
 		$guests = participations::where('event_id', $eventID)->get();
 		$users = User::get();
 
-		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'user' => $user, 'location' => $location,'guests' => $guests, 'admin' => $admin,
-			 'categories' => $categories, 'categoriesIDFromCategoryEvent' => $categoriesIDFromCategoryEvent, 'users' => $users,'guests'=>$guests]);
-
+		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'user' => $user, 'location' => $location, 'guests' => $guests, 'admin' => $admin, 'categories' => $categories, 'users' => $users]);
 	}
 
 	/**
