@@ -10,3 +10,12 @@ var letsEventModule = (function() {
 	setTimeout(function() { hideMsg(); }, 5000);
 
 })();//console.log
+
+$(document).ready(function(){
+	$('.multi-tag').select2({
+		placeholder: 'Select your category tags.',
+		tags: true,
+		tokenSeparators: [' ', ',', ';'],
+		allowClear: true
+	});
+});

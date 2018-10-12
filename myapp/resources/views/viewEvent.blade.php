@@ -34,21 +34,48 @@
 							<label class="control-label col-sm-9 eventDataHeader"> Time : </label> <p class="eventData">{{$event->time}} </p>
 						</div>
 						<div class="form-group ">
-							<label class="control-label col-sm-9 eventDataHeader"> Price : </label> <p class="eventData">@if($event->price != 0) €{{$event->price}} @else Free @endif</p>
+							<label class="control-label col-sm-9 eventDataHeader"> Price : </label> <p class="eventData">@if($event->price != 0) €{{$event->price}}.- @else Free @endif</p>
 						</div>
 						<div class="form-group ">
 							<label class="control-label col-sm-9 eventDataHeader"> Location : </label><p class="eventData" >{{$location->name}}</p>
 						</div>
+						@if($event->minimum_members != null)
 						<div class="form-group ">
-							<label class="control-label col-sm-9 eventDataHeader"> Minimum : </label> <p class="eventData">{{$event->minimum_members}} </p>
+							<label class="control-label col-sm-9 eventDataHeader"> Minimum : </label> <p class="eventData">{{$event->minimum_members}}</p>
 						</div>
+						@endif
+						@if($event->maximum_members != null)
 						<div class="form-group ">
 							<label class="control-label col-sm-9 eventDataHeader"> Maximum : </label> 
 							<p class="eventData"> {{ $event->maximum_members }} </p>
+							<label class="control-label col-sm-9 eventDataHeader"> Maximum : </label> <p class="eventData">{{$event->maximum_members}}</p>
 						</div>
-
+						@endif
 					</div>
 				</div>
+				<div class="card">
+					<div class="card-header" ><h3>Tags:</h3></div>
+					<div class="card-body">
+						<div  class="EventTags" class="form-group description ">
+							<table class="table">
+								<tbody>
+									@foreach($categoriesIDFromCategoryEvent as $cifce)
+									@if($cifce->event_id == $event->id) 
+									@foreach($categories as $category)
+									@if( $cifce->category_id == $category->id)
+									<tr><td><p  class="eventData">{{$category->name}}</p></td></tr>
+									@endif
+									@endforeach	
+									@endif
+									@endforeach
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>	
+
+
+
 				<div class="card">
 					<div class="card-header" ><h3>Description</h3></div>
 					<div class="card-body">
@@ -68,13 +95,15 @@
 						@endif
 						@if ( $guests->contains('id', Auth::user()->id) )
 						<form class="float-right" method="POST" action="{{ route('WriteOutEvent')}}">
+						@if ( $guests->contains('user_id', Auth::user()->id) )
+						<form class="float-right" method="POST" action="{{ route('WriteOutEvent', $event->id)}}">
 							@else 
 							<form class="float-right" method="POST" action="{{ route('RegisterEventAction')}}">
 								@endif
 								@csrf
 								<input type="hidden" value="{{ $event->id }}" name="id">
-								@if ( $guests->contains('id', Auth::user()->id) )
-									<button type="submit" class="btn btn-danger">Write out of the event</button>
+								@if ( $guests->contains('user_id', Auth::user()->id) )
+								<button type="submit" class="btn btn-danger">Write out of the event</button>
 								@else 
 									@if(!empty($event->maximum_members))
 	                                    @if (count($guests) == $event->maximum_members)
@@ -83,6 +112,9 @@
 									@else
 									<button type="submit"  class="btn btn-primary">Register for the event</button>
 									@endif
+					
+								<button type="submit" class="btn btn-primary">Register for the event</button>
+						
 								@endif
 							</form>
 					</div>
@@ -97,9 +129,20 @@
 										<th>Name</th>
 									</tr>
 									@foreach($guests as $guest)
+									@if($guest->event_id == $event->id)
+									@foreach($users as $user)
+									@if($guest->user_id == $user->id)
 									<tr>
-										<td>{{ $guest->firstname }} {{ $guest->lastname }}</td>
+										<td>
+											{{ $user->firstname }} {{ $user->lastname }}
+											@if ($organizer->id === $guest->user_id) 
+											<img title="Host" src="{{ asset('misc/CROWN_OG.jpg') }}" height="35" width="35" defer style="float:right"> 
+											@endif
+										</td>
 									</tr>
+									@endif
+									@endforeach
+									@endif
 									@endforeach
 								</tbody>
 							</table>

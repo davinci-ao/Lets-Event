@@ -76,13 +76,18 @@ class ImportController extends Controller
 	/**
 	 * process the data to input into db
 	 * 
-	 * @param null
+	 * @param Request $request
 	 * @return view index if success else return error
 	 */
 	public function processImport(Request $request)
 	{
+
 		$importCsv = new ImportCsv;
 		$csvData = $importCsv->getTmpCsv($request);
+
+		if ($csvData === null || route('import_parse') !== \URL::previous() ) {
+			return back();
+		}
 
 		if (!in_array('0', $_POST['fields']) || !in_array('1', $_POST['fields']) || !in_array('2', $_POST['fields']) || !in_array('3', $_POST['fields']) || count($_POST['fields']) != 4) {
 			return redirect('/errorparseimport')->with('status', 'Error! Make sure there is one of each fields set. No more or less.');

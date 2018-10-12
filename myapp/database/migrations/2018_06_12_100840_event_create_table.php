@@ -16,14 +16,13 @@ class EventCreateTable extends Migration
 		Schema::create('events', function (Blueprint $table) {
 			$table->increments('id');
 			$table->string('name');
-			$table->integer('category_id');
 			$table->date('datum');
 			$table->time('time');
 			$table->double('price');
 			$table->integer('location_id');
-			$table->string('description');
+			$table->string('description')->nullable();
 			$table->integer('user_id');
-			$table->integer('minimum_members');
+			$table->integer('minimum_members')->nullable();
 			$table->integer('maximum_members')->nullable();
 			$table->enum('status', ['accepted', 'tobechecked']);
 			$table->timestamps();
