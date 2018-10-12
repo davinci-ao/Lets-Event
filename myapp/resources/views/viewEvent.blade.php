@@ -93,8 +93,6 @@
 						@else
 						{{ count($guests) }}/ {{ $event->maximum_members }}
 						@endif
-						@if ( $guests->contains('id', Auth::user()->id) )
-						<form class="float-right" method="POST" action="{{ route('WriteOutEvent')}}">
 						@if ( $guests->contains('user_id', Auth::user()->id) )
 						<form class="float-right" method="POST" action="{{ route('WriteOutEvent', $event->id)}}">
 							@else 

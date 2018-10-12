@@ -290,14 +290,6 @@ class EventController extends Controller
 			return redirect('event/overview');
 		}
 
-	
-		return view('viewEvent', ['event' => $event, 'organizer' => $organizer,'user'=>$user, 'location' => $location, 'guests' => $guests]);
-		if (empty($event->maximum_members)) {
-			$event->maximum_members = '-';
-		if ( $event->status === 'tobechecked' || auth()->user()->role !== 'teacher' ) {
-			return back();
-		}
-
 		$organizer = User::where('id', $event->user_id)->first();
 		$user = auth()->user();
 		$categoriesIDFromCategoryEvent = CategoryEvent::get();
@@ -306,6 +298,15 @@ class EventController extends Controller
 		$location = locations::where('id', $event->location_id)->first();
 		$guests = participations::where('event_id', $eventID)->get();
 		$users = User::get();
+	
+		return view('viewEvent', ['event' => $event, 'organizer' => $organizer,'user'=>$user, 'location' => $location, 'guests' => $guests]);
+		if (empty($event->maximum_members)) {
+			$event->maximum_members = '-';
+		}
+		if ( $event->status === 'tobechecked' || auth()->user()->role !== 'teacher' ) {
+			return back();
+		}
+
 
 		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'user' => $user, 'location' => $location,'guests' => $guests, 'admin' => $admin,
 			 'categories' => $categories, 'categoriesIDFromCategoryEvent' => $categoriesIDFromCategoryEvent, 'users' => $users,'guests'=>$guests]);
