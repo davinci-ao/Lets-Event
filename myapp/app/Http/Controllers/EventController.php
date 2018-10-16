@@ -289,6 +289,9 @@ class EventController extends Controller
 		if ($event === null ) {
 			return redirect('event/overview');
 		}
+		// if ( $event->status === 'tobechecked' || auth()->user()->role !== 'teacher' ) {
+		// 	return back();
+		// }
 
 		$organizer = User::where('id', $event->user_id)->first();
 		$user = auth()->user();
@@ -299,13 +302,6 @@ class EventController extends Controller
 		$guests = participations::where('event_id', $eventID)->get();
 		$users = User::get();
 	
-		return view('viewEvent', ['event' => $event, 'organizer' => $organizer,'user'=>$user, 'location' => $location, 'guests' => $guests]);
-		if (empty($event->maximum_members)) {
-			$event->maximum_members = '-';
-		}
-		if ( $event->status === 'tobechecked' || auth()->user()->role !== 'teacher' ) {
-			return back();
-		}
 
 
 		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'user' => $user, 'location' => $location,'guests' => $guests, 'admin' => $admin,
@@ -321,18 +317,28 @@ class EventController extends Controller
 	{
 		$event = Event::find($id);
 		$locations = locations::all();
+		$categories = Category::all();
+		$eventCategory = $event->categories()->where('event_id', $id)->get();
+		$eventTags = array();
+
+		foreach ($eventCategory as $category) {
+			$eventTags[] = $category->id;
+		}
+
+		//dd($eventTags);
+		//verder uitwerken: values meekrijgen mnaar de view, maar het zijn taggs
 
 		if ($this->eventStatus === true) {
 			$this->eventStatus = null;
 
-			return view('eventEdit', ['event' => $event, 'locations' => $locations, 'status' => 'success', 'success' => $this->eventName]);
+			return view('eventEdit', ['event' => $event, 'locations' => $locations,  'categories' => $categories, 'eventTags' => $eventTags, 'status' => 'success', 'success' => $this->eventName]);
 		}
 		if ($this->eventStatus === false) {
 			$this->eventStatus = null;
-			return view('eventEdit', ['event' => $event, 'locations' => $locations, 'status' => 'fail']);
+			return view('eventEdit', ['event' => $event, 'locations' => $locations,  'categories' => $categories, 'eventTags' => $eventTags, 'status' => 'fail']);
 		}
 
-        return view('eventEdit', ['event' => $event, 'locations' => $locations, 'status' => '', 'success' => $this->eventName]);
+        return view('eventEdit', ['event' => $event, 'locations' => $locations,  'categories' => $categories, 'eventTags' => $eventTags, 'status' => '', 'success' => $this->eventName]);
 	}
 
 	/**
@@ -368,7 +374,8 @@ class EventController extends Controller
 						return $fail('This location doesn\'t exist');
 					}
 				}],
-			  'eventDescription' => 'nullable|max:255'
+			  'eventDescription' => 'nullable|max:255',
+			  'tags.*' => 'nullable|max:40'
 		]);
 
         if (!empty($eventData['maximum_members'])) {
@@ -385,11 +392,26 @@ class EventController extends Controller
 		}
 
 		$event = Event::find($eventId);
-
 		if (empty($eventData['eventPrice']))
-			$eventData['eventPrice'] = 0;	
+			$eventData['eventPrice'] = 0;
+
+		$tags = $request->tags;
+		if ($tags !== null) {
+			foreach ($tags as $key => $value) {
+				if (is_numeric($value)) {
+					continue;
+				}
+				$tags[$key] = ucfirst(strtolower($tags[$key]));
+				$category = new Category();
+				$category->name = $tags[$key];
+				$category->save();
+
+				$tags[$key] = $category->id;
+			}
+		}
 
 		$result = $event->updateEventData($eventData);
+		$event->categories()->sync($tags);
 		
 		$this->eventStatus = $result;
 		$this->eventName = $eventData['eventName'];

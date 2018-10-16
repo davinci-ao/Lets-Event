@@ -76,6 +76,16 @@
 						<div class="form-group">
 							<label class="control-label col-sm-2" for="description">  Description  </label><textarea name="eventDescription" id="eventDescription" style="width:70%">{{$event->description}}</textarea>
 						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="tags">Add tags</label>
+							<select class="multi-tag" name="tags[]" multiple="multiple" style="width:70%">
+								@foreach ($categories as $category)
+								<option value="{{ $category->id }}">{{ $category->name }}</option>
+								@endforeach
+							</select>
+						</div>
+
 						<input type="hidden" value="{{$event->id}}" name="id">
 						<button type="submit" class="btn btn-primary">Edit</button>
 					</form>
@@ -84,4 +94,13 @@
 		</div>
 	</div>
 </div>
+<?php echo "<script type='text/javascript'>
+$(document).ready(function(){
+	var eventTags = [];";
+	for ($i = 0; $i < count($eventTags); $i++) {
+		echo "eventTags.push(" . $eventTags[$i] . ");";
+	}
+	echo "$('.multi-tag').val(eventTags).trigger('change');
+	});
+</script>"; ?>
 @endsection

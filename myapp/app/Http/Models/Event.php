@@ -59,7 +59,6 @@ class Event extends \Illuminate\Database\Eloquent\Model
 	public function updateEventData($eventData)
 	{
 		$this->fill([
-		    "category_id" => 0,
 		    "name" => $eventData['eventName'],
 		    "datum" => $eventData['eventDate'],
 		    "time" => $eventData['eventTime'],
