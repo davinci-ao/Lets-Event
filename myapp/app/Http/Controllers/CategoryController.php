@@ -10,7 +10,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Models\Category;
-use App\Http\Models\CategoryEvent;
 use Session;
 use Validator;
 
@@ -121,7 +120,7 @@ class CategoryController extends Controller
 		$category = Category::where('id', '=', $categoryId)->first();
 		if (isset($category->id)) {
 
-			CategoryEvent::where('category_id', $categoryId)->delete();
+			$category->events()->detach();
 			Category::where('id', $categoryId)->delete();
 			Session::flash('succes_deleted', 'Category ' . $category->name . ' successful deleted! ');
 			return redirect('category/index');

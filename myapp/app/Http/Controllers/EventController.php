@@ -11,7 +11,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Models\Event;
 use App\Http\Models\Category;
-use App\Http\Models\CategoryEvent;
 use App\Http\Models\locations;
 use App\Http\Models\participations;
 use Auth;
@@ -310,13 +309,13 @@ class EventController extends Controller
 		if (Auth::user()->role != "teacher") {
 			if ($event->user_id != Auth::user()->id) {
 
-				Session::flash('message', 'U cant delete "' . $event->name . '" You are not the owner');
+				Session::flash('message', 'You cant delete "' . $event->name . '" You are not the owner');
 				return redirect('event/overview');
 			}
 		}
 
 		participations::where('event_id', $eventId)->delete();
-		CategoryEvent::where('event_id', $eventId)->delete();
+		$event->categories()->detach();
 
 		Event::where('id', $eventId)->delete();
 		Session::flash('message', ' "' . $event->name . '" has been deleted succesfully');
@@ -326,9 +325,3 @@ class EventController extends Controller
 	}
 
 }
-
-#API used for multi select
-#https://select2.org/programmatic-control/add-select-clear-items
-
-#tutorial on tags
-#https://www.youtube.com/watch?v=BNUYaLWdR04
