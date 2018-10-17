@@ -59,14 +59,8 @@
 						<div  class="EventTags" class="form-group description ">
 							<table class="table">
 								<tbody>
-									@foreach($categoriesIDFromCategoryEvent as $cifce)
-									@if($cifce->event_id == $event->id) 
 									@foreach($categories as $category)
-									@if( $cifce->category_id == $category->id)
 									<tr><td><p  class="eventData">{{$category->name}}</p></td></tr>
-									@endif
-									@endforeach	
-									@endif
 									@endforeach
 								</tbody>
 							</table>
@@ -94,7 +88,7 @@
 						{{ count($guests) }}/ {{ $event->maximum_members }}
 						@endif
 						@if ( $guests->contains('user_id', Auth::user()->id) )
-						<form class="float-right" method="POST" action="{{ route('WriteOutEvent', $event->id)}}">
+						<form class="float-right" method="POST" action="{{ route('WriteOutEvent')}}">
 							@else 
 							<form class="float-right" method="POST" action="{{ route('RegisterEventAction')}}">
 								@endif
@@ -103,6 +97,7 @@
 								@if ( $guests->contains('user_id', Auth::user()->id) )
 								<button type="submit" class="btn btn-danger">Write out of the event</button>
 								@else 
+
 									@if(!empty($event->maximum_members))
 	                                    @if (count($guests) == $event->maximum_members)
 											<span class="text-danger">No more free space</span>
@@ -110,9 +105,7 @@
 									@else
 									<button type="submit"  class="btn btn-primary">Register for the event</button>
 									@endif
-					
-								<button type="submit" class="btn btn-primary">Register for the event</button>
-						
+
 								@endif
 							</form>
 					</div>

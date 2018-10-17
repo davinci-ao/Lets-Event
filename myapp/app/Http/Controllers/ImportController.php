@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Description of ImportController
+ *
+ * @author Team yugioh
+ */
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -20,9 +26,12 @@ class ImportController extends Controller
 		$this->middleware('auth');
 	}
 
-	//form to import csv files
-	//if csv is invalid, shows error box
-	//if data is imported into db, show suc6 box
+	/**
+	 * Form to import CSV files.
+	 * If CSV is invalid, shows error box.
+	 * If data is imported into db, show succes box.
+	 * @return type
+	 */
 	public function index()
 	{
 		return view('importCSV');
@@ -38,10 +47,14 @@ class ImportController extends Controller
 		return view('import_fields', ['csv_data' => $importCsv->getTmpCsv($request), 'db_fields' => $db_fields]);
 	}
 
-	//checks if file is csv
-	//then tries to read it
-	//returns to index if not csv or invalid csv
-	//else continue to import_fields view
+	/**
+	 * Checks if file is CSV.
+	 * Then tries to read it.
+	 * Returns to index if not CSV or invalid CSV.
+	 * Else continue to import_fields view.
+	 * @param Request $request
+	 * @return type
+	 */
 	public function parseImport(Request $request)
 	{
 		$db_fields = array(self::COL_STUDENT_NR, self::COL_FIRSTNAME, self::COL_PREFIX, self::COL_LASTNAME);
@@ -74,7 +87,7 @@ class ImportController extends Controller
 	}
 
 	/**
-	 * process the data to input into db
+	 *  Process the data to insert it into the Database
 	 * 
 	 * @param Request $request
 	 * @return view index if success else return error
@@ -85,7 +98,7 @@ class ImportController extends Controller
 		$importCsv = new ImportCsv;
 		$csvData = $importCsv->getTmpCsv($request);
 
-		if ($csvData === null || route('import_parse') !== \URL::previous() ) {
+		if ($csvData === null || route('import_parse') !== \URL::previous()) {
 			return back();
 		}
 
@@ -103,17 +116,19 @@ class ImportController extends Controller
 		foreach ($csvData as $data) {
 			$dbData = array();
 
+			// first name
 			for ($i = 0; $i < count($newArray); $i++) {
 				$db_field = $newArray[$i];
 				$dbData[] = $data[$db_field];
 			}
-
+			//prefix + last name or lastname only
 			if ($dbData[2] != null) {
 				$dbData[2] = $dbData[2] . ' ' . $dbData[3];
 			} else {
 				$dbData[2] = $dbData[3];
 			}
 
+			// email
 			$dbData[3] = $dbData[0] . '@mydavinci.nl';
 
 			$errors = $this->validateRowData($dbData);
@@ -126,7 +141,7 @@ class ImportController extends Controller
 	}
 
 	/**
-	 * Validate data in this csv row.
+	 * Validate data in this CSV row.
 	 * 
 	 * @param $rowData data to validate
 	 * @return $errors validation errors
