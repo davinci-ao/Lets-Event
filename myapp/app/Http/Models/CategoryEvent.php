@@ -14,3 +14,4 @@ class CategoryEvent extends \Illuminate\Database\Eloquent\Model
 	protected $fillable = ['category_id','event_id'];
 
 }
+

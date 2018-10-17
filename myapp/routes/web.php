@@ -27,11 +27,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['checkRole']], function () {
 
 	// category
-	Route::get('/category/index/', 'CategoryController@index')->name('indexCategory');
-	Route::post('/category/create', 'CategoryController@createCategory')->name('createCategory');
-	Route::get('/category/delete/{categoryId}', 'CategoryController@deleteCategory')->name('deleteCategory');
-	Route::get('/category/edit/{id}', 'CategoryController@viewEditCategory')->name('editCategory');
-	Route::post('/category/edit', 'CategoryController@editCategoryAction')->name('editCategoryAction');
+	Route::resource('category', 'CategoryController')->except([
+    	'create', 'show'
+	]);	
 
 	// CSV import
 	Route::get('/importcsv', 'ImportController@index')->name('import');

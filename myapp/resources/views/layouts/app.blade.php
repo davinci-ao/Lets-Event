@@ -55,7 +55,7 @@
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 									<a class="dropdown-item" href="{{ route('home') }}" >Home</a>
 									@if ( Auth::user()->role == "teacher" ) 
-										<a class="dropdown-item" href="{{ route('indexCategory') }}" >View Categories</a>
+										<a class="dropdown-item" href="{{ route('category.index') }}" >View Categories</a>
 										<a class="dropdown-item" href="{{ route('import') }}" >Import CSV</a>
 										<a class="dropdown-item" href="{{ route('userIndex') }}" >View Users</a>
 									@endif

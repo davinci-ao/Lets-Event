@@ -2,132 +2,136 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Models\Category;
-use App\Http\Models\CategoryEvent;
-use Illuminate\Support\Facades\DB;
-use Session;
+use Illuminate\Http\Request;
 use Validator;
+use session;
 
-/**
- * Description of CategoryController
- *
- * @author Peter Verhaar
- */
 class CategoryController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('category.index', ['categories' => Category::paginate(10)]);
+    }
 
-	/**
-	 * Loads the web page with the corresponding parameter value supplied from $parra
-	 * @param type $parra
-	 * @return type view
-	 */
-	public function index()
-	{
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
 
-		$categories = Category::get();
-		return view('categoryPage', ['categories' => $categories]);
-	}
+    }
 
-	/**
-	 * Gives the category model the data from the form POST
-	 * and generates a flash message
-	 * @return type view
-	 */
-	public function createCategory(Request $request)
-	{
-		$validator = Validator::make($request->all(), [
-			  'categoryName' => 'required|max:40'
-		]);
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 
+            ['required',
+                'max:40',
+                function ($attribute, $value, $fail) {
 
-		if (Count(Category::where('name', $request->categoryName)->get()) > 0) {
-			return back()->with('message', 'Category creation failed , "  ' . $request->categoryName . '  " already exists');
-		}
+                    $category = new Category();
+                    $category = $category->where('name', $value)->get();
 
-		if ($validator->fails()) {
-			return back()->with('message', implode('<br>', $validator->errors()->all()));
-		}
+                    if ( $category->isNotEmpty() ) {
+                        return $fail('Category creation failed, The category "' . ucfirst(strtolower($value)) . '" already exsist');
+                    }
 
-		$catName = $request->categoryName;
-		$catName = ucfirst(strtolower($catName)); //any string to lower case, then first letter to upper
-		$category = new Category();
-		$category->name = $catName;
-		$category->save();
+                }
+            ]
+        ]);
 
-		Session::flash('positive', true);
-		return back()->with('message', 'Category Creation is succesfull , ' . $category->name . ' Created');
-	}
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
 
-	/**
-	 * @param id  
-	 * load the category according to the id
-	 *
-	 * @return type view
-	 */
-	public function viewEditCategory($id)
-	{
-		$category = Category::find($id);
+        $category = new Category();
+        $category = $category->createCategory(ucfirst(strtolower($request->input('name'))));
 
-		if (!isset($category->id)) {
-			return back()->with('message', 'category not found');
-		}
+        return back()->with('message', 'Category Creation is succesfull , ' . $category->name . ' Created');
+    }
 
-		return view('categoryEdit', ['category' => $category]);
-	}
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
 
-	/**
-	 * Validate the request and edit the category
-	 * @param id  
-	 *
-	 * @return type view
-	 */
-	public function editCategoryAction(Request $request)
-	{
-		$category = new Category();
+    }
 
-		$validator = Validator::make($request->all(), [
-			  'id' =>
-			  ['required',
-				function($attribute, $value, $fail) {
-					$category = new Category();
-					$category = $category->find($value);
-					
-					if (!isset($category->id)) {
-						return $fail('Category not found');
-					}
-				}],
-			  'categoryName' => 'required|max:40'
-		]);
-				
-		if ($validator->fails()) {
-			return back()->withErrors($validator);
-		}
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        return view('category.edit', ['category' => Category::findOrFail($id)]);
+    }
 
-		$category = new Category();
-		$category = $category->find($request->input('id'));
-		$category->name = $request->input('categoryName');
-		$category->save();
-		
-		Session::flash('positive', true);
-		return redirect('category/index')->with('message', 'Category succesvol edited');
-	}
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' =>
+            ['required',
+                function ($attribute, $value, $fail) {
+                    $category = new Category();
+                    $category = $category->find($value);
 
-	/**
-	 * 
-	 */
-	public function deleteCategory(Request $request, $categoryId)
-	{
+                    if ( $category->name === ucfirst(strtolower($value)) ) {
+                        return $fail('This category already exsist');
+                    }
 
-		$category = Category::where('id', '=', $categoryId)->first();
-		if (isset($category->id)) {
-			
-			CategoryEvent::where('category_id', $categoryId)->delete();
-			Category::where('id', $categoryId)->delete();
-			Session::flash('succes_deleted', 'Category ' . $category->name . ' successful deleted! ');
-			return redirect('category/index');
-		}
-		Session::flash('error_deleted', 'Category does not exists');
-		return redirect('category/index');
-	}
+                    if (!isset($category->id)) {
+                        return $fail('Category not found');
+                    }
+                }],
+            'name' => 'required|max:40',
+        ]);
 
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $category->find($request->input('id'))->editCategory($request);
+
+        return redirect('/category');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $category = Category::findOrFail($id)->deleteCategory();
+
+        return redirect('/category')->with('message', $category->name . " Has been deleted succesfully" );
+    }
 }

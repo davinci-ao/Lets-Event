@@ -17,4 +17,25 @@ class Category extends \Illuminate\Database\Eloquent\Model
 	{
 		return $this->belongsToMany('App\Http\Models\Event');
 	}
+
+	public function createCategory($name)
+	{
+		return self::create([
+			'name' => $name
+		]);
+	}
+
+	public function editCategory($request)
+	{		
+		$this->name = $request->input('name');
+		$this->save();
+	}
+
+	public function deleteCategory()
+	{
+		$this->events()->detach();
+		$this->delete();
+
+		return $this; 
+	}
 }
