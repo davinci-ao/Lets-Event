@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Description of UserController
+ *
+ * @author Team yugioh
+ */
+
 namespace App\Http\Controllers;
 
 use App\Http\Models\locations;
@@ -8,11 +14,6 @@ use Illuminate\Http\Request;
 use Session;
 use Validator;
 
-/**
- * Description of UserController
- *
- * @author Peter Verhaar
- */
 class UserController extends Controller
 {
 
@@ -58,11 +59,11 @@ class UserController extends Controller
             return back()->with('message', implode('<br>', $validator->errors()->all()));
         } else {
 
-            $user = new User();
-            $user = $user->find($request->id);
+			$user = new User();
+			$user = $user->find($request->id);
 
-            if ($user->role == 'teacher' && $request->role != 'teacher') {
-                if (Count($user->where('role', 'teacher')->get()) == 1) {
+			if ($user->role == 'teacher' && $request->role != 'teacher') {
+				if (Count($user->where('role', 'teacher')->get()) == 1) {
 
                     return back()->with('message', 'Error u cannot edit "' . $request->firstname . ' ' . $request->lastname . '" role because it is the last user with the teacher role');
                 }

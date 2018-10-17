@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * import CSV model
+ *
+ * @author team Yugioh
+ */
+
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;

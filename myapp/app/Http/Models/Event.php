@@ -1,16 +1,16 @@
 <?php
-
-namespace App\Http\Models;
-
 /**
  * Description of Event this is the model for the events
  *
- * @author Ian Storm
+ * @author team Yugioh
  */
+
+namespace App\Http\Models;
+
 class Event extends \Illuminate\Database\Eloquent\Model
 {
-
 	public $table = "events";
+
 	/**
 	 *
 	 */
@@ -21,7 +21,6 @@ class Event extends \Illuminate\Database\Eloquent\Model
 
 	protected $fillable = ['name', 'category_id', 'datum', 'time', 'price', 'minimum_members', 'maximum_members', 'location_id', 'status', 'description', 'user_id'];
 
-
 	/**
 	 * Saves the event name to the database with the data from eventData array
 	 * @param type $eventData
@@ -30,7 +29,7 @@ class Event extends \Illuminate\Database\Eloquent\Model
 	public function saveEventData($eventData)
 	{
 
-		
+
 
 		if (auth()->user()->role == "teacher" || auth()->user()->role == "organisator") {
 			$status = "accepted";
@@ -38,17 +37,40 @@ class Event extends \Illuminate\Database\Eloquent\Model
 			$status = "tobechecked";
 		}
 		return $this->create([
-		    "status"=>$status,
+			  "status" => $status,
+			  "name" => $eventData['eventName'],
+			  "datum" => $eventData['eventDate'],
+			  "time" => $eventData['eventTime'],
+			  "price" => $eventData['eventPrice'],
+			  "minimum_members" => $eventData['minimum_members'],
+			  "maximum_members" => $eventData['maximum_members'],
+			  "location_id" => $eventData['eventLocation'],
+			  "description" => $eventData['eventDescription'],
+			  "user_id" => auth()->user()->id
+		]);
+	}
+
+	/**
+	 * Saves the event name to the database with the data from eventData array
+	 * @param type $eventData
+	 * @return type array
+	 */
+	public function updateEventData($eventData)
+	{
+		$this->fill([
 		    "name" => $eventData['eventName'],
 		    "datum" => $eventData['eventDate'],
 		    "time" => $eventData['eventTime'],
 		    "price" => $eventData['eventPrice'],
 		    "minimum_members" => $eventData['minimum_members'],
-		    "maximum_members" => $eventData['maximum_members'],
+            "maximum_members" => $eventData['maximum_members'],
 		    "location_id" => $eventData['eventLocation'],
 		    "description" => $eventData['eventDescription'],
 		    "user_id" => auth()->user()->id
 		]);
+		$this->save();
+
+		return true;
 	}
 
 	public function hasEvent($eventObject)
