@@ -1,7 +1,7 @@
 var letsEventModule = (function() {
 
 	var hideMsg = function() {
-		var alerts = document.getElementsByClassName('alert');
+		var alerts = document.getElementsByClassName('hideMsg');
 		for (var i = 0; i < alerts.length; i++) {
 			alerts[i].style.display = 'none';
 		}
