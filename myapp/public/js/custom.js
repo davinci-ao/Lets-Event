@@ -79,7 +79,7 @@ module.exports = __webpack_require__(45);
 var letsEventModule = function () {
 
 	var hideMsg = function hideMsg() {
-		var alerts = document.getElementsByClassName('alert');
+		var alerts = document.getElementsByClassName('hideMsg');
 		for (var i = 0; i < alerts.length; i++) {
 			alerts[i].style.display = 'none';
 		}
