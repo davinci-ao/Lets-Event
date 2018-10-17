@@ -12,9 +12,12 @@ var letsEventModule = (function() {
 })();//console.log
 
 $(document).ready(function(){
+
+
 	$('.multi-tag').select2({
 		placeholder: 'Select your category tags.',
 		tags: true,
+		value: tags,
 		tokenSeparators: [' ', ',', ';'],
 		allowClear: true
 	});

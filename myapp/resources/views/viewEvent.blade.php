@@ -6,18 +6,19 @@
 		<div class="col-md-8">
 
 			@if(Session::has('message'))
-			@if(Session::has('positive'))
-			<div class="alert alert-success">
+				@if(Session::has('positive'))
+				<div class="alert alert-success">
 				@else 
 				<div  class="alert alert-danger">
-					@endif		
+				@endif		
 					<p> {{ Session('message') }} </p>
 				</div>
-				@endif
+			@endif
 
 				<a  class="btn btn-primary" href="{{ route('eventIndex') }}" >Back to overview</a>
-
+				
 				@if($organizer->id === $user->id || $user->role == 'teacher')
+				<a id="eventEditButton" class="btn btn-warning" href="{{ route('editEvent', $event->id)}}"> Edit Event </a>
 				<a id="eventDeleteButton" class="btn btn-danger" href="{{ route('deleteEvent', $event->id)}}"onclick="return confirm('are you sure to delete this Event ?')" > Delete Event </a>
 				@endif
 				<div class="card">
@@ -45,7 +46,8 @@
 						@endif
 						@if($event->maximum_members != null)
 						<div class="form-group ">
-							<label class="control-label col-sm-9 eventDataHeader"> Maximum : </label> <p class="eventData">{{$event->maximum_members}}</p>
+							<label class="control-label col-sm-9 eventDataHeader"> Maximum : </label> 
+							<p class="eventData"> {{ $event->maximum_members }} </p>
 						</div>
 						@endif
 					</div>
@@ -79,6 +81,11 @@
 				</div>
 				<div class="card">
 					<div class="card-header"><h3>Attendees</h3>
+						@if (empty($event->maximum_members))
+						{{ count($guests) }}/ -
+						@else
+						{{ count($guests) }}/ {{ $event->maximum_members }}
+						@endif
 						@if ( $guests->contains('user_id', Auth::user()->id) )
 						<form class="float-right" method="POST" action="{{ route('WriteOutEvent')}}">
 							@else 
@@ -90,7 +97,13 @@
 								<button type="submit" class="btn btn-danger">Write out of the event</button>
 								@else 
 
-								<button type="submit" class="btn btn-primary">Register for the event</button>
+									@if(!empty($event->maximum_members))
+	                                    @if (count($guests) == $event->maximum_members)
+											<span class="text-danger">No more free space</span>
+										@endif
+									@else
+									<button type="submit"  class="btn btn-primary">Register for the event</button>
+									@endif
 
 								@endif
 							</form>
