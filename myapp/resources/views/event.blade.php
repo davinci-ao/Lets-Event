@@ -32,7 +32,7 @@
 		<div class="col-md-8">
 			<a class="btn btn-primary" href="{{ route('eventIndex') }}" >Back to overview</a>
 			<div class="card">
-				<div class="card-header">Create Event</div>
+				<div class="card-header">Edit Event</div>
 
 				<div class="card-body">
 					<form class="form-horizontal" action="{{ route('createEvent') }}" method="POST">

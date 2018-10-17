@@ -48,6 +48,7 @@ class EventController extends Controller
 	 */
 	public function eventApprovalIndex()
 	{
+
 		$events = Event::where('status', 'tobechecked')->get();
 		return view('eventsApproval', ['events' => $events]);
 	}
@@ -114,6 +115,17 @@ class EventController extends Controller
 					if ($userEventLink !== null) {
 						return $fail('You are already registered for this event');
 					}
+
+					
+					$userIds = participations::where('event_id', $event->id)->pluck('user_id');
+					$guests = User::find($userIds);
+					if (!empty($event->maximum_members)) {
+						
+						if (count($guests) == $event->maximum_members){
+							return $fail('no more free space');
+						}	
+					}
+
 				}],
 		]);
 
@@ -190,8 +202,7 @@ class EventController extends Controller
 		$validator = Validator::make($request->all(), [
 			  'eventName' => 'required|max:40',
 			  'eventDate' => 'required|date',
-			  'minimum_members' => 'nullable|min:0',
-			  'maximum_members' => 'nullable|min:0',
+			  'maximum_members' => 'nullable',
 			  'eventTime' => ['required',
 				function($attribute, $value, $fail) {
 					$time = \DateTime::createFromFormat('G:i', $value);
@@ -281,17 +292,121 @@ class EventController extends Controller
 		$location = locations::where('id', $event->location_id)->first();
 		$guests = participations::where('event_id', $eventID)->get();
 		$users = User::get();
+	
+
 
 		return view('viewEvent', ['event' => $event, 'organizer' => $organizer, 'user' => $user, 'location' => $location, 'guests' => $guests, 'admin' => $admin, 'categories' => $categories, 'users' => $users]);
 	}
 
 	/**
-	 * 
+	 * Edit event data
+	 * @param type $eventId
 	 */
-	public function editEvent()
+	public function editEvent($id)
 	{
-		
+		$event = Event::find($id);
+		$locations = locations::all();
+		$categories = Category::all();
+		$eventCategory = $event->categories()->where('event_id', $id)->get();
+		$eventTags = array();
+
+		foreach ($eventCategory as $category) {
+			$eventTags[] = $category->id;
+		}
+
+		//dd($eventTags);
+		//verder uitwerken: values meekrijgen mnaar de view, maar het zijn taggs
+
+		if ($this->eventStatus === true) {
+			$this->eventStatus = null;
+
+			return view('eventEdit', ['event' => $event, 'locations' => $locations,  'categories' => $categories, 'eventTags' => $eventTags, 'status' => 'success', 'success' => $this->eventName]);
+		}
+		if ($this->eventStatus === false) {
+			$this->eventStatus = null;
+			return view('eventEdit', ['event' => $event, 'locations' => $locations,  'categories' => $categories, 'eventTags' => $eventTags, 'status' => 'fail']);
+		}
+
+        return view('eventEdit', ['event' => $event, 'locations' => $locations,  'categories' => $categories, 'eventTags' => $eventTags, 'status' => '', 'success' => $this->eventName]);
 	}
+
+	/**
+     * Update event
+     *
+     * @param  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function editSaveEvent(Request $request)
+    {
+
+    	$eventData = $request->all();
+    	$eventId = $eventData['id'];
+
+		$validator = Validator::make($request->all(), [
+			  'eventName' => 'required|max:40',
+			  'eventDate' => 'required|date',
+              'minimum_members' => 'nullable',
+              'maximum_members' => 'nullable',
+			  'eventTime' => ['required',
+				function($attribute, $value, $fail) {
+					$time = \DateTime::createFromFormat('G:i', $value);
+					if ($time == false) {
+						return $fail("Your time is invalid.");
+					}
+				}],
+			  'eventPrice' => 'nullable|regex:/^[0-9]*\.?[0-9]{1,2}+$/',
+			  'eventLocation' => ['required',
+				'numeric',
+				function($attribute, $value, $fail) {
+					$locations = locations::find($value);
+					if (!isset($locations->id)) {
+						return $fail('This location doesn\'t exist');
+					}
+				}],
+			  'eventDescription' => 'nullable|max:255',
+			  'tags.*' => 'nullable|max:40'
+		]);
+
+        if (!empty($eventData['maximum_members'])) {
+            if ($eventData['minimum_members'] > $eventData['maximum_members']) {
+                Session::flash('alert-danger', 'Minimum cannot be higher than maximum!');
+                $this->eventStatus = false;
+                return $this->editEvent($eventId);    
+            }
+        }
+
+		if ($validator->fails()) {
+			$this->eventStatus = false;
+			return $this->editEvent($eventId);
+		}
+
+		$event = Event::find($eventId);
+		if (empty($eventData['eventPrice']))
+			$eventData['eventPrice'] = 0;
+
+		$tags = $request->tags;
+		if ($tags !== null) {
+			foreach ($tags as $key => $value) {
+				if (is_numeric($value)) {
+					continue;
+				}
+				$tags[$key] = ucfirst(strtolower($tags[$key]));
+				$category = new Category();
+				$category->name = $tags[$key];
+				$category->save();
+
+				$tags[$key] = $category->id;
+			}
+		}
+
+		$result = $event->updateEventData($eventData);
+		$event->categories()->sync($tags);
+		
+		$this->eventStatus = $result;
+		$this->eventName = $eventData['eventName'];
+		return $this->editEvent($eventId);
+    	
+    }
 
 	/**
 	 *  Deletes the event & users that registered to the event by given id from the database.
