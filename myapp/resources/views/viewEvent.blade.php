@@ -48,7 +48,6 @@
 						<div class="form-group ">
 							<label class="control-label col-sm-9 eventDataHeader"> Maximum : </label> 
 							<p class="eventData"> {{ $event->maximum_members }} </p>
-							<label class="control-label col-sm-9 eventDataHeader"> Maximum : </label> <p class="eventData">{{$event->maximum_members}}</p>
 						</div>
 						@endif
 					</div>
