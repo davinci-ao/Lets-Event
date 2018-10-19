@@ -34,4 +34,9 @@ class User extends Authenticatable
 	    'password', 'remember_token',
 	];
 
+	public function events()
+	{
+		return $this->belongsToMany('App\Http\Models\Event', 'participations');
+	}
+
 }
