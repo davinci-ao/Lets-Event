@@ -83,4 +83,32 @@ class UserController extends Controller
         }
     }
 
+    public function userStatus($userId)
+    {
+        $user = User::where('id', $userId)->first();
+
+        return view('userStatus', ['user' => $user]);
+    }   
+
+    public function saveUserStatus(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('message', implode('<br>', $validator->errors()->all()));
+        } else {
+
+            $user = new User();
+            $user = $user->find($request->id);
+
+            $user->status = $request->status;
+            $user->save();
+        }
+
+            Session::flash('positive', true);
+            return back()->with('message', 'Succesfully changed User data of " ' . $user->firstname . ' ' . $user->lastname . ' "');
+    }
+
 }

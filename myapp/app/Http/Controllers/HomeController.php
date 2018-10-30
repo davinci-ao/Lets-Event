@@ -7,6 +7,7 @@
  */
 
 namespace App\Http\Controllers;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -28,7 +29,17 @@ class HomeController extends Controller
 	 */
 	public function index()
 	{
-		return view('home');
+		$user = Auth()->user();
+
+		if ($user->status == 'empty') {
+			session()->flash('default', 'Welcome in Letsevents!');
+		}elseif ($user->status == 'warning') {
+			session()->flash('warning', 'Watch out you have a warning, the next step is a ban!!!' );
+		}elseif ($user->status == 'ban') {
+			session()->flash('danger', 'You have a ban, contact the admin for more info....');
+		}
+
+		return view('home', ['user' => $user]);
 	}
 
 }

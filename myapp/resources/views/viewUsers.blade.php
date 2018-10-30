@@ -30,7 +30,12 @@
 								@foreach($users as $user)
 								<tr >
 									<td><p>{{$user->firstname . " " . $user->lastname}} </p></td>
-									<td><a class="btn btn-primary" href="{{ route('editUser', $user->id) }}">Edit this user</a></td>
+									<td>
+										<a class="btn btn-primary" href="{{ route('editUser', $user->id) }}">Edit this user</a>
+										@if($user->role != 'teacher')
+											<a class="btn btn-warning" href="{{ route('userStatus', $user->id) }}">Change status</a>
+										@endif
+									</td>
 								</tr>
 								@endforeach
 
