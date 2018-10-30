@@ -48,10 +48,17 @@
 							<li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
 							@else
 							<li class="nav-item dropdown">
-								@if (Auth()->user()->status != 'ban')
-								<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-									{{ Auth::user()->firstname }} {{ Auth::user()->lastname }} <span class="caret"></span>
-								</a>
+								@if (Auth()->user()->status == 'ban')
+									<a class="dropdown-item" href="{{ route('logout') }}"
+									   onclick="event.preventDefault();
+										document.getElementById('logout-form').submit();">
+										{{ __('Logout') }}
+									</a>  									
+								@else
+									<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+										{{ Auth::user()->firstname }} {{ Auth::user()->lastname }} 
+										<span class="caret"></span>
+									</a>
 								@endif
 
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
