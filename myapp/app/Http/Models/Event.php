@@ -19,7 +19,12 @@ class Event extends \Illuminate\Database\Eloquent\Model
 		return $this->belongsToMany('App\Http\Models\Category');
 	}
 
-	protected $fillable = ['name', 'category_id', 'datum', 'time', 'price', 'minimum_members', 'maximum_members', 'location_id', 'status', 'description', 'user_id'];
+	public function users()
+	{
+		return $this->belongsToMany('App\Http\Models\User', 'participations');
+	}
+
+	protected $fillable = ['name', 'datum', 'time', 'price', 'minimum_members', 'maximum_members', 'location_id', 'status', 'description', 'user_id'];
 
 	/**
 	 * Saves the event name to the database with the data from eventData array

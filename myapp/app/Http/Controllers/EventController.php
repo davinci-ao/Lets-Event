@@ -259,6 +259,10 @@ class EventController extends Controller
 				}
 				$tags[$key] = ucfirst(strtolower($tags[$key]));
 				$category = new Category();
+				$category = $category->where('name', $tags[$key])->get();
+				if ($category->isNotEmpty()) {
+					continue;
+				}
 				$category->name = $tags[$key];
 				$category->save();
 
@@ -393,6 +397,10 @@ class EventController extends Controller
 				}
 				$tags[$key] = ucfirst(strtolower($tags[$key]));
 				$category = new Category();
+				$category = $category->where('name', $tags[$key])->get();
+				if ($category->isNotEmpty()) {
+					continue;
+				}
 				$category->name = $tags[$key];
 				$category->save();
 
