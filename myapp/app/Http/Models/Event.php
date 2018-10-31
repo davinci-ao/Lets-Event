@@ -28,9 +28,6 @@ class Event extends \Illuminate\Database\Eloquent\Model
 	 */
 	public function saveEventData($eventData)
 	{
-
-
-
 		if (auth()->user()->role == "teacher" || auth()->user()->role == "organisator") {
 			$status = "accepted";
 		} else {

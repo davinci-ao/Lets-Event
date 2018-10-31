@@ -34,4 +34,16 @@ class User extends Authenticatable
 	    'password', 'remember_token',
 	];
 
+	public function importCsvData($studentNumber, $prefix, $firstname, $lastname)
+	{
+		return $this->firstOrCreate([
+			'student_nr' => $studentNumber,
+			'firstname' => $prefix . ' ' . $firstname,
+			'lastname' => $lastname,
+			'email' => $studentNumber. '@mydavinci.nl',
+			'password' => '',
+			'education_location_id' => 0
+		]);
+	}
+
 }
