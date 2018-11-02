@@ -61,7 +61,7 @@ use RegistersUsers;
 					$user = User::where('student_nr', $value)->first();
 					if ($user === null) {
 						return $fail('No user found');
-					} else if ( $user->user_status == 'actived' ) { 
+					} else if ( $user->activated == 'actived' ) { 
 						return $fail('This acount is already active');
 					}
 				}
