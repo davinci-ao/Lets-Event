@@ -104,7 +104,10 @@ class UserController extends Controller
             $user = $user->find($request->id);
 
             $user->status = $request->status;
-            $user->save();
+
+            if ($user->role != 'teacher') {
+                $user->save();   
+            } 
         }
 
             Session::flash('positive', true);
