@@ -9,7 +9,7 @@
 				<div class="card-header">Showing the events held at '{{ $location->name }}'</div>
 				<div class="card-body">
 					@foreach( $location->events as $event )
-						{{ $event->name }}
+						<a href="{{route('viewEvent', $event->id)}}">{{ $event->name }}</a> <br>
 					@endforeach
 				</div>
 			</div>

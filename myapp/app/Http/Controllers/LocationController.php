@@ -37,7 +37,9 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), ['name' => 'required']);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:100|unique:locations,name'
+        ]);
     
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -82,7 +84,7 @@ class LocationController extends Controller
     {
          $validator = Validator::make($request->all(), [
             'id' => ' required',
-            'name' => 'required',
+            'name' => 'required|unique:locations,name',
         ]);
 
         if ($validator->fails()) {
