@@ -23,13 +23,13 @@
 			</div>
 			@endif
 
-			<a class="btn btn-primary"  href="{{ route('eventIndex') }}" >back to overview</a>
+			<a class="btn btn-primary"  href="{{ route('event.index') }}" >back to overview</a>
 			<div class="card">
 				<div class="card-header"><h3>List of events that need to be approved</h3></div>
 
 				<div class="card-body">
 					@if(count($events) > 0)
-					@foreach ($events as $event)
+					
 					<table class="table">
 						<thead>
 							<tr>
@@ -38,12 +38,21 @@
 							</tr>
 						</thead>
 						<tbody>
-
+						@foreach ($events as $event)
 							<tr>
-								<td><a  href="{{ route('viewEvent', $event->id)}}" > {{ $event->name }} </a> </td>
+								<td><a  href="{{ route('event.show', $event->id)}}" > {{ $event->name }} </a> </td>
 								<td>
-									<a href="{{ route('eventApproval', $event->id) }}" class="btn btn-success" style="color: white">Accept</a> 
-									<a href="{{ route('eventDecline', $event->id) }}" class="btn btn-danger" style="color: white">Decline</a>
+								<form method="POST" action="{{ route('event.update', [$event->id, 'approve' => 'accept']) }}" style="display:inline">
+									@csrf
+									@method('PUT')
+									<button type="submit" class="btn btn-success">Accept</button>
+								</form>
+
+								<form method="POST" action="{{ route('event.destroy', $event->id) }}" style="display:inline">
+									@csrf
+									@method('DELETE')
+									<button type="submit" class="btn btn-danger">Decline</button>
+								</form>
 								<td>
 							</tr>
 							@endforeach

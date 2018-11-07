@@ -14,6 +14,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         \Schema::defaultStringLength(191);
+
+        \Validator::extend('less_than_equal', function($attribute, $value, $parameters, $validator) {
+            $other = $parameters[0];
+            $value = intval($value);
+            $toCompare = intval($other);
+
+            return ($value >= $other);
+        });
     }
 
     /**

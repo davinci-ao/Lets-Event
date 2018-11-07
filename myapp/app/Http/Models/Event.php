@@ -33,9 +33,6 @@ class Event extends \Illuminate\Database\Eloquent\Model
 	 */
 	public function saveEventData($eventData)
 	{
-
-
-
 		if (auth()->user()->role == "teacher" || auth()->user()->role == "organisator") {
 			$status = "accepted";
 		} else {
@@ -70,12 +67,9 @@ class Event extends \Illuminate\Database\Eloquent\Model
 		    "minimum_members" => $eventData['minimum_members'],
             "maximum_members" => $eventData['maximum_members'],
 		    "location_id" => $eventData['eventLocation'],
-		    "description" => $eventData['eventDescription'],
-		    "user_id" => auth()->user()->id
+		    "description" => $eventData['eventDescription']
 		]);
-		$this->save();
-
-		return true;
+		return $this->save();
 	}
 
 	public function hasEvent($eventObject)
