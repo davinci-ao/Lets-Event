@@ -41,7 +41,11 @@
 							<label class="control-label col-sm-2" for="name">  Name*  </label><input type="text" value="{{ $event->name }} " name="eventName" style="width:70%" placeholder="Masked Gala" id="eventName" required>
 						</div>
 						<div class="form-group">
+<<<<<<< HEAD:myapp/resources/views/event/eventEdit.blade.php
 							<label class="control-label col-sm-2" for="date">  Date*  </label><input type="date" value="{{ $event->datum }}" name="eventDate" style="width:155px" id="eventDate" onclick="type='date'" required>
+=======
+							<label class="control-label col-sm-2" for="date">  Date*  </label><input type="date" value="{{$event->datum}}" name="eventDate" style="width:155px" id="eventDate" required>
+>>>>>>> c518b1c3ff7ebbbd1a7da0846724936bea2f3ff1:myapp/resources/views/eventEdit.blade.php
 						</div>
 						<div class="form-group">
 								<label class="control-label col-sm-2" for="time">  Time*  </label><input type="time" name="eventTime" style="width:100px" id="eventTime" value="{{ substr($event->time, 0, 5) }}"  required>

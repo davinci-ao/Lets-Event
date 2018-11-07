@@ -11,7 +11,6 @@
   |
  */
 
-
 Route::get('/', 'WelcomeController@index');
 
 //register
@@ -31,10 +30,8 @@ Route::group(['middleware' => ['checkRole']], function () {
 	]);
 
 	// CSV import
-	Route::get('/importcsv', 'ImportController@index')->name('import');
-	Route::get('/errorparseimport', 'ImportController@errorParseImport')->name('import_parse_error');
-	Route::post('/parseimport', 'ImportController@parseImport')->name('import_parse');
-	Route::post('/processimport', 'ImportController@processImport')->name('import_process');
+	Route::get('/import', 'ImportController@index')->name('import');
+	Route::post('/import', 'ImportController@processImport')->name('import_parse');
 
 	//Users
 	Route::get('/Users/viewAll', 'UserController@index')->name('userIndex');
