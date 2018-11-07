@@ -62,6 +62,7 @@ use RegistersUsers;
 					if ($user === null) {
 						return $fail('No user found');
 					} else if ( $user->activated == 'actived' ) { 
+
 						return $fail('This acount is already active');
 					}
 				}

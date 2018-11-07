@@ -11,9 +11,11 @@ class Event extends \Illuminate\Database\Eloquent\Model
 {
 	public $table = "events";
 
-	/**
-	 *
-	 */
+	public function location()
+	{
+		return $this->belongsTo('App\Http\Models\locations');
+	}
+
 	public function categories()
 	{
 		return $this->belongsToMany('App\Http\Models\Category');

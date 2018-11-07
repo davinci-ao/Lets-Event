@@ -27,6 +27,7 @@ Route::group(['middleware' => ['checkRole']], function () {
 
 	// category
 	Route::resource('category', 'CategoryController')->except(['create', 'show']);	
+	Route::resource('location', 'LocationController');	
 
 	// CSV import
 	Route::get('/import', 'ImportController@index')->name('import');
