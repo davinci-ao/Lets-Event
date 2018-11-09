@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
 			  'email' => "Test@mydavinci.nl",
 			  'password' => bcrypt('123456'),
 			  'role' => "teacher",
-			  'status' => "empty",
+			  'status' => "unban",
 			  'activated' => "activated",
 			  'remember_token' => str_random(10)
 		    ], [
@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
 			  'email' => "99041848@mydavinci.nl",
 			  'password' => bcrypt('123456'),
 			  'role' => "student",
+			  'status' => "unban",
 			  'activated' => "activated",
 			  'remember_token' => str_random(10)
 		    ]]
