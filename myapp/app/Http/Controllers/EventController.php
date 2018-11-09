@@ -108,6 +108,11 @@ class EventController extends Controller
     public function edit($id)
     {
         $event = Event::where('id', $id)->first();
+
+        if ($event->user_id != Auth::user()->id) {
+            return redirect('event');
+        }
+
         $locations = locations::all();
         $categories = Category::all();
         $eventCategory = $event->categories()->where('event_id', $id)->get();
