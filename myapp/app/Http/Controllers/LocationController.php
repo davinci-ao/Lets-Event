@@ -82,7 +82,7 @@ class LocationController extends Controller
      */
     public function update(Request $request, $id)
     {
-         $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'id' => ' required',
             'name' => 'required|unique:locations,name',
         ]);
@@ -106,6 +106,15 @@ class LocationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $location = new locations();
+        $location = $location->find($id);
+
+        if ($location === null || $location->events->isNotEmpty())  {
+            return redirect('/location');
+        }
+
+        $location->delete();
+
+        return redirect('/location')->with('message', 'The location "'.$location->name.'" has been succesfull deleted');
     }
 }
