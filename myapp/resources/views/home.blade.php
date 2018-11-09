@@ -5,16 +5,22 @@
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="card">
-				<div class="card-header">Dashboard</div>
+				<div class="card-header">Notifications</div>
 
 				<div class="card-body">
-					@if (session('status'))
-					<div class="alert alert-success">
-						{{ session('status') }}
+					@if (session('default'))
+					<div class="alert alert-default">
+						{{ session('default') }}
+					</div>
+					@elseif (session('warning'))
+					<div class="alert alert-warning">
+						{{ session('warning') }}
+					</div>
+					@elseif (session('danger'))
+					<div class="alert alert-danger">
+						{{ session('danger') }}
 					</div>
 					@endif
-
-					You are logged in!
 				</div>
 			</div>
 		</div>

@@ -15,6 +15,7 @@
 		<script src="{{ asset('js/custom.js') }}" defer></script>
 		<script src="{{ asset('js/select2.min.js') }}" defer></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
 		<!-- Fonts -->
 		<link rel="dns-prefetch" href="https://fonts.gstatic.com">
 		<link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
@@ -49,7 +50,11 @@
 							@else
 							<li class="nav-item dropdown">
 								<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-									{{ Auth::user()->firstname }} {{ Auth::user()->lastname }} <span class="caret"></span>
+									{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
+									@if (Auth::user()->status == 'warning') 
+										<i class="fas fa-exclamation-circle" style="color: red"></i>
+									@endif
+									<span class="caret"></span>
 								</a>
 
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
