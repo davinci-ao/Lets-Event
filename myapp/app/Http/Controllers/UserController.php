@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\locations;
 use App\Http\Models\User;
+use App\Http\Models\Event;
 use Illuminate\Http\Request;
 use Session;
 use Validator;
@@ -83,4 +84,38 @@ class UserController extends Controller
         }
     }
 
+      public function userStatus($userId)
+    {
+        $user = User::where('id', $userId)->first();
+
+        return view('userStatus', ['user' => $user]);
+    }   
+
+    public function saveUserStatus(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('message', implode('<br>', $validator->errors()->all()));
+        } else {
+
+            $user = User::Where('id', $request->id)->first();
+
+            $user->status = $request->status;
+
+            if ($user->role != 'teacher') {
+                $user->save();
+                if ($user->status == 'ban') {
+                    $user->events()->detach();      
+                    //participations::where('user_id', $user->id)->delete();   
+                    Event::where('user_id', $user->id)->delete();  
+                } 
+            } 
+        }
+
+            Session::flash('positive', true);
+            return back()->with('message', 'Succesfully changed User data of " ' . $user->firstname . ' ' . $user->lastname . ' "');
+    }
 }
