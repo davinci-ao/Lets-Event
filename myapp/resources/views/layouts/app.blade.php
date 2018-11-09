@@ -62,7 +62,8 @@
 										<a class="dropdown-item" href="{{ route('location.index') }}" >View locations</a>
 									@endif
 
-									<a class="dropdown-item" href="{{ route('eventIndex') }}" >View Events</a>
+									<a class="dropdown-item" href="{{ route('event.index') }}" >View Events</a>
+
 									<a class="dropdown-item" href="{{ route('logout') }}"
 									   onclick="event.preventDefault();
 										document.getElementById('logout-form').submit();">
