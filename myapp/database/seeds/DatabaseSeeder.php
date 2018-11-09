@@ -34,6 +34,16 @@ class DatabaseSeeder extends Seeder
 			  'status' => "empty",
 			  'activated' => "activated",
 			  'remember_token' => str_random(10)
+		    ], [
+			  'student_nr' => "99041848",
+			  'firstname' => "Bailey",
+			  'lastname' => "van Antwerpen",
+			  'education_location_id' => "1",
+			  'email' => "99041848@mydavinci.nl",
+			  'password' => bcrypt('123456'),
+			  'role' => "student",
+			  'activated' => "activated",
+			  'remember_token' => str_random(10)
 		    ]]
 		);
 

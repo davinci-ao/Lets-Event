@@ -1,27 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-@if ($status == 'success')
+@foreach ($errors->all() as $message)
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
-			<div id="message" class="alert alert-success">
-				<strong>Success!</strong> Event '{{ $success }}' is updated.
-			</div>
-			@if( Session::has( 'alert-danger' ))
-			<div id="message" class="alert alert-danger">
-				{{ Session::get( 'alert-danger' ) }}
-			</div>
-			@endif
-		</div>
+			<div class="alert alert-danger">
+	    		{{ $message }}
+	    	</div>
+    	</div>
 	</div>
 </div>
-@elseif ($status == 'fail')
+@endforeach
+@if (Session::has('message'))
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
-			<div id="message" class="alert alert-danger">
-				<strong>Error!</strong> Event is not updated.
+			<div class="alert {{ Session::get('alert-class', 'alert-info') }} hideMsg">
+				{{ Session::get('message') }}
 			</div>
 		</div>
 	</div>
@@ -31,26 +27,22 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
-
-			@foreach ($errors->all() as $message) 
-				<div id="message" class="alert alert-danger">
-    				{{ $message }}
-    			</div>
-			@endforeach
 			<div class="card">
 				<div class="card-header" >
 					Editing the event "{{ $event->name }}"
-					<a  class="btn btn-primary" style="float: right;"  href="{{ route('viewEvent', $event->id) }}" >Back to event</a>
+					<a  class="btn btn-primary" style="float: right;"  href="{{ route('event.show', $event->id) }}" >Back to event</a>
 				</div>
 				<div class="card-body">
 					
-					<form action="{{ route('editSaveEvent')}}" method="POST">
+					<form action="{{ route('event.update', $event->id)}}" method="POST">
 						@csrf
+						@method('PUT')
 						<div class="form-group">
 							<label class="control-label col-sm-2" for="name">  Name*  </label><input type="text" value="{{ $event->name }} " name="eventName" style="width:70%" placeholder="Masked Gala" id="eventName" required>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="date">  Date*  </label><input type="text" value="{{ $event->datum }} " name="eventDate" style="width:155px" id="eventDate" onclick="type='date'" required>
+							<label class="control-label col-sm-2" for="date">  Date*  </label><input type="date" value="{{ $event->datum }}" name="eventDate" style="width:155px" id="eventDate" onclick="type='date'" required>
+							<label class="control-label col-sm-2" for="date">  Date*  </label><input type="date" value="{{$event->datum}}" name="eventDate" style="width:155px" id="eventDate" required>
 						</div>
 						<div class="form-group">
 								<label class="control-label col-sm-2" for="time">  Time*  </label><input type="time" name="eventTime" style="width:100px" id="eventTime" value="{{ substr($event->time, 0, 5) }}"  required>
@@ -86,7 +78,6 @@
 							</select>
 						</div>
 
-						<input type="hidden" value="{{$event->id}}" name="id">
 						<button type="submit" class="btn btn-primary">Edit</button>
 					</form>
 				</div>

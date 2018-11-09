@@ -1,28 +1,20 @@
 <?php
 
-/**
- * Event controller
- *
- * @author team Yugioh
- */
-
 namespace App\Http\Controllers;
 
-
-use Illuminate\Http\Request;
-use App\Http\Models\Event;
 use App\Http\Models\Category;
+use App\Http\Models\Event;
 use App\Http\Models\locations;
-use App\Http\Models\participations;
 use App\Http\Models\User;
-use Auth;
+use Illuminate\Http\Request;
 use Session;
 use Validator;
+use Auth;
 
 class EventController extends Controller
 {
-
     public function __construct()
+<<<<<<< HEAD
 	{
 		$this->middleware('auth');
 		$this->middleware('checkStatus');
