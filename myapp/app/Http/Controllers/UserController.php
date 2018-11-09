@@ -10,6 +10,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\locations;
 use App\Http\Models\User;
+use App\Http\Models\participations;
+use App\Http\Models\Event;
 use Illuminate\Http\Request;
 use Session;
 use Validator;
@@ -106,7 +108,11 @@ class UserController extends Controller
             $user->status = $request->status;
 
             if ($user->role != 'teacher') {
-                $user->save();   
+                $user->save();
+                if ($user->status == 'ban') {       
+                    participations::where('user_id', $user->id)->delete();   
+                    Event::where('user_id', $user->id)->delete();  
+                } 
             } 
         }
 
