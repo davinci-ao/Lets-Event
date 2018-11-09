@@ -54,12 +54,16 @@
 
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 									<a class="dropdown-item" href="{{ route('home') }}" >Home</a>
+									
 									@if ( Auth::user()->role == "teacher" ) 
 										<a class="dropdown-item" href="{{ route('category.index') }}" >View Categories</a>
 										<a class="dropdown-item" href="{{ route('import') }}" >Import CSV</a>
 										<a class="dropdown-item" href="{{ route('userIndex') }}" >View Users</a>
+										<a class="dropdown-item" href="{{ route('location.index') }}" >View locations</a>
 									@endif
+
 									<a class="dropdown-item" href="{{ route('event.index') }}" >View Events</a>
+
 									<a class="dropdown-item" href="{{ route('logout') }}"
 									   onclick="event.preventDefault();
 										document.getElementById('logout-form').submit();">

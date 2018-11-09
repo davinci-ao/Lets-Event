@@ -28,7 +28,7 @@ class Category extends \Illuminate\Database\Eloquent\Model
 	public function editCategory($request)
 	{		
 		$this->name = $request->input('name');
-		$this->save();
+		return $this->save();
 	}
 
 	public function deleteCategory()
