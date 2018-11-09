@@ -108,8 +108,7 @@ class UserController extends Controller
             if ($user->role != 'teacher') {
                 $user->save();
                 if ($user->status == 'ban') {
-                    $user->events()->detach();      
-                    //participations::where('user_id', $user->id)->delete();   
+                    $user->events()->detach();        
                     Event::where('user_id', $user->id)->delete();  
                 } 
             } 
