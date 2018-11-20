@@ -11,7 +11,10 @@
     			</div>
 			@endforeach
 			<div class="card">
-				<div class="card-header">Editing the location "{{ $location->name }}"</div>
+				<div class="card-header">
+					Editing the location "{{ $location->name }}"
+					<a  class="float-right btn btn-primary" href="{{ route('location.index') }}" >Back to overview</a>
+				</div>
 				<div class="card-body">
 					<form method="post" action="{{ route('location.update', $location->name )}}">
 						@csrf

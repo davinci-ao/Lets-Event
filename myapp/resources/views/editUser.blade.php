@@ -6,21 +6,24 @@
 		<div class="col-md-8">
 
 			@if(Session::has('message'))
-			@if(Session::has('positive'))
-			<div  class="alert alert-success">
+				@if(Session::has('positive'))
+					<div  class="alert alert-success">
 				@else 
-				<div  class="alert alert-danger">
-					@endif		
+					<div  class="alert alert-danger">
+				@endif		
 					<p> {{ Session('message') }} </p>
 				</div>
-				@endif
+			@endif
 
-				<a  class="btn btn-primary" href="{{ route('userIndex') }}" >Back to overview</a>
 				<form class="form-horizontal" action="{{ route('updateUser') }}" method="post">
 					<div class="card">
-						<div class="card-header" >Edit user</div>
+						<div class="card-header">
+							Edit user
+							<a  class="float-right btn btn-primary" href="{{ route('userIndex') }}" >Back to overview</a>
+
+						</div>
 						<div class="card-body">
-							{{csrf_field()}}
+							@csrf()
 
 							<div class="form-group ">
 								<label class="control-label col-sm-2 ">First name*   </label> <input required style="width:50%"  value="{{$user->firstname}}" name="firstname">
@@ -38,20 +41,21 @@
 								<label class="control-label col-sm-2 "> Location* </label> 
 								<select required name="location">
 									@foreach($locations as $location)
-									<option value="{{$location->id}}" @if($user->education_location_id == $location->id) selected="true" @endif >{{$location->name}}</option>
+										<option value="{{$location->id}}" 
+											@if($user->education_location_id == $location->id) selected="true" @endif >{{$location->name}}</option>
 									@endforeach
 								</select>
 							</div>
 
-							<div class="form-group ">
-								<label class="control-label col-sm-2 "> Activation* </label> 
+							<div class="form-group">
+								<label class="control-label col-sm-2"> Activation* </label> 
 								<select required name="activated">
 									<option value="activated">Activated</option>
 									<option value="not activated" @if($user->activated == "not activated") selected="true" @endif>Not Activated</option>
 								</select>
 							</div>
-							<div class="form-group ">
-								<label class="control-label col-sm-2 "> Role* </label>
+							<div class="form-group">
+								<label class="control-label col-sm-2"> Role* </label>
 								<select required name="role">
 									<option value="teacher">Teacher</option>
 									<option value="organisator" @if($user->role == "organisator") selected="true" @endif>Organisator</option>
