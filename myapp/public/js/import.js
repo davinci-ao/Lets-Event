@@ -66,7 +66,7 @@ $(document).ready(function(){
  
 		  table += "</table>"
 
-		  $('#table').empty().append(table).append(forum);
+		  $('#table').append(table).append(forum);
 
 		  	for (i = 0; i < 4; i++) {
 		  		$('.' + i).text( function(index, text) 
@@ -85,6 +85,7 @@ $(document).ready(function(){
 			})
 		}
 		var extension = this.files[0].name.match(/\..+/);
+		$('#table').empty();
 		if ( extension[0] === '.csv' ) {
 			reader.readAsText(this.files[0]);
 		} else {
