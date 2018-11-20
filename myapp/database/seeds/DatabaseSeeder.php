@@ -20,16 +20,20 @@ class DatabaseSeeder extends Seeder
 		    'email' => "99021508@mydavinci.nl",
 		    'password' => bcrypt('123456'),
 		    'role' => "student",
+		    'status' => "warning",
 		    'activated' => "not activated",
-		    'remember_token' => str_random(10)
-		    ], [
-			  'student_nr' => "18328730",
+		    'remember_token' => str_random(10),
+		    'token' => '',
+		    'email_send_at' => now()
+		    ]])/*, [
+			//  'student_nr' => "18328730",
 			  'firstname' => "Dev",
 			  'lastname' => "Test",
 			  'education_location_id' => "3",
 			  'email' => "Test@mydavinci.nl",
 			  'password' => bcrypt('123456'),
 			  'role' => "teacher",
+			  'status' => "unban",
 			  'activated' => "activated",
 			  'remember_token' => str_random(10)
 		    ], [
@@ -40,10 +44,11 @@ class DatabaseSeeder extends Seeder
 			  'email' => "99041848@mydavinci.nl",
 			  'password' => bcrypt('123456'),
 			  'role' => "student",
+			  'status' => "unban",
 			  'activated' => "activated",
 			  'remember_token' => str_random(10)
 		    ]]
-		);
+		);*/;
 
 
 		DB::table('locations')->insert([

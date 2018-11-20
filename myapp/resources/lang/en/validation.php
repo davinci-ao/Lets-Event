@@ -89,6 +89,8 @@ return [
     'uploaded'             => 'The :attribute failed to upload.',
     'url'                  => 'The :attribute format is invalid.',
     'less_than_equal'      => 'The :attribute field is lower than the minimum members field.',
+    'is_later_than_today'  => 'The date and time of the event must be in the future.',
+
 
     /*
     |--------------------------------------------------------------------------

@@ -54,7 +54,11 @@
 										@method('DELETE')
 										@csrf
 
-										<button type="submit" class="btn btn-danger">Delete</button>
+										@if ($location->events->isNotEmpty() )
+											<button type="button" class="btn btn-danger" disabled="true" data-toggle="tooltip" data-placement="top" title="{{$location->events->pluck('name')}}">Delete</button>
+										@else
+											<button type="submit" class="btn btn-danger">Delete</button>
+										@endif
 									</form>
 								</td>
 							</tr>

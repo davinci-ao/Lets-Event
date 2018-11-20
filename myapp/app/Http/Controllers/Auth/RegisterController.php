@@ -7,15 +7,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 use App\Mail\AcountConfirm;
 use Mail;
 use Session;
 
-
-class RegisterController extends Controller {
+class RegisterController extends Controller
+{
 	/*
 	  |--------------------------------------------------------------------------
 	  | Register Controller
@@ -41,7 +40,8 @@ use RegistersUsers;
 	 *
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		$this->middleware('guest');
 	}
 
@@ -51,22 +51,23 @@ use RegistersUsers;
 	 * @param  array  $data
 	 * @return \Illuminate\Contracts\Validation\Validator
 	 */
-	protected function validator(array $data) {
+	protected function validator(array $data)
+	{
 		return Validator::make($data, [
-			'student_number' => [
+			  'student_number' => [
 				'required',
-				'string', 
+				'string',
 				'max:255',
 				function($attribute, $value, $fail) {
 					$user = User::where('student_nr', $value)->first();
 					if ($user === null) {
 						return $fail('No user found');
-					} else if ( $user->activated == 'actived' ) { 
+					} else if ($user->activated == 'actived') {
 
 						return $fail('This acount is already active');
 					}
 				}
-			]
+			  ]
 		]);
 	}
 
@@ -76,7 +77,6 @@ use RegistersUsers;
 	 * @param  array  $data
 	 * @return \App\User
 	 */
-
 	protected function create(array $data)
 	{
 		$token = md5(uniqid());
@@ -85,7 +85,7 @@ use RegistersUsers;
 		$user->email_send_at = date('Y-m-d');
 		$user->save();
 		Mail::to($user->email)->send(new AcountConfirm($token));
-
+		
 		return $user;
 	}
 
@@ -123,7 +123,7 @@ use RegistersUsers;
 	public function SetPassword(Request $request)
 	{
 		$user = User::where('token', $request->input('token'))->first();
-
+		
 		if ($user == null || $user->activated == 'activated') {
 			if ($user == null) {
 				Session::flash('message', 'An unexpected error has accore6d');
@@ -139,8 +139,8 @@ use RegistersUsers;
 		}
 
 		$validator = Validator::make($request->all(), [
-		    'password' => 'required|min:6|max:255',
-		    'password_confirmation' => 'same:password'
+			  'password' => 'required|min:6|max:255',
+			  'password_confirmation' => 'same:password'
 		]);
 
 		if ($validator->fails()) {
@@ -157,20 +157,23 @@ use RegistersUsers;
 
 		return redirect('login');
 	}
-	/***
-	* Handle a registration request for the application.
-	*
-	* @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-	*/
+
+	/*	 * *
+	 * Handle a registration request for the application.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+
 	public function register(Request $request)
 	{
-        $this->validator($request->all())->validate();
+		$this->validator($request->all())->validate();
 
-        event(new Registered($user = $this->create($request->all())));
-
-        return $this->registered($request, $user)
-                        ?: redirect($this->redirectPath());
-    }
+		
+		
+		event(new Registered($user = $this->create($request->all())));
+		Session::flash('positive', true);
+		return redirect()->route('register')->with("message", "A Registration email has been send");	
+	}
 
 }

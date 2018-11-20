@@ -21,6 +21,7 @@
 			    $table->string('email')->unique();
 			    $table->string('password');
 			    $table->enum('role', ['teacher','organisator','student']);
+			    $table->enum('status', ['unban','warning','ban']);
 			    $table->enum('activated', ['activated', 'not activated']);
 			    $table->rememberToken();
 			    $table->timestamps();

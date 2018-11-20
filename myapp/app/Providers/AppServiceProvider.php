@@ -22,6 +22,16 @@ class AppServiceProvider extends ServiceProvider
 
             return ($value >= $other);
         });
+
+        \Validator::extend('is_later_than_today', function($attribute, $value, $parameters, $validator) {
+            
+            if ( $value === false || $value === -1 || strtotime("now") > $value ) {
+                return false;
+            }
+
+            return true;
+        });
+
     }
 
     /**
