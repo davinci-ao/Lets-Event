@@ -62,19 +62,22 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $this->validateEvent($request->all());
+        $data = $this->toDefault($request->all());
+        $validator = $this->validateEvent($data);
+
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
         
-        $eventData = $this->toDefault($request->all());
         $event = new Event();
-        $event = $event->saveEventData($eventData);
+        $event = $event->saveEventData($data);
+
         if (!empty($request->tags)) {
             $tags = $this->saveTags($request->tags);
             $event->categories()->sync($tags);
         }
+
         return redirect()->route('event.create')->with('message', 'The event "' . $event->name . '" has been created.');
     }
 
@@ -140,7 +143,8 @@ class EventController extends Controller
 
         if ($attend == null && $approve == null) {
 
-            $validator = $this->validateEvent($request->all());
+            $data = $this->toDefault($request->all());
+            $validator = $this->validateEvent($data);
 
             if ($validator->fails()) {
                 return back()->withErrors($validator)->withInput();
@@ -150,7 +154,8 @@ class EventController extends Controller
                 $tags = $this->saveTags($request->tags);
                 $event->categories()->sync($tags);
             }
-            $event->updateEventData($request->all());
+
+            $event->updateEventData($data);
             $message = 'The event "' . $event->name . '" has been updated.';
         } else {
             if ($attend == 'in') {
@@ -178,7 +183,6 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        
         $event = Event::where('id', $id)->first();
         
         if (Auth::user()->role != "teacher") {
@@ -207,28 +211,13 @@ class EventController extends Controller
     {
         return $validator = Validator::make($validate, [
             'eventName' => 'required|max:40',
-            'eventDate' => 'required|date',
             'minimum_members' => 'nullable|min:0',
             'maximum_members' => 'nullable|min:1|less_than_equal:' . $validate['minimum_members'],
-            'eventTime' => ['required',
-                function ($attribute, $value, $fail) {
-                    $time = \DateTime::createFromFormat('G:i', $value);
-                    if ($time == false) {
-                        return $fail("Your time is invalid.");
-                    }
-                }],
-            'eventPrice' => 'nullable|regex:/^[0-9]*\.?[0-9]{1,2}+$/',
-            'eventLocation' => ['required',
-                'numeric',
-                function ($attribute, $value, $fail) {
-                    $locations = new locations();
-                    $locations = $locations::find($value);
-                    if (!isset($locations->id)) {
-                        return $fail('This location doesn\'t exist');
-                    }
-                }],
+            'eventPrice' => 'required|regex:/^[0-9]*\.?[0-9]{1,2}+$/',
+            'eventLocation' => 'required|numeric|exists:locations,id',
             'eventDescription' => 'nullable|max:255',
             'tags.*' => 'nullable|max:40', //validates the array, each item in array is max 40
+            'dateTime' => 'required|is_later_than_today'
         ]);
     }
 
@@ -241,10 +230,14 @@ class EventController extends Controller
 
     private function toDefault($data)
     {
-        if (empty($data['eventPrice'])) {
-            $data['eventPrice'] = 0;
+        if (empty($data['eventPrice'])) $data['eventPrice'] = 0;
+        
+        if (!empty($data['eventDate']) || !empty($data['eventTime'])) {
+            $data['dateTime'] = strtotime( $data['eventDate'] . ' ' . $data['eventTime'] );
+        } else {
+            $data['dateTime'] = false;
         }
-        //$data['eventTime'] .= ':00';
+        
         return $data;
     }
 

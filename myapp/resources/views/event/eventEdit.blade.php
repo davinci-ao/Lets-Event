@@ -38,40 +38,46 @@
 						@csrf
 						@method('PUT')
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="name">  Name*  </label><input type="text" value="{{ $event->name }} " name="eventName" style="width:70%" placeholder="Masked Gala" id="eventName" required>
+							<label class="control-label col-sm-2" for="name">  Name*  </label>
+							<input type="text" value="{{ $event->name }} " name="eventName" style="width:70%" placeholder="Masked Gala" id="name" required>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="date">  Date*  </label><input type="date" value="{{ $event->datum }}" name="eventDate" style="width:155px" id="eventDate" onclick="type='date'" required>
-							<label class="control-label col-sm-2" for="date">  Date*  </label><input type="date" value="{{$event->datum}}" name="eventDate" style="width:155px" id="eventDate" required>
+							<label class="control-label col-sm-2" for="date">  Date*  </label>
+							<input type="date" value="{{ date('Y-m-d', $event->date_time) }}" name="eventDate" style="width:155px" id="date" required>
 						</div>
 						<div class="form-group">
-								<label class="control-label col-sm-2" for="time">  Time*  </label><input type="time" name="eventTime" style="width:100px" id="eventTime" value="{{ substr($event->time, 0, 5) }}"  required>
-							</div>
+							<label class="control-label col-sm-2" for="time">  Time*  </label>
+							<input type="time" name="eventTime" style="width:100px" id="time" value="{{ date('G:i', $event->date_time) }}"  required>
+						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="price">  Price </label><input type="number" value="{{ $event->price }}" name="eventPrice" style="width:80px" placeholder="€ 22,50" step="any" id="eventPrice">
+							<label class="control-label col-sm-2" for="price">  Price </label>
+							<input type="number" value="{{ $event->price }}" name="eventPrice" style="width:80px" placeholder="€ 22,50" id="price">
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-2" for="location"> Location* </label>
 
-							<select name="eventLocation">
+							<select id="location" name="eventLocation">
 								@foreach($locations as $location)
 									<option value="{{ $location->id }}" @if($location->id == $event->location_id) selected @endif>{{ $location->name }}</option>
 								@endforeach
 							</select>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="Minimum_members">  Minimum*  </label><input type="number" value="{{$event->minimum_members}}" name="minimum_members" style="width:50px; text-align: right">
+							<label class="control-label col-sm-2" for="Minimum_members">  Minimum*  </label>
+							<input type="number" value="{{$event->minimum_members}}" name="minimum_members" style="width:50px; text-align: right">
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="maximum_members">  Maximum  </label><input type="number" value="{{$event->maximum_members}}" name="maximum_members" style="width:50px; text-align: right">
+							<label class="control-label col-sm-2" for="maximum_members">  Maximum  </label>
+							<input type="number" value="{{$event->maximum_members}}" name="maximum_members" style="width:50px; text-align: right">
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="description">  Description  </label><textarea name="eventDescription" id="eventDescription" style="width:70%">{{$event->description}}</textarea>
+							<label class="control-label col-sm-2" for="description">  Description  </label>
+							<textarea name="eventDescription" id="eventDescription" style="width:70%">{{$event->description}}</textarea>
 						</div>
 
 						<div class="form-group">
 							<label class="control-label col-sm-2" for="tags">Add tags</label>
-							<select class="multi-tag" name="tags[]" multiple="multiple" style="width:70%">
+							<select id="tags" class="multi-tag" name="tags[]" multiple="multiple" style="width:70%">
 								@foreach ($categories as $category)
 								<option value="{{ $category->id }}">{{ $category->name }}</option>
 								@endforeach

@@ -37,7 +37,7 @@
 							<label class="control-label col-sm-2" for="name">  Name*  </label><input type="text" name="eventName" style="width:70%" placeholder="Masked Gala" id="eventName" value="{{ old('eventName') }}" required>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2" for="date">  Date*  </label><input type="date" name="eventDate" style="width:155px" id="eventDate" value="{{ old('eventDate') }}" required>
+							<label class="control-label col-sm-2" for="date">  Date*  </label><input min="{{ date('Y-m-d') }}" type="date" name="eventDate" style="width:155px" id="eventDate" value="{{ old('eventDate') }}" required>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-2" for="time">  Time*  </label><input type="time" name="eventTime" style="width:100px" id="eventTime" value="{{ old('eventTime') }}" required>

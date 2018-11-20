@@ -22,9 +22,11 @@ class DatabaseSeeder extends Seeder
 		    'role' => "student",
 		    'status' => "warning",
 		    'activated' => "not activated",
-		    'remember_token' => str_random(10)
-		    ], [
-			  'student_nr' => "18328730",
+		    'remember_token' => str_random(10),
+		    'token' => '',
+		    'email_send_at' => now()
+		    ]])/*, [
+			//  'student_nr' => "18328730",
 			  'firstname' => "Dev",
 			  'lastname' => "Test",
 			  'education_location_id' => "3",
@@ -45,7 +47,7 @@ class DatabaseSeeder extends Seeder
 			  'activated' => "activated",
 			  'remember_token' => str_random(10)
 		    ]]
-		);
+		);*/;
 
 
 		DB::table('locations')->insert([
