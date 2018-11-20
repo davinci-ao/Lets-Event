@@ -109,19 +109,12 @@ class EventController extends Controller
     {
         $event = Event::where('id', $id)->first();
 
-        if ($event->user_id != Auth::user()->id) {
-            return redirect('event');
-        }
+        if ($event->user_id == Auth::user()->id || Auth::user()->role === 'teacher') {
+            $eventCategory = $event->categories->pluck('id');
 
-        $locations = locations::all();
-        $categories = Category::all();
-        $eventCategory = $event->categories()->where('event_id', $id)->get();
-        $eventTags = array();
-
-        foreach ($eventCategory as $category) {
-            $eventTags[] = $category->id;
+            return view('event.eventEdit', ['event' => $event, 'locations' => locations::all(), 'categories' => Category::all(), 'eventTags' => $eventCategory]);
         }
-        return view('event.eventEdit', ['event' => $event, 'locations' => $locations, 'categories' => $categories, 'eventTags' => $eventTags]);
+        return redirect('event');
     }
 
     /**
