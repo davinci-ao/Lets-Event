@@ -22,9 +22,6 @@ Auth::routes();
 // dashboard
 Route::get('/home', 'HomeController@index')->name('home');
 
-// events
-Route::get('/event/approve', 'EventController@approveIndex')->name('eventApprove');
-
 // the routes for admins
 Route::group(['middleware' => ['checkRole']], function () {
 
@@ -42,10 +39,10 @@ Route::group(['middleware' => ['checkRole']], function () {
 	Route::get('/users', 'UserController@index')->name('userIndex');
 	Route::get('/users/{id}', 'UserController@viewUser')->name('editUser');
 	Route::post('/users/updateUser', 'UserController@updateUser')->name('updateUser');
-	Route::get('/users/status/{userId}', 'userController@userStatus')->name('userStatus');
-	Route::post('/users/updatestatus/', 'userController@saveUserStatus')->name('saveUserStatus');
-
 	//approve events
+
+	// events
+	Route::get('/event/approve', 'EventController@approveIndex')->name('eventApprove');
 });
 
 Route::resource('event', 'EventController');
