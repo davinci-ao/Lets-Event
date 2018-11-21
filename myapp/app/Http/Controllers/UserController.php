@@ -24,18 +24,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
-        return view('viewUsers', ['users' => $users]);
+        return view('user/viewUsers', ['users' => User::get()]);
     }
 
-    public function viewUser($userID)
+    public function viewUser($id)
     {
-        $user = User::where('id', $userID)->first();
+        $user = new user();
+        $user = $user->find($id);
 
-        $locations = new locations();
-        $locations = $locations::all();
-
-        return view('editUser', ['user' => $user, 'locations' => $locations]);
+        return view('user/editUser', ['user' => $user, 'locations' => locations::all()]);
     }
 
     /**
@@ -48,16 +45,16 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|max:40',
             'lastname' => 'required|max:40',
-            'studentnr' => 'required|integer',
+            'student_number' => 'required|integer',
             'location' => 'required|integer',
             'email' => 'required|email',
             'activated' => 'required|max:40',
             'role' => 'required|max:40',
-            'id' => 'required|integer',
+            'id' => 'required|integer'
         ]);
 
         if ($validator->fails()) {
-            return back()->with('message', implode('<br>', $validator->errors()->all()));
+            return back()->withErrors($validator);
         } else {
 
 			$user = new User();
@@ -66,55 +63,22 @@ class UserController extends Controller
 			if ($user->role == 'teacher' && $request->role != 'teacher') {
 				if (Count($user->where('role', 'teacher')->get()) == 1) {
 
-                    return back()->with('message', 'Error u cannot edit "' . $request->firstname . ' ' . $request->lastname . '" role because it is the last user with the teacher role');
+                    return back()->withErrors(['message' => 'Error u cannot edit "' . $request->firstname . ' ' . $request->lastname . '" role because it is the last user with the teacher role']);
                 }
             }
 
-            $user->firstname = $request->firstname;
-            $user->lastname = $request->lastname;
-            $user->student_nr = $request->studentnr;
-            $user->education_location_id = $request->location;
-            $user->email = $request->email;
-            $user->activated = $request->activated;
-            $user->role = $request->role;
-            $user->save();
-
-            Session::flash('positive', true);
-            return back()->with('message', 'Succesfully changed User data of " ' . $user->firstname . ' ' . $user->lastname . ' "');
-        }
-    }
-
-      public function userStatus($userId)
-    {
-        $user = User::where('id', $userId)->first();
-
-        return view('userStatus', ['user' => $user]);
-    }   
-
-    public function saveUserStatus(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'status' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return back()->with('message', implode('<br>', $validator->errors()->all()));
-        } else {
-
-            $user = User::Where('id', $request->id)->first();
-
-            $user->status = $request->status;
-
-            if ($user->role != 'teacher') {
-                $user->save();
-                if ($user->status == 'ban') {
+            if ($user->role === "teacher" && $request->input('status') == 'ban') {
+                return back()->withErrors(['message' => 'You can not ban another teacher']);
+            } else {
+                if ($request->input('status') == 'ban') {
                     $user->events()->detach();        
                     Event::where('user_id', $user->id)->delete();  
-                } 
-            } 
-        }
+                }
+            }
 
-            Session::flash('positive', true);
+            $user->editUser($request->all());
+
             return back()->with('message', 'Succesfully changed User data of " ' . $user->firstname . ' ' . $user->lastname . ' "');
+        }
     }
 }

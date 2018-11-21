@@ -26,9 +26,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::where('status', 'accepted')->get();
-        $user = auth()->user();
-        return view('event.eventIndex', ['events' => $events, 'user' => $user]);
+        return view('event.eventIndex', ['events' => Event::where('status', 'accepted')->get(), 'user' => auth()->user()]);
     }
 
     /**
@@ -38,8 +36,7 @@ class EventController extends Controller
      */
     public function approveIndex()
     {
-        $events = Event::where('status', 'tobechecked')->get();
-        return view('event.eventApproval', ['events' => $events]);
+        return view('event.eventApproval', ['events' => Event::where('status', 'tobechecked')->get()]);
     }
 
     /**
@@ -49,9 +46,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        $locations = locations::all();
-        $categories = Category::all();
-        return view('event.eventCreate', ['locations' => $locations, 'categories' => $categories]);
+        return view('event.eventCreate', ['locations' => locations::all(), 'categories' => Category::all()]);
     }
 
     /**

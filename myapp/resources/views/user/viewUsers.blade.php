@@ -26,17 +26,14 @@
 								</tr>
 							</thead>
 							<tbody>
-
 								@foreach($users as $user)
-								<tr >
-									<td>{{$user->firstname . " " . $user->lastname}}</td>
-									<td>
-										<a class="btn btn-primary" href="{{ route('editUser', $user->id) }}">Edit this user</a>
-										<a class="btn btn-warning" href="{{ route('userStatus', $user->id) }}">Change status</a>
-									</td>
-								</tr>
+									<tr>
+										<td>{{$user->firstname . " " . $user->lastname}}</td>
+										<td>
+											<a class="btn btn-primary" href="{{ route('editUser', $user->id) }}">Edit this user</a>
+										</td>
+									</tr>
 								@endforeach
-
 							</tbody>
 						</table>
 					</div>
@@ -45,14 +42,5 @@
 		</div>
 	</div>
 </div>
-<script>
-
-
-
-
-
-
-
-</script>
 
 @endsection
