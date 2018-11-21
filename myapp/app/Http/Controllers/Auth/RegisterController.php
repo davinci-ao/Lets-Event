@@ -168,10 +168,8 @@ use RegistersUsers;
 	public function register(Request $request)
 	{
 		$this->validator($request->all())->validate();
-
-		
-		
 		event(new Registered($user = $this->create($request->all())));
+
 		Session::flash('positive', true);
 		return redirect()->route('register')->with("message", "A Registration email has been send");	
 	}
