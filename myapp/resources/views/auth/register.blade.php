@@ -8,15 +8,15 @@
 				<div class="card-header">{{ __('Register') }}</div>
 
 				@if(Session::has('message'))
-					@if(Session::has('positive'))
-						<div id="message" class="alert alert-success hideMsg">
+				@if(Session::has('positive'))
+				<div id="message" class="alert alert-success">
 					@else 
-						<div id="message" class="alert alert-danger hideMsg">
-					@endif		
-							<p> {{ Session('message') }} </p>
-						</div>
-				@endif
+					<div id="message" class="alert alert-danger">
+						@endif		
+						<p> {{ Session('message') }} </p>
+					</div>
 
+					@endif
 
 					<div class="card-body">
 						<form method="POST" action="{{ route('register') }}">
