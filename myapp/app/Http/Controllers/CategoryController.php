@@ -16,7 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('category.index', ['categories' => Category::paginate(10)]);
+        $user = auth()->user();
+        return view('category.index', ['categories' => Category::paginate(8), 'user' => $user]);
     }
 
     /**
