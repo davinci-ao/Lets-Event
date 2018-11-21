@@ -32,6 +32,8 @@ $(document).ready(function(){
 		
 
 		reader.onload = function(input) {
+			colums = [ [], [], [], [] ]; 
+			
 			text = reader.result;
 			text = text.split('\n');
 
