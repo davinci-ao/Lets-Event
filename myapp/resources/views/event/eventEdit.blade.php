@@ -23,7 +23,6 @@
 	</div>
 </div>
 @endif
-
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
@@ -46,7 +45,7 @@
 							<input class="col-md-4 form-control" min="{{ date('Y-m-d') }}" type="date" name="eventDate" id="date" value="{{ date('Y-m-d', $event->date_time) }}" required>
 						
 							<label class="control-label col-md-2" for="time">  Time*  </label>
-							<input value="{{ date('G:i', $event->date_time) }}" class="col-md-4 form-control" type="time" name="eventTime" id="time" value="{{ old('eventTime') }}" required>
+							<input value="{{ date('h:i', $event->date_time) }}" class="col-md-4 form-control" type="time" name="eventTime" id="time" required>
 						</div>
 
 						<div class="form-group row">
