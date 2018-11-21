@@ -126,9 +126,9 @@ $(document).ready(function(){
 	function showFeedback(feedback, type = "negative")
 	{
 		if (type === "negative") {
-			$('#feedback').addClass( 'alert-danger'  ).removeClass( 'alert-success' ).append( feedback ).show()
+			$('#feedback').addClass( 'alert-danger'  ).empty().removeClass( 'alert-success' ).append( feedback ).show()
 		} else if (type === "positive") {
-			$('#feedback').addClass( 'alert-success' ).removeClass( 'alert-danger' ).append( feedback ).show()
+			$('#feedback').addClass( 'alert-success' ).empty().removeClass( 'alert-danger' ).append( feedback ).show()
 		}
 	}
 
