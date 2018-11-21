@@ -47,7 +47,7 @@
 						<tbody>
 							@foreach($categories as $category)
 							<tr style="inline">
-								<td>{{$category->name}}</td>
+								<td><a href="{{route('category.show', $category->id)}}">{{$category->name}}</a></td>
 								@if($user->role == 'teacher')
 								<td><a class="btn btn-info" href="{{ route('category.edit', $category->id)}}">Edit</a></td>
 								<td>

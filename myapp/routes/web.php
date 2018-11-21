@@ -27,9 +27,8 @@ Route::group(['middleware' => ['checkRole']], function () {
 
 	// category
 
-	Route::resource('category', 'CategoryController')->except(['create', 'show']);	
+	Route::resource('category', 'CategoryController')->except(['create']);	
 	Route::resource('location', 'LocationController')->except(['create']);	
-
 
 	// CSV import
 	Route::get('/import', 'ImportController@index')->name('import');
@@ -40,9 +39,8 @@ Route::group(['middleware' => ['checkRole']], function () {
 	Route::get('/users/{id}', 'UserController@viewUser')->name('editUser');
 	Route::post('/users/updateUser', 'UserController@updateUser')->name('updateUser');
 	//approve events
-
-	// events
 	Route::get('/event/approve', 'EventController@approveIndex')->name('eventApprove');
 });
 
+// events
 Route::resource('event', 'EventController');

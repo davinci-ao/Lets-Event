@@ -7,11 +7,11 @@
 
 			<div class="card">
 				<div class="card-header">
-					Showing the events held at ''
-					<a class="float-right btn btn-primary" href="{{ route('event.index') }}" >Back to overview</a>
+					showing the events for the category {{ $category->name }}
+					<a class="float-right btn btn-primary" href="{{ route('category.index') }}" >Back to overview</a>
 				</div>
 				<div class="card-body">
-					@foreach( $categories->events as $event )
+					@foreach( $category->events as $event )
 						<a href="{{route('event.show', $event->id)}}">{{ $event->name }}</a> <br>
 					@endforeach
 				</div>
