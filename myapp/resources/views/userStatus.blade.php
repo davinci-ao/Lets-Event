@@ -5,19 +5,20 @@
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			@if(Session::has('message'))
-			@if(Session::has('positive'))
-			<div  class="alert alert-success">
+				@if(Session::has('positive'))
+					<div class="alert alert-success">
 				@else 
-				<div  class="alert alert-danger">
-					@endif		
-					<p> {{ Session('message') }} </p>
-				</div>
+					<div class="alert alert-danger">
+				@endif		
+						<p> {{ Session('message') }} </p>
+					</div>
 			@endif
 
 				<form class="form-horizontal" action="{{ route('saveUserStatus') }}" method="post">
 					<div class="card">
 						<div class="card-header" >Edit user status for {{$user->firstname}} {{$user->lastname}}
-							<a  class="btn btn-primary" href="{{ route('userIndex') }}"  style="float: right" >Back to users</a></div>
+							<a class="float-right btn btn-primary" href="{{ route('userIndex') }}" >Back to users</a>
+						</div>
 						<div class="card-body">
 							{{csrf_field()}}
 

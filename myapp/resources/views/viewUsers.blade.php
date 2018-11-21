@@ -6,14 +6,14 @@
 		<div class="col-md-8">
 
 			@if(Session::has('message'))
-			@if(Session::has('positive'))
-			<div  class="alert alert-success">
+				@if(Session::has('positive'))
+					<div  class="alert alert-success">
 				@else 
-				<div  class="alert alert-danger">
-					@endif		
+					<div  class="alert alert-danger">
+				@endif		
 					<p> {{ Session('message') }} </p>
 				</div>
-				@endif
+			@endif
 
 				<div class="card">
 					<div class="card-header" ><h1 class='headEventName'>Users</h1></div>
@@ -29,12 +29,10 @@
 
 								@foreach($users as $user)
 								<tr >
-									<td><p>{{$user->firstname . " " . $user->lastname}} </p></td>
+									<td>{{$user->firstname . " " . $user->lastname}}</td>
 									<td>
 										<a class="btn btn-primary" href="{{ route('editUser', $user->id) }}">Edit this user</a>
-										@if($user->role != 'teacher')
-											<a class="btn btn-warning" href="{{ route('userStatus', $user->id) }}">Change status</a>
-										@endif
+										<a class="btn btn-warning" href="{{ route('userStatus', $user->id) }}">Change status</a>
 									</td>
 								</tr>
 								@endforeach

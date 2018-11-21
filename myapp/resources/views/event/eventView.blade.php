@@ -65,7 +65,9 @@
 						<table class="table">
 							<tbody>
 								@foreach($categories as $category)
-								<tr><td><p  class="eventData">{{$category->name}}</p></td></tr>
+									<tr>
+										<td>{{$category->name}}</td>
+									</tr>
 								@endforeach
 							</tbody>
 						</table>
