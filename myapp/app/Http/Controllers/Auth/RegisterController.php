@@ -61,10 +61,9 @@ use RegistersUsers;
 				function($attribute, $value, $fail) {
 					$user = User::where('student_nr', $value)->first();
 					if ($user === null) {
-						return $fail('No user found');
-					} else if ($user->activated == 'actived') {
-
-						return $fail('This acount is already active');
+						return $fail(Session::flash('message', 'No user found'));
+					} else if ($user->activated == 'activated') {
+						return $fail(Session::flash('message', 'This acount is already active'));
 					}
 				}
 			  ]
@@ -85,7 +84,7 @@ use RegistersUsers;
 		$user->email_send_at = date('Y-m-d');
 		$user->save();
 		Mail::to($user->email)->send(new AcountConfirm($token));
-		
+
 		return $user;
 	}
 
@@ -123,7 +122,7 @@ use RegistersUsers;
 	public function SetPassword(Request $request)
 	{
 		$user = User::where('token', $request->input('token'))->first();
-		
+
 		if ($user == null || $user->activated == 'activated') {
 			if ($user == null) {
 				Session::flash('message', 'An unexpected error has accore6d');
@@ -171,7 +170,7 @@ use RegistersUsers;
 		event(new Registered($user = $this->create($request->all())));
 
 		Session::flash('positive', true);
-		return redirect()->route('register')->with("message", "A Registration email has been send");	
+		return redirect()->route('register')->with("message", "A Registration email has been send");
 	}
 
 }
