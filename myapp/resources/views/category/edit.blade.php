@@ -11,7 +11,10 @@
     			</div>
 			@endforeach
 			<div class="card">
-				<div class="card-header">Editing the category "{{ $category->name }}"</div>
+				<div class="card-header">
+					Editing the category "{{ $category->name }}" 
+					<a class="btn btn-primary float-right" href="{{ route('category.index') }}" >Back to category overview</a>
+				</div>
 				<div class="card-body">
 					<form method="post" action="{{ route('category.update', $category->name )}}">
 						@csrf

@@ -22,7 +22,7 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $fillable = [
-	    'firstname', 'lastname', 'email', 'password', 'student_nr', 'firstname', 'lastname', 'education_location_id', 'activated', 'role'
+	    'firstname', 'lastname', 'email', 'password', 'student_nr', 'firstname', 'lastname', 'education_location_id', 'activated', 'role', 'status'
 	];
 
 	/**
@@ -36,14 +36,19 @@ class User extends Authenticatable
 
 	public function importCsvData($studentNumber, $prefix, $firstname, $lastname)
 	{
-		return $this->firstOrCreate([
-			'student_nr' => $studentNumber,
-			'firstname' => $prefix . ' ' . $firstname,
-			'lastname' => $lastname,
-			'email' => $studentNumber. '@mydavinci.nl',
-			'password' => '',
-			'education_location_id' => 0
-		]);
+		try {
+			return $this->firstOrCreate([
+				'student_nr' => $studentNumber,
+				'firstname' => $firstname,
+				'lastname' => $prefix . ' ' . $lastname,
+				'email' => $studentNumber. '@mydavinci.nl',
+				'password' => '',
+				'education_location_id' => 0
+			]);
+		} catch (\Exception $e) {
+			return false;
+		}
+		
 	}
 
 	public function events()

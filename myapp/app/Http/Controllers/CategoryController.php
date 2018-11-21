@@ -118,6 +118,7 @@ class CategoryController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
+        $category = new Category();
         $category->find($request->input('id'))->editCategory($request);
 
         return redirect('/category');

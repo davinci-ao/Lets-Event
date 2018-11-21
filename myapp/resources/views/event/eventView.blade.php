@@ -32,10 +32,12 @@
 						<label class="control-label col-sm-9 eventDataHeader">Host :</label> <p class="eventData">{{$organizer->firstname . ' ' . $organizer->lastname}}</p>
 					</div>
 					<div class="form-group ">
-						<label class="control-label col-sm-9 eventDataHeader"> Date : </label><p class="eventData">{{$event->datum}}</p>
+						<label class="control-label col-sm-9 eventDataHeader"> Date : </label>
+						<p class="eventData"> {{ date('Y-m-d', $event->date_time) }} </p>
 					</div>
 					<div class="form-group ">
-						<label class="control-label col-sm-9 eventDataHeader"> Time : </label> <p class="eventData">{{$event->time}} </p>
+						<label class="control-label col-sm-9 eventDataHeader"> Time : </label> 
+						<p class="eventData"> {{ date('G:i', $event->date_time) }} </p>
 					</div>
 					<div class="form-group ">
 						<label class="control-label col-sm-9 eventDataHeader"> Price : </label> <p class="eventData">@if($event->price != 0) €{{$event->price}}.- @else Free @endif</p>
@@ -63,7 +65,9 @@
 						<table class="table">
 							<tbody>
 								@foreach($categories as $category)
-								<tr><td><p  class="eventData">{{$category->name}}</p></td></tr>
+									<tr>
+										<td>{{$category->name}}</td>
+									</tr>
 								@endforeach
 							</tbody>
 						</table>

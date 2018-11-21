@@ -6,10 +6,13 @@
 		<div class="col-md-8">
 
 			<div class="card">
-				<div class="card-header">Showing the events held at '{{ $location->name }}'</div>
+				<div class="card-header">
+					Showing the events held at '{{ $location->name }}'
+					<a  class="float-right btn btn-primary" href="{{ route('userIndex') }}" >Back to overview</a>
+				</div>
 				<div class="card-body">
 					@foreach( $location->events as $event )
-						<a href="{{route('viewEvent', $event->id)}}">{{ $event->name }}</a> <br>
+						<a href="{{route('event.show', $event->id)}}">{{ $event->name }}</a> <br>
 					@endforeach
 				</div>
 			</div>
