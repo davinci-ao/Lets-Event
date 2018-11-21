@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
 				  'role' => "teacher",
 				  'status' => "unban",
 				  'activated' => "activated",
-				  'remember_token' => str_random(10)
+				  'remember_token' => str_random(10),
 				  'token' => '',
 			  	  'email_send_at' => now()
 		    ], 
@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
 				  'role' => "student",
 				  'status' => "unban",
 				  'activated' => "activated",
-				  'remember_token' => str_random(10)
+				  'remember_token' => str_random(10),
 				  'token' => '',
 			      'email_send_at' => now()
 		    ]
