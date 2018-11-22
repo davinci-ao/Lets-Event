@@ -10,6 +10,12 @@
 				</div>
 			@endif
 
+			@foreach ($errors->all() as $message)
+				<div class="alert alert-danger hideMsg">
+					{{ $message }}
+				</div>
+			@endforeach
+
 			<div class="card">
 				<div class="card-header">
 					List of events

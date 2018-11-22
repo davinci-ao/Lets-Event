@@ -131,6 +131,10 @@ class EventController extends Controller
 
         if ($attend == null && $approve == null) {
 
+            if ($event->user_id !== auth()->user()->id && auth()->user()->role !== 'teacher') {
+                return redirect('event')->withErrors(['doesNotBelong' => 'This event does not belong to you']);
+            }
+
             $data = $this->toDefault($request->all());
             $validator = $this->validateEvent($data);
 
@@ -145,6 +149,7 @@ class EventController extends Controller
 
             $event->updateEventData($data);
             $message = 'The event "' . $event->name . '" has been updated.';
+            
         } else {
             if ($attend == 'in') {
                 $event->users()->attach(Auth::user()->id, ['paid' => '0', 'result' => '0']);
