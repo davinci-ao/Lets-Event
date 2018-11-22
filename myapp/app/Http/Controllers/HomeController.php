@@ -34,11 +34,11 @@ class HomeController extends Controller
 		$user = Auth::user();
 
 		if ($user->status == 'empty') {
-			session()->flash('default', 'Welcome in Letsevents!');
+			session()->flash('default', 'Welcome to Letsevents!');
 		}elseif ($user->status == 'warning') {
-			session()->flash('warning', 'Watch out you have a warning, the next step is a ban!!!' );
+			session()->flash('warning', 'Watch out you have a warning, the next step is a ban!' );
 		}elseif ($user->status == 'ban') {		
-			session()->flash('danger', 'You have a ban and been written out by all events. We also have deleted the events where you are the organisator from, contact the admin for more info....');
+			session()->flash('danger', 'You have a ban and been written out by all events. We also have deleted the events where you are the organisator of, contact the admin for more info.');
 		}
 		return view('home', ['user' => $user]);
 	}

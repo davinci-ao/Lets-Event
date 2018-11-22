@@ -74,7 +74,7 @@
 						</div>
 
 						<div class="form-group row">
-							<label class="control-label col-md-2" for="tags">Add tags</label>
+							<label class="control-label col-md-2" style="width: 100%" for="tags">Add tags</label>
 							<select class="form-control col-md-10 multi-tag" name="tags[]" multiple="multiple">
 								@foreach ($categories as $category)
 									<option value="{{ $category->id }}">{{ $category->name }}</option>

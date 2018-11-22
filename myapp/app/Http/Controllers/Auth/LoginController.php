@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Http\Models\User;
 use Session;
+
 class LoginController extends Controller
 {
 	/*
@@ -43,7 +44,11 @@ use AuthenticatesUsers;
 	{
 		$this->validateLogin($request);
 		$user = User::Where('email', $request->email)->first();
-		
+
+		if ($user == null) {
+			return $this->sendFailedLoginResponse($request, Session::flash('message', 'There is no account known with these credentials'));
+		}
+
 		if ($user->activated == 'not activated') {
 			return $this->sendFailedLoginResponse($request, Session::flash('message', 'This acount is not activated'));
 		}

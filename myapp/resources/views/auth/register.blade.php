@@ -23,7 +23,7 @@
 							@csrf
 
 							<div class="form-group row">
-								<label for="student_nummer" class="col-md-4 col-form-label text-md-right">{{ __('student_nummer') }}</label>
+								<label for="student_nummer" class="col-md-4 col-form-label text-md-right">{{ __('student nummer') }}</label>
 
 								<div class="col-md-6">
 									<input id="student_nummer" type="text" class="form-control{{ $errors->has('student_nummer') ? ' is-invalid' : '' }}" name="student_number" value="{{ old('student_nummer') }}" required>

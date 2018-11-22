@@ -73,7 +73,7 @@
 								@if($user->role != "teacher" && $user->id !== auth()->user()->id ) 
 									<label class="control-label col-md-2">Status</label>
 									<select class="col-md-4 form-control" name="status"> 
-										<option value="empty"  @if($user->status == "empty") selected="true" @endif>Normal</option>
+										<option value="unban"  @if($user->status == "unban") selected="true" @endif>Normal</option>
 										<option value="warning" @if($user->status == "warning") selected="true" @endif>Warning</option>
 										<option value="ban" @if($user->status == "ban") selected="true" @endif>Ban</option>
 									</select>

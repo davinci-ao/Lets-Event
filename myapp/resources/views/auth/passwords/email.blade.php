@@ -17,9 +17,9 @@
 					@if(Session::has('message'))
 
 					@if(Session::has('positive'))
-					<div id="message" class="alert alert-success">
+					<div id="message" class="alert alert-success hideMsg">
 						@else 
-						<div id="message" class="alert alert-danger">
+						<div id="message" class="alert alert-danger hideMsg">
 							@endif		
 							<p> {{ Session('message') }} </p>
 						</div>
