@@ -53,9 +53,8 @@ class User extends Authenticatable
 
 	public function editUser($data)
 	{
-		if ( empty($data['status']) ) {
-			$data['status'] = $this->status;
-		} 
+		if ( empty($data['status']) ) $data['status'] = $this->status;
+		
         $this->fill([
 		    "firstname" => $data['firstname'],
 		    "lastname" => $data['lastname'],
@@ -63,7 +62,8 @@ class User extends Authenticatable
 		    "education_location_id" => $data['location'],
             "email" => $data['email'],
 		    "activated" => $data['activated'],
-		    "role" => $data['role'],
+		    "role" => $data['role'], 
+		    "status" => $data['status']
 		]);
 
 		return $this->save();

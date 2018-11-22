@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
 use App\Http\Models\User;
 use Session;
@@ -44,6 +45,11 @@ use SendsPasswordResetEmails;
 		$this->validateEmail($request);
 
 		$user = User::Where('email', $request->email)->first();
+
+		if ($user == null) {
+			Session::flash('message', 'No acount found');
+			return redirect()->route('password.request');
+		}
 
 		if ($user->activated == 'not activated') {
 			Session::flash('message', 'This acount is not activated');
