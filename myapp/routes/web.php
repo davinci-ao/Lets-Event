@@ -38,7 +38,7 @@ Route::group(['middleware' => ['checkRole']], function () {
 	Route::get('/users/{id}', 'UserController@viewUser')->name('editUser');
 	Route::post('/users/updateUser', 'UserController@updateUser')->name('updateUser');
 	//approve events
-	Route::get('/event/approve', 'EventController@approveIndex')->name('eventApprove');
+	Route::get('/event/approve', 'EventController@approve')->name('eventApprove');
 });
 
 // events

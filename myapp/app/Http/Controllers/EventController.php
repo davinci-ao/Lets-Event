@@ -27,7 +27,7 @@ class EventController extends Controller
 	 */
 	public function index()
 	{
-		return view('event.eventIndex', ['events' => Event::where('status', 'accepted')->get(), 'user' => auth()->user()]);
+		return view('event.index', ['events' => Event::where('status', 'accepted')->get(), 'user' => auth()->user()]);
 	}
 
 	/**
@@ -35,9 +35,9 @@ class EventController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function approveIndex()
+	public function approve()
 	{
-		return view('event.eventApproval', ['events' => Event::where('status', 'tobechecked')->get()]);
+		return view('event.approve', ['events' => Event::where('status', 'tobechecked')->get()]);
 	}
 
 	/**
@@ -47,7 +47,7 @@ class EventController extends Controller
 	 */
 	public function create()
 	{
-		return view('event.eventCreate', ['locations' => locations::all(), 'categories' => Category::all()]);
+		return view('event.create', ['locations' => locations::all(), 'categories' => Category::all()]);
 	}
 
 	/**
@@ -96,7 +96,7 @@ class EventController extends Controller
 		$location = locations::where('id', $event->location_id)->first();
 		$guests = $event->users()->where('event_id', $id)->get();
 
-		return view('event.eventView', ['event' => $event, 'organizer' => $organizer, 'location' => $location, 'guests' => $guests, 'categories' => $categories]);
+		return view('event.show', ['event' => $event, 'organizer' => $organizer, 'location' => $location, 'guests' => $guests, 'categories' => $categories]);
 	}
 
 	/**
@@ -112,9 +112,10 @@ class EventController extends Controller
 		if ($event->user_id == Auth::user()->id || Auth::user()->role === 'teacher') {
 			$eventCategory = $event->categories->pluck('id');
 
-			return view('event.eventEdit', ['event' => $event, 'locations' => locations::all(), 'categories' => Category::all(), 'eventTags' => $eventCategory]);
+			return view('event.edit', ['event' => $event, 'locations' => locations::all(), 'categories' => Category::all(), 'eventTags' => $eventCategory]);
 		}
-		return redirect('event');
+
+		return back();
 	}
 
 	/**
@@ -157,10 +158,10 @@ class EventController extends Controller
 			} else if ($attend == 'out') {
 				$event->users()->detach(Auth::user()->id);
 				$message = 'You have succesfully been unregistered for the event"' . $event->name . '"';
-			} else if ($approve == 'accept') {
+			} else if ($approve == 'accept' && Auth::user()->role === 'teacher') {
 				$event->status = 'accepted';
 				$event->save();
-				return $this->approveIndex();
+				return redirect()->route('eventApprove');
 			}
 		}
 
