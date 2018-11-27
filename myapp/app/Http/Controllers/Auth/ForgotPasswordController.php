@@ -47,12 +47,12 @@ use SendsPasswordResetEmails;
 		$user = User::Where('email', $request->email)->first();
 
 		if ($user == null) {
-			Session::flash('message', 'No acount found');
+			Session::flash('message', 'No account found');
 			return redirect()->route('password.request');
 		}
 
 		if ($user->activated == 'not activated') {
-			Session::flash('message', 'This acount is not activated');
+			Session::flash('message', 'This account is not activated');
 			return redirect()->route('password.request');
 		}
 

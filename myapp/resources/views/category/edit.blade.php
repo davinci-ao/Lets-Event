@@ -2,14 +2,16 @@
 
 @section('content')
 <div class="container">
+
+	@foreach ($errors->all() as $message) 
+		<div class="alert alert-danger hideMsg">
+    		{{ $message }}
+    	</div>
+	@endforeach
+
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 
-			@foreach ($errors->all() as $message) 
-				<div rol="alert" class="alert alert-danger">
-    				{{ $message }}
-    			</div>
-			@endforeach
 			<div class="card">
 				<div class="card-header">
 					Editing the category "{{ $category->name }}" 

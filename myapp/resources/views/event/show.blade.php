@@ -2,15 +2,15 @@
 
 @section('content')
 @if (Session::has('message'))
-<div class="container">
-	<div class="row justify-content-center">
-		<div class="col-md-8">
-			<div class="alert {{ Session::get('alert-class', 'alert-info') }} hideMsg">
-				{{ Session::get('message') }}
+	<div class="container hideMsg">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="alert {{ Session::get('alert-class', 'alert-info') }} hideMsg">
+					{{ Session::get('message') }}
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 @endif
 
 <div class="container">

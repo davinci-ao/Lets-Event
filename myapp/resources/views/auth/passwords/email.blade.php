@@ -2,31 +2,31 @@
 
 @section('content')
 <div class="container">
+
+	@if (session('status'))
+		<div class="alert alert-success">
+			{{ session('status') }}
+		</div>
+	@endif
+
+	@if(Session::has('message'))
+
+		@if(Session::has('positive'))
+			<div class="alert alert-success hideMsg">
+		@else 
+			<div class="alert alert-danger hideMsg">
+		@endif		
+			{{ Session('message') }}
+			</div>
+
+	@endif
+
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="card">
 				<div class="card-header">{{ __('Reset Password') }}</div>
 
 				<div class="card-body">
-					@if (session('status'))
-					<div class="alert alert-success">
-						{{ session('status') }}
-					</div>
-					@endif
-
-					@if(Session::has('message'))
-
-					@if(Session::has('positive'))
-					<div id="message" class="alert alert-success hideMsg">
-						@else 
-						<div id="message" class="alert alert-danger hideMsg">
-							@endif		
-							<p> {{ Session('message') }} </p>
-						</div>
-
-						@endif
-
-
 						<form method="POST" action="{{ route('password.email') }}">
 							@csrf
 

@@ -3,23 +3,23 @@
 @section('content')
 <div class="container">
 
+	@if(Session::has('message'))
+
+		@if(Session::has('positive'))
+			<div id="message" class="alert alert-success hideMsg">
+		@else 
+			<div id="message" class="alert alert-danger hideMsg">
+		@endif		
+				<p> {{ Session('message') }} </p>
+			</div>
+
+	@endif
+
+
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="card">
 				<div class="card-header">{{ __('Reset Password') }}</div>
-
-					@if(Session::has('message'))
-
-						@if(Session::has('positive'))
-							<div id="message" class="alert alert-success">
-						@else 
-							<div id="message" class="alert alert-danger">
-						@endif		
-								<p> {{ Session('message') }} </p>
-							</div>
-
-					@endif
-
 					<div class="card-body">
 
 						<p>A password has a minimal of 6 charachters and a max of 255 charachters</p>

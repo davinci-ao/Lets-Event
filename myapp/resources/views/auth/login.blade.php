@@ -2,23 +2,23 @@
 
 @section('content')
 <div class="container">
+
+	@if(Session::has('message'))
+
+		@if(Session::has('positive'))
+			<div class="alert alert-success hideMsg">
+		@else 
+			<div class="alert alert-danger hideMsg">
+		@endif		
+			{{ Session('message') }}
+		</div>
+
+	@endif
+
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="card">
 				<div class="card-header">{{ __('Login') }}</div>
-
-				@if(Session::has('message'))
-
-				@if(Session::has('positive'))
-				<div id="message" class="alert alert-success hideMsg">
-					@else 
-					<div id="message" class="alert alert-danger hideMsg">
-						@endif		
-						<p> {{ Session('message') }} </p>
-					</div>
-
-					@endif
-
 					<div class="card-body">
 						<form method="POST" action="{{ route('login') }}">
 							@csrf

@@ -2,19 +2,21 @@
 
 @section('content')
 <div class="container">
+
+	@if(Session::has('message'))
+		<div class="alert {{ Session::get('alert-class', 'alert-success') }} hideMsg">
+			<p> {{ Session('message') }} </p>
+		</div>
+	@endif
+
+	@foreach ($errors->all() as $message)
+		<div class="alert alert-danger hideMsg">
+			{{ $message }}
+		</div>
+	@endforeach
+			
 	<div class="row justify-content-center">
 		<div class="col-md-8">
-			@if(Session::has('message'))
-				<div class="alert {{ Session::get('alert-class', 'alert-success') }} hideMsg">
-					<p> {{ Session('message') }} </p>
-				</div>
-			@endif
-
-			@foreach ($errors->all() as $message)
-				<div class="alert alert-danger hideMsg">
-					{{ $message }}
-				</div>
-			@endforeach
 
 			<div class="card">
 				<div class="card-header">
