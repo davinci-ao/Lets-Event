@@ -30,7 +30,7 @@
 									<tr>
 										<td>{{$user->firstname . " " . $user->lastname}}</td>
 										<td>
-											<a class="btn btn-primary" href="{{ route('editUser', $user->id) }}">Edit this user</a>
+											<a class="btn btn-primary" href="{{ route('editUser', $user->id) }}">Edit user</a>
 										</td>
 									</tr>
 								@endforeach

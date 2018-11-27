@@ -36,32 +36,35 @@
 					</div>
 					@endif
 					<div class="mx-auto justify-content-center">{{ $categories->links() }}</div>
-					
-					<table class="table">
-						<thead>
-							<tr>
-								<th> Name </th>
-								@if($user->role == 'teacher')<th colspan="2"> Options </th>@endif
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($categories as $category)
-							<tr style="inline">
-								<td><a href="{{route('category.show', $category->id)}}">{{$category->name}}</a></td>
-								@if($user->role == 'teacher')
-								<td><a class="btn btn-info" href="{{ route('category.edit', $category->id)}}">Edit</a></td>
-								<td>
-									<form action="{{ route('category.destroy',  $category->id) }}" method="POST">
-										@method('DELETE')
-										@csrf
+					<div class="table-responsive-sm">
+						<table class="table">
+							<thead>
+								<tr>
+									<th> Name </th>
+									@if($user->role == 'teacher')<th colspan="2"> Options </th>@endif
+								</tr>
+							</thead>
+							<tbody>
+								@foreach($categories as $category)
+									<tr>
+										<td><a href="{{route('category.show', $category->id)}}">{{$category->name}}</a></td>
+										@if($user->role == 'teacher')
+											<td><a class="btn btn-info" href="{{ route('category.edit', $category->id)}}">Edit</a></td>
+											<td>
+												<form action="{{ route('category.destroy',  $category->id) }}" method="POST">
+													@method('DELETE')
+													@csrf
 
-										<button type="submit" class="btn btn-danger">Delete</button>
-									</form>
-								</td>@endif
-							</tr>
-							@endforeach
-						</tbody>
-					</table>
+													<button type="submit" class="btn btn-danger">Delete</button>
+												</form>
+											</td>
+										@endif
+									</tr>
+								@endforeach
+							</tbody>
+						</table>
+
+					</div>
 					
 					<div class="mx-auto justify-content-center">{{ $categories->links() }}</div>
 

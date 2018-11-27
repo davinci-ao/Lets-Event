@@ -29,8 +29,6 @@ $(document).ready(function(){
 
 		const reader = new FileReader;
 
-		
-
 		reader.onload = function(input) {
 			colums = [ [], [], [], [] ]; 
 			

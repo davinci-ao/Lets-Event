@@ -26,7 +26,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['checkRole']], function () {
 
 	// category
-
 	Route::resource('category', 'CategoryController')->except(['create']);	
 	Route::resource('location', 'LocationController')->except(['create']);	
 
