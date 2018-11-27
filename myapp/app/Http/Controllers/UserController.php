@@ -64,7 +64,7 @@ class UserController extends Controller
 			if ($user->role == 'teacher' && $request->role != 'teacher') {
 				if (Count($user->where('role', 'teacher')->get()) == 1) {
 
-					return back()->withErrors(['message' => 'Error u cannot edit "' . $request->firstname . ' ' . $request->lastname . '" role because it is the last user with the teacher role']);
+					return back()->withErrors(['message' => 'You cannot edit "' . $request->firstname . ' ' . $request->lastname . '" role because it is the last user with the teacher role']);
 				}
 			}
 
@@ -73,13 +73,18 @@ class UserController extends Controller
 			} else {
 				if ($request->input('status') == 'ban') {
 					$user->events()->detach();	
-					Event::where('user_id', $user->id)->delete();
+					$events = Event::where('user_id', $user->id)->get();
+					foreach ($events as $event) {
+						$event->categories()->detach();
+						$event->users()->detach();
+						$event->delete();
+					}
 				}
 			}
 
 			$user->editUser($request->all());
 
-			return back()->with('message', 'Succesfully changed User data of " ' . $user->firstname . ' ' . $user->lastname . ' "');
+			return back()->with('message', 'Succesfully changed user data of " ' . $user->firstname . ' ' . $user->lastname . ' "');
 		}
 	}
 
