@@ -6,18 +6,18 @@
 	@if(Session::has('message'))
 		@if(Session::has('positive'))
 			<div class="alert alert-success hideMsg">
-				<p> {{ Session('message') }} </p>
+				{{ Session('message') }}
 			</div>
 		@else 
 			<div class="alert alert-danger hideMsg">
-				<p> {{ Session('message') }} </p>
+				{{ Session('message') }}
 			</div>
 		@endif		
 	@endif
 
 	@if(Session::has('failMessage'))
-		<div id="message" class="alert alert-danger hideMsg"> 
-			<p>That event does not exist</p> 
+		<div class="alert alert-danger hideMsg"> 
+			That event does not exist 
 		</div>
 	@endif
 

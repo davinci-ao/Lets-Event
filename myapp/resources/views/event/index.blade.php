@@ -4,12 +4,12 @@
 <div class="container">
 
 	@if(Session::has('message'))
-		<div class="alert {{ Session::get('alert-class', 'alert-success') }} hideMsg">
-			<p> {{ Session('message') }} </p>
+		<div class="alert alert-success hideMsg">
+			{{ Session('message') }}
 		</div>
 	@endif
 
-	@foreach ($errors->all() as $message)
+	@foreach ($errors->all() as $message
 		<div class="alert alert-danger hideMsg">
 			{{ $message }}
 		</div>

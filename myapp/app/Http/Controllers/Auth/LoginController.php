@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Http\Models\User;
-use Session;
 
 class LoginController extends Controller
 {
@@ -46,11 +45,11 @@ use AuthenticatesUsers;
 		$user = User::Where('email', $request->email)->first();
 
 		if ($user == null) {
-			return $this->sendFailedLoginResponse($request, Session::flash('message', 'There is no account known with these credentials'));
+			return $this->sendFailedLoginResponse($request)->withErrors(['no_account_found' => 'There is no account known with these credentials']);
 		}
 
 		if ($user->activated == 'not activated') {
-			return $this->sendFailedLoginResponse($request, Session::flash('message', 'This acount is not activated'));
+			return $this->sendFailedLoginResponse($request)->withErrors(['account_not_active' => 'This acount is not activated']);
 		}
 		// If the class is using the ThrottlesLogins trait, we can automatically throttle
 		// the login attempts for this application. We'll key this by the username and

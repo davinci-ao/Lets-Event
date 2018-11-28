@@ -61,9 +61,9 @@ use RegistersUsers;
 				function($attribute, $value, $fail) {
 					$user = User::where('student_nr', $value)->first();
 					if ($user === null) {
-						return $fail(Session::flash('message', 'No user found'));
+						return $fail('No user found');
 					} else if ($user->activated == 'activated') {
-						return $fail(Session::flash('message', 'This acount is already active'));
+						return $fail('This acount is already active');
 					}
 				}
 			  ]
@@ -99,15 +99,14 @@ use RegistersUsers;
 		$user = User::where('token', $token)->first();
 		if ($user == null || $user->activated == 'activated') {
 			if ($user == null) {
-				Session::flash('message', 'An unexpected error has accord');
+				$message = ['user_not_found' => 'An unexpected error has accored'];
 			} else if ($user->activated == 'activated') {
-				Session::flash('message', 'This acount is already active');
+				$message = ['acount_already_active' => 'This acount is already active'];
 			}
-			return redirect()->route('login');
+			return redirect()->route('login')->withErrors($message);
 		}
 		if ((strtotime(date('Y-m-d'))) > strtotime($user->email_send_at . " +2 days")) {
-			Session::flash('message', 'This email has expired');
-			return redirect()->route('register');
+			return redirect()->route('register')->withErrors(['email_expired' => 'This email has expired']);
 		}
 
 		return view('registration.setPassword', ['token' => $token]);
@@ -125,16 +124,15 @@ use RegistersUsers;
 
 		if ($user == null || $user->activated == 'activated') {
 			if ($user == null) {
-				Session::flash('message', 'An unexpected error has accore6d');
+				$message = ['user_not_found' => 'An unexpected error has accored'];
 			} else if ($user->activated == 'activated') {
-				Session::flash('message', 'This acount is already active');
+				$message = ['acount_already_active' => 'This acount is already active'];
 			}
-			return redirect()->route('login');
+			return redirect()->route('login')->withErrors($message);
 		}
 
 		if ((strtotime(date('Y-m-d'))) > strtotime($user->email_send_at . " +2 days")) {
-			Session::flash('message', 'This email has expired');
-			return redirect()->route('register');
+			return redirect()->route('register')->withErrors(['email_expired' => 'This email has expired']);
 		}
 
 		$validator = Validator::make($request->all(), [
@@ -151,10 +149,7 @@ use RegistersUsers;
 
 		$user->save();
 
-		Session::flash('positive', true);
-		Session::flash('message', 'Succes you can now log in');
-
-		return redirect('login');
+		return redirect('login')->with('message', 'Succes you can now log in');
 	}
 
 	/*	 * *
@@ -169,8 +164,7 @@ use RegistersUsers;
 		$this->validator($request->all())->validate();
 		event(new Registered($user = $this->create($request->all())));
 
-		Session::flash('positive', true);
-		return redirect()->route('register')->with("message", "A Registration email has been send");
+		return redirect()->route('register')->with('message', 'A Registration email has been send');
 	}
 
 }

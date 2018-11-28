@@ -7,7 +7,6 @@ use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
 use App\Http\Models\User;
-use Session;
 
 class ForgotPasswordController extends Controller
 {
@@ -47,21 +46,17 @@ use SendsPasswordResetEmails;
 		$user = User::Where('email', $request->email)->first();
 
 		if ($user == null) {
-			Session::flash('message', 'No account found');
-			return redirect()->route('password.request');
+			return redirect()->route('password.request')->withErrors(['no_acount_found' => 'No account found']);
 		}
 
 		if ($user->activated == 'not activated') {
-			Session::flash('message', 'This account is not activated');
-			return redirect()->route('password.request');
+			return redirect()->route('password.request')->withErrors(['acount_not_active' => 'This account is not activated']);
 		}
 
 		// We will send the password reset link to this user. Once we have attempted
 		// to send the link, we will examine the response then see the message we
 		// need to show to the user. Finally, we'll send out a proper response.
-		$response = $this->broker()->sendResetLink(
-		    $request->only('email')
-		);
+		$response = $this->broker()->sendResetLink($request->only('email'));
 
 		return $response == Password::RESET_LINK_SENT ? $this->sendResetLinkResponse($response) : $this->sendResetLinkFailedResponse($request, $response);
 	}
