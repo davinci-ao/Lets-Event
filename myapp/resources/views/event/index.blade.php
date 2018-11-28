@@ -9,7 +9,7 @@
 		</div>
 	@endif
 
-	@foreach ($errors->all() as $message
+	@foreach ($errors->all() as $message)
 		<div class="alert alert-danger hideMsg">
 			{{ $message }}
 		</div>
