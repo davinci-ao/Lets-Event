@@ -18,7 +18,6 @@
 
 		<div class="col-md-8">
 			<div class="card">
-				
 				<div class="card-header">
 					<big> <strong>{{$event->name}}</strong></big>
 					@if($event->user_id === auth()->user()->id || auth()->user()->role == 'teacher')
