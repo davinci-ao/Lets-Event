@@ -29,6 +29,8 @@ $(document).ready(function(){
 
 		const reader = new FileReader;
 
+		
+
 		reader.onload = function(input) {
 			colums = [ [], [], [], [] ]; 
 			
@@ -102,10 +104,10 @@ $(document).ready(function(){
 		    cache : false,
 		    data: 
 		    {
-		    	student:   getOrder(0),
-		    	firstName: getOrder(1),
-		    	prefix:    getOrder(2),
-		    	lastName:  getOrder(3)
+		    	student:   colums[ order[0] ],
+		    	firstName: colums[ order[1] ],
+		    	prefix:    colums[ order[2] ],
+		    	lastName:  colums[ order[3] ]
 		    },
 		    success: function(data) {
 		    	if (data.succes === 'true') {
@@ -129,15 +131,6 @@ $(document).ready(function(){
 			$('#feedback').addClass( 'alert-danger'  ).empty().removeClass( 'alert-success' ).append( feedback ).show()
 		} else if (type === "positive") {
 			$('#feedback').addClass( 'alert-success' ).empty().removeClass( 'alert-danger' ).append( feedback ).show()
-		}
-	}
-
-	function getOrder(orderNmr)
-	{
-		for (var i = 0; i < 4; i++) {
-			if (order[i] == orderNmr) {
-				return colums[i];
-			}
 		}
 	}
 
