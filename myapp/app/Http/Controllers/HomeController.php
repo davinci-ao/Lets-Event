@@ -44,7 +44,7 @@ class HomeController extends Controller
 			Session::flash('alert-class', 'alert-danger');	
 			$message = 'You have a ban and been written out by all events. We also have deleted the events where you are the organisator of, contact the admin for more info.';
 		} else {
-			$message = 'Welcome to Lets Event!';
+			$message = "Welcome to Lets Event!";
 		}
 		
 		return view('home', ['user' => $user, 'location' => $location, 'events' => $events])->with('message', $message);
