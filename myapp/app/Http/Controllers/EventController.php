@@ -27,7 +27,7 @@ class EventController extends Controller
 	 */
 	public function index()
 	{
-		return view('event.index', ['events' => Event::where('status', 'accepted')->get(), 'user' => auth()->user()]);
+		return view('event.index', ['events' => Event::where('status', 'accepted')->orderBy('date_time')->get(), 'user' => auth()->user()]);
 	}
 
 	/**

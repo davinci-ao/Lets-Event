@@ -37,6 +37,7 @@
 									<div class="card-body eventIndexName center">
 										<a  href="{{ route('event.show', $event->id)}}" > {{ $event->name }}</a> 
 										<p>dezetextis120charlanglololololololololdezetextis120charlanglololololololololdezetextis120charlanghhh</p>
+										<p>{{date("Y-m-d ",$event->date_time)}}</p>
 									</div>
 									</a> 
 								</td>
