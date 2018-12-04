@@ -72,7 +72,7 @@
 									@if ( Auth::user()->role == "teacher" ) 
 										<a class="dropdown-item" href="{{ route('import') }}" >Import CSV</a>
 										<a class="dropdown-item" href="{{ route('userIndex') }}" >View Users</a>
-										<a class="dropdown-item" href="{{ route('location.index') }}" >View locations</a>
+										<a class="dropdown-item" href="{{ route('location.index') }}" >View Locations</a>
 									@endif
 
 									<a class="dropdown-item" href="{{ route('event.index') }}" >View Events</a>

@@ -32,6 +32,8 @@ $(document).ready(function(){
 		
 
 		reader.onload = function(input) {
+			colums = [ [], [], [], [] ]; 
+			
 			text = reader.result;
 			text = text.split('\n');
 
@@ -86,6 +88,7 @@ $(document).ready(function(){
 		}
 		var extension = this.files[0].name.match(/\..+/);
 		$('#table').empty();
+		$('#feedback').empty().hide();
 		if ( extension[0] === '.csv' ) {
 			reader.readAsText(this.files[0]);
 		} else {
@@ -124,12 +127,10 @@ $(document).ready(function(){
 
 	function showFeedback(feedback, type = "negative")
 	{
-		$('#feedback').hide()
-
 		if (type === "negative") {
-			$('#feedback').addClass( 'alert-danger'  ).removeClass( 'alert-success' ).empty().append( feedback ).show()
+			$('#feedback').addClass( 'alert-danger'  ).empty().removeClass( 'alert-success' ).append( feedback ).show()
 		} else if (type === "positive") {
-			$('#feedback').addClass( 'alert-success' ).removeClass( 'alert-danger' ).empty().append( feedback ).show()
+			$('#feedback').addClass( 'alert-success' ).empty().removeClass( 'alert-danger' ).append( feedback ).show()
 		}
 	}
 

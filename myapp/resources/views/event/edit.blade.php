@@ -2,28 +2,27 @@
 
 @section('content')
 @foreach ($errors->all() as $message)
-<div class="container">
-	<div class="row justify-content-center">
-		<div class="col-md-8">
-			<div class="alert alert-danger">
-	    		{{ $message }}
+	<div class="container hideMsg">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="alert alert-danger">
+		    		{{ $message }}
+		    	</div>
 	    	</div>
-    	</div>
+		</div>
 	</div>
-</div>
 @endforeach
 @if (Session::has('message'))
-<div class="container">
-	<div class="row justify-content-center">
-		<div class="col-md-8">
-			<div class="alert {{ Session::get('alert-class', 'alert-info') }} hideMsg">
-				{{ Session::get('message') }}
+	<div class="container hideMsg">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="alert {{ Session::get('alert-class', 'alert-info') }} hideMsg">
+					{{ Session::get('message') }}
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 @endif
-
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
@@ -46,7 +45,7 @@
 							<input class="col-md-4 form-control" min="{{ date('Y-m-d') }}" type="date" name="eventDate" id="date" value="{{ date('Y-m-d', $event->date_time) }}" required>
 						
 							<label class="control-label col-md-2" for="time">  Time*  </label>
-							<input value="{{ date('G:i', $event->date_time) }}" class="col-md-4 form-control" type="time" name="eventTime" id="time" value="{{ old('eventTime') }}" required>
+							<input value="{{ date('h:i', $event->date_time) }}" class="col-md-4 form-control" type="time" name="eventTime" id="time" required>
 						</div>
 
 						<div class="form-group row">

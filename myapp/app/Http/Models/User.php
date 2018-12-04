@@ -51,6 +51,24 @@ class User extends Authenticatable
 		
 	}
 
+	public function editUser($data)
+	{
+		if ( empty($data['status']) ) $data['status'] = $this->status;
+		
+        $this->fill([
+		    "firstname" => $data['firstname'],
+		    "lastname" => $data['lastname'],
+		    "student_nr" => $data['student_number'],
+		    "education_location_id" => $data['location'],
+            "email" => $data['email'],
+		    "activated" => $data['activated'],
+		    "role" => $data['role'], 
+		    "status" => $data['status']
+		]);
+
+		return $this->save();
+	}
+
 	public function events()
 	{
 		return $this->belongsToMany('App\Http\Models\Event', 'participations');

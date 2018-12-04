@@ -13,10 +13,13 @@
 				<div class="card-header">Import CSV file</div>
 
 				<div class="card-body">
-					CSV file to import<input id="csv_file" type="file" class="form-control" name="file">	
+					<div class="custom-file">
+						<input id="csv_file" type="file" class="custom-file-input" id="inputGroupFile01">
+						<label class="custom-file-label" for="inputGroupFile01">CSV file to import</label>
+					</div>	
 				</div>
 
-				<div id="table">
+				<div id="table" class="table-responsive-sm">
 
 				</div>
 			</div>

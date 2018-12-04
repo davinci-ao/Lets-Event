@@ -4,36 +4,72 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use App\Http\Models\User;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
+	/*
+	  |--------------------------------------------------------------------------
+	  | Login Controller
+	  |--------------------------------------------------------------------------
+	  |
+	  | This controller handles authenticating users for the application and
+	  | redirecting them to your home screen. The controller uses a trait
+	  | to conveniently provide its functionality to your applications.
+	  |
+	 */
 
-    use AuthenticatesUsers;
+use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
+	/**
+	 * Where to redirect users after login.
+	 *
+	 * @var string
+	 */
+	protected $redirectTo = '/home';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$this->middleware('guest')->except('logout');
+	}
+
+	public function login(Request $request)
+	{
+		$this->validateLogin($request);
+		$user = User::Where('email', $request->email)->first();
+
+		if ($user == null) {
+			return $this->sendFailedLoginResponse($request)->withErrors(['no_account_found' => 'There is no account known with these credentials']);
+		}
+
+		if ($user->activated == 'not activated') {
+			return $this->sendFailedLoginResponse($request)->withErrors(['account_not_active' => 'This acount is not activated']);
+		}
+		// If the class is using the ThrottlesLogins trait, we can automatically throttle
+		// the login attempts for this application. We'll key this by the username and
+		// the IP address of the client making these requests into this application.
+		if ($this->hasTooManyLoginAttempts($request)) {
+			$this->fireLockoutEvent($request);
+
+			return $this->sendLockoutResponse($request);
+		}
+
+		if ($this->attemptLogin($request)) {
+			return $this->sendLoginResponse($request);
+		}
+
+		// If the login attempt was unsuccessful we will increment the number of attempts
+		// to login and redirect the user back to the login form. Of course, when this
+		// user surpasses their maximum number of attempts they will get locked out.
+		$this->incrementLoginAttempts($request);
+
+		return $this->sendFailedLoginResponse($request);
+	}
+
 }
