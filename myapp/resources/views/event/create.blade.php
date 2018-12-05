@@ -33,9 +33,8 @@
 				</div>
 
 				<div class="card-body">
-					<form class="form-horizontal" action="{{ route('event.store') }}" method="POST">
+					<form class="form-horizontal" enctype="multipart/form-data" action="{{ route('event.store') }}" method="POST">
 						@csrf
-						<input id="csv_file" type="file" class="custom-file-input" id="inputGroupFile01">
 						<div class="form-group row">
 							<label class="control-label col-md-2" for="name">  Name*  </label>
 							<input class="form-control col-md-10" type="text" name="eventName" placeholder="Masked Gala" id="name" value="{{ old('eventName') }}" required>
@@ -82,6 +81,15 @@
 								@endforeach
 							</select>
 						</div>
+						
+						<div class="custom-file" style="padding-bottom: 55px">
+							<input data-preview="#preview" id="imgInp" type="file" class="custom-file-input eventThumbnailImport" id="inputGroupFile01" name="eventThumbnail">
+							<label class="custom-file-label" for="inputGroupFile01">Event Thumbnail</label>
+						</div>	
+						<div class="custom-file" style="padding-bottom: 55px">
+							<input data-preview="#preview"  type="file" class="custom-file-input eventPictureImport" id="inputGroupFile02" name="eventPicture">
+							<label class="custom-file-label" for="inputGroupFile02">Event Picture</label>
+						</div>	
 
 						<button type="submit" class="btn btn-primary">Save</button>
 					</form>

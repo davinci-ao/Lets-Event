@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use App\Http\Models\Category;
 use App\Http\Models\Event;
 use App\Http\Models\locations;
@@ -58,14 +59,25 @@ class EventController extends Controller
 	 */
 	public function store(Request $request)
 	{
+
 		$data = $this->toDefault($request->all());
 		$validator = $this->validateEvent($data);
-
 
 		if ($validator->fails()) {
 			return back()->withErrors($validator)->withInput();
 		}
+		$data['eventPicture'] = "";
+		$data['eventThumbnail']  = "";
 
+		if ($request->file('eventThumbnail') != null) {
+			$thumbnailName = Storage::put('public/EventThumbnails', $request->file('eventThumbnail'));
+			$data['eventThumbnail'] = str_replace("public", "storage", $thumbnailName);
+		}
+		if ($request->file('eventPicture') != null) {
+			$pictureName = Storage::put('public/EventPictures', $request->file('eventPicture'));
+			$data['eventPicture'] = str_replace("public", "storage", $pictureName);
+		}
+		
 		$event = new Event();
 		$event = $event->saveEventData($data);
 
@@ -147,6 +159,14 @@ class EventController extends Controller
 			if (!empty($request->tags)) {
 				$tags = $this->saveTags($request->tags);
 				$event->categories()->sync($tags);
+			}
+			if ($request->file('eventThumbnail') != null) {
+				$thumbnailName = Storage::put('public/EventThumbnails', $request->file('eventThumbnail'));
+				$data['eventThumbnail'] = str_replace("public", "storage", $thumbnailName);
+			}
+			if ($request->file('eventPicture') != null) {
+				$pictureName = Storage::put('public/EventPictures', $request->file('eventPicture'));
+				$data['eventPicture'] = str_replace("public", "storage", $pictureName);
 			}
 
 			$event->updateEventData($data);
