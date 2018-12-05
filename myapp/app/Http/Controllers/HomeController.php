@@ -8,9 +8,8 @@
 
 namespace App\Http\Controllers;
 use Auth;
-use App\Http\Models\locations;
+use App\Http\Models\participations;
 use App\Http\Models\Event;
-use Session;
 
 class HomeController extends Controller
 {
@@ -33,21 +32,15 @@ class HomeController extends Controller
 	public function index()
 	{
 		$user = Auth::user();
-		$location = Locations::where('id', $user->education_location_id)->first();
-		$events = $user->events()->get();
-		//dd($events);
 
-		if ($user->status == 'warning') {
-			Session::flash('alert-class', 'alert-warning');
-			$message = 'Watch out you have a warning, the next step is a ban!';
-		} elseif ($user->status == 'ban') {	
-			Session::flash('alert-class', 'alert-danger');	
-			$message = 'You have a ban and been written out by all events. We also have deleted the events where you are the organisator of, contact the admin for more info.';
-		} else {
-			$message = "Welcome to Lets Event!";
+		if ($user->status == 'empty') {
+			session()->flash('default', 'Welcome to Letsevents!');
+		}elseif ($user->status == 'warning') {
+			session()->flash('warning', 'Watch out you have a warning, the next step is a ban!' );
+		}elseif ($user->status == 'ban') {		
+			session()->flash('danger', 'You have a ban and been written out by all events. We also have deleted the events where you are the organisator of, contact the admin for more info.');
 		}
-		
-		return view('home', ['user' => $user, 'location' => $location, 'events' => $events])->with('message', $message);
+		return view('home', ['user' => $user]);
 	}
 
 }
