@@ -36,8 +36,7 @@
 				<div class="card-body description">
 					<div class="form-group eventDesctiption ">
 
-						<img width="200" height="200"
-						     @if($event->indexpicture == null)
+						<img width="200" height="200"  @if($event->viewpicture == null || "")
 						     src="{{ asset('misc/PlaceHolderImage.png') }}" 
 						     @else
 						     src="/{{ $event->viewpicture }}"

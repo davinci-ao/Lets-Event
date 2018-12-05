@@ -112,6 +112,36 @@ $(document).ready(function () {
 	});
 });
 
+
+
 /***/ })
 
 /******/ });
+
+
+	function readURL1(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function (e) {
+				$('#inputGroupFile01PR').attr('src', e.target.result);
+				$('#inputGroupFile01div').css({'padding-bottom' : '250px'});
+				
+			};
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+	function readURL2(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function (e) {
+				$('#inputGroupFile02PR').attr('src', e.target.result);
+				$('#inputGroupFile02div').css({'padding-bottom' : '250px'});
+				
+			};
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}

@@ -190,12 +190,6 @@ html, body {
 	}
 }
 
-
-.eventPictureImport{
-}
-
-
-
 .tdEventIndex{
 	width: 100%;
 }
@@ -206,4 +200,8 @@ html, body {
 
 .eventIndexPage{
 	width: 100%;
+}
+
+#inputGroupFile01PR{
+	padding: 4px;
 }

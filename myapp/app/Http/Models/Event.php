@@ -28,7 +28,7 @@ class Event extends \Illuminate\Database\Eloquent\Model
 		return $this->belongsToMany('App\Http\Models\User', 'participations');
 	}
 
-	protected $fillable = ['name', 'indexpicture', 'viewpicture', 'price', 'minimum_members', 'maximum_members', 'location_id', 'status', 'description', 'user_id', 'date_time'];
+	protected $fillable = ['name', 'indexpicture', 'viewpicture', 'price', 'minimum_members', 'maximum_members', 'location_id', 'status', 'description', 'shortdescription', 'user_id', 'date_time'];
 
 	/**
 	 * Saves the event name to the database with the data from eventData array
@@ -54,6 +54,7 @@ class Event extends \Illuminate\Database\Eloquent\Model
 			  "maximum_members" => $eventData['maximum_members'],
 			  "location_id" => $eventData['eventLocation'],
 			  "description" => $eventData['eventDescription'],
+			  "shortdescription" => $eventData['shortdesc'],
 			  "user_id" => auth()->user()->id
 		]);
 	}
@@ -67,12 +68,15 @@ class Event extends \Illuminate\Database\Eloquent\Model
 	{
 		$this->fill([
 		    "name" => $eventData['eventName'],
+		    "indexpicture" => $eventData['eventThumbnail'],
+		    "viewpicture" => $eventData['eventPicture'],
 		    "date_time" => $eventData['dateTime'],
 		    "price" => $eventData['eventPrice'],
 		    "minimum_members" => $eventData['minimum_members'],
 		    "maximum_members" => $eventData['maximum_members'],
 		    "location_id" => $eventData['eventLocation'],
-		    "description" => $eventData['eventDescription']
+		    "description" => $eventData['eventDescription'],
+		    "shortdescription" => $eventData['shortdesc']
 		]);
 		return $this->save();
 	}
