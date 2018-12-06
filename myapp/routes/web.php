@@ -40,6 +40,8 @@ Route::group(['middleware' => ['checkRole']], function () {
 	//approve events
 	Route::get('/event/approve', 'EventController@approve')->name('eventApprove');
 });
-
+Route::resource('category', 'CategoryController')->only([
+    'index', 'show'
+]);
 // events
 Route::resource('event', 'EventController');

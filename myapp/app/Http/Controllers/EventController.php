@@ -160,6 +160,9 @@ class EventController extends Controller
 				$tags = $this->saveTags($request->tags);
 				$event->categories()->sync($tags);
 			}
+
+			$data['eventPicture'] = "";
+			$data['eventThumbnail'] = "";
 			
 			if ($request->file('eventThumbnail') != null) {
 				$thumbnailName = Storage::put('public/EventThumbnails', $request->file('eventThumbnail'));
