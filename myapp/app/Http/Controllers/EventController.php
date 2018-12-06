@@ -66,6 +66,7 @@ class EventController extends Controller
 		if ($validator->fails()) {
 			return back()->withErrors($validator)->withInput();
 		}
+		
 		$data['eventPicture'] = "";
 		$data['eventThumbnail'] = "";
 
@@ -160,9 +161,6 @@ class EventController extends Controller
 				$tags = $this->saveTags($request->tags);
 				$event->categories()->sync($tags);
 			}
-
-			$data['eventPicture'] = "";
-			$data['eventThumbnail'] = "";
 			
 			if ($request->file('eventThumbnail') != null) {
 				$thumbnailName = Storage::put('public/EventThumbnails', $request->file('eventThumbnail'));
