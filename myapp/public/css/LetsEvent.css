@@ -84,7 +84,124 @@ html, body {
 }
 
 #eventDesctiption{
-	width: 100%;
+	display: inline;
+	float:right;
+	width: 70%;
 	padding: 9px;
 	font-size: 20px;
 }	
+
+.EventTags{
+
+}
+@media (min-width: 768px) {
+	.attendees{
+		width: 30%; 
+	}
+	#eventViewPicture{
+		float:left;
+		display: inline;
+		height:200px; 
+		width:200px;
+	}
+	#eventDesctiption{
+		display: inline;
+		float:right;
+		width: 70%;
+		padding: 9px;
+		font-size: 20px;
+	}	
+
+}
+@media (max-width: 767px) {
+	.attendees{
+		width:91.5%;
+	}
+	#eventViewPicture{
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		height:200px; 
+		width:200px;
+	}
+	#eventDesctiption{
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		width: 100%;
+		padding: 9px;
+		font-size: 20px;
+	}
+}
+
+
+.trViewEvent{
+	display: inline-block;
+	border: 1px #C0C0C0 solid;
+	border-radius: 10px;
+
+}
+
+.indexButton{
+	float: right;
+}
+
+@media (min-width: 1025px) {
+	.eventIndexPicture{
+		float:right;
+		display: block;
+		width:320px;
+		height: 200px;
+		padding: 0;
+	}
+
+	.eventIndexName{
+		float:left;
+		display: block;
+		width:300px;
+		padding: 0;
+	}
+
+
+}
+@media (max-width: 1024px) {
+	.eventIndexPicture{
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+		width:320px;
+		height: 200px;
+		padding: 0;
+	}
+
+	.eventIndexName{
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+		width:300px;
+		padding: 0;
+	}
+	
+	
+	.indexButton{
+		display: inline;
+		float: right;
+		padding: 5px;
+	}
+}
+
+.tdEventIndex{
+	width: 100%;
+}
+
+#Indexoverview{
+	font-size: 20px;
+}
+
+.eventIndexPage{
+	width: 100%;
+}
+
+#inputGroupFile01PR{
+	padding: 4px;
+}

@@ -16,11 +16,14 @@ class EventCreateTable extends Migration
 		Schema::create('events', function (Blueprint $table) {
 			$table->increments('id');
 			$table->string('name');
+			$table->string('indexpicture')->nullable();
+			$table->string('viewpicture')->nullable();
 			$table->date('datum');
 			$table->time('time');
 			$table->double('price');
 			$table->integer('location_id');
 			$table->string('description')->nullable();
+			$table->string('shortdescription')->nullable();
 			$table->integer('user_id');
 			$table->integer('minimum_members')->nullable();
 			$table->integer('maximum_members')->nullable();

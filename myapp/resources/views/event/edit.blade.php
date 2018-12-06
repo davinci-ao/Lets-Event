@@ -33,7 +33,7 @@
 				</div>
 				<div class="card-body">
 					
-					<form action="{{ route('event.update', $event->id)}}" method="POST">
+					<form action="{{ route('event.update', $event->id)}}" enctype="multipart/form-data" method="POST">
 						@csrf
 						@method('PUT')
 						<div class="form-group row">
@@ -72,7 +72,12 @@
 
 						<div class="form-group row">
 							<label class="control-label col-md-2" for="description">Description</label>
-							<textarea class="form-control col-md-10" name="eventDescription" id="eventDescription">{{$event->description}}</textarea>
+							<textarea maxlength="180" max="180" class="form-control col-md-10" name="eventDescription" id="eventDescription">{{$event->description}}</textarea>
+						</div>
+						
+						<div class="form-group row">
+							<label class="control-label col-md-2" for="shortdesc">short description </label>
+							<textarea maxlength="50" max="50" placeholder="(max 50 characters)" class="form-control col-md-10" name="shortdesc" id="eventDescription">{{$event->shortdescription}}</textarea>
 						</div>
 
 						<div class="form-group row">
@@ -84,6 +89,19 @@
 							</select>
 						</div>
 						
+						<p style="color: grey">the previews are how it will be shown on their the page(has to be a jpg)</p>
+						<div class="custom-file" id="inputGroupFile01div" style="padding-bottom: 55px">
+							<input type="file" onchange="readURL1(this)" class="custom-file-input eventThumbnailImport" id="inputGroupFile01" name="eventThumbnail">
+							<label class="custom-file-label" for="inputGroupFile01"  >Event Thumbnail Max Dimensions 3840*2160</label>		
+							<img id="inputGroupFile01PR" src="#" alt="" width="320" height="200" />
+						</div>	
+
+						<div class="custom-file"  id="inputGroupFile02div" style="padding-bottom: 55px">
+							<input  type="file" onchange="readURL2(this)" class="custom-file-input eventPictureImport" id="inputGroupFile02" name="eventPicture">
+							<label class="custom-file-label" for="inputGroupFile02">Event Picture Max Dimensions 2160*2160 </label>
+							<img id="inputGroupFile02PR" src="#" alt="" width="200" height="200" />
+						</div>	
+						
 						<button type="submit" class="btn btn-primary">Edit</button>
 					</form>
 				</div>
@@ -91,6 +109,37 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+	
+	function readURL1(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function (e) {
+				$('#inputGroupFile01PR').attr('src', e.target.result);
+				$('#inputGroupFile01div').css({'padding-bottom' : '250px'});
+				
+			};
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+	function readURL2(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function (e) {
+				$('#inputGroupFile02PR').attr('src', e.target.result);
+				$('#inputGroupFile02div').css({'padding-bottom' : '250px'});
+				
+			};
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+
+</script>
+
 <?php echo "<script type='text/javascript'>
 $(document).ready(function(){
 	var eventTags = [];";
