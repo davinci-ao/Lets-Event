@@ -18,7 +18,6 @@
 
 		<div class="col-md-8">
 			<div class="card">
-				
 				<div class="card-header">
 					<big> <strong>{{$event->name}}</strong></big>
 					@if($event->user_id === auth()->user()->id || auth()->user()->role == 'teacher')
@@ -37,7 +36,13 @@
 				<div class="card-body description">
 					<div class="form-group eventDesctiption ">
 
-						<img src="{{ asset('misc/PlaceHolderImage.png') }}" id="eventViewPicture"  alt="EventPicture">
+						<img width="200" height="200"  @if($event->viewpicture == null || "")
+						     src="{{ asset('misc/PlaceHolderImage.png') }}" 
+						     @else
+						     src="/{{ $event->viewpicture }}"
+						     @endif
+						     alt="EventPicture" >
+
 						<label class="control-label col-sm-9" id="eventDesctiption">@if($event->description != "") {{$event->description}} @else  There is no description  @endif </label>
 					</div>
 				</div>

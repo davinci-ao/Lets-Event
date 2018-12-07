@@ -32,11 +32,19 @@
 							<tr class="row" id="trEventIndex">
 								<td class="tdEventIndex">
 									<div class="card-body eventIndexPicture center">
-										<a  href="{{ route('event.show', $event->id)}}" ><img src="{{ asset('misc/ThumbnailPlaceholder.png') }}"  alt="EventPicture"></a>
+										<a  href="{{ route('event.show', $event->id)}}" >
+											<img width="320" height="200"
+											@if($event->indexpicture == null)
+											src="{{ asset('misc/ThumbnailPlaceholder.png') }}" 
+											@else
+											src="/{{ $event->indexpicture }}"
+											@endif
+											alt="EventPicture" ></a>
 									</div>
 									<div class="card-body eventIndexName center">
 										<a  href="{{ route('event.show', $event->id)}}" > {{ $event->name }}</a> 
-										<p>dezetextis120charlanglololololololololdezetextis120charlanglololololololololdezetextis120charlanghhh</p>
+										<p>{{ $event->shortdescription }}</p>
+										<p>{{date("Y-m-d ",$event->date_time)}}</p>
 									</div>
 									</a> 
 								</td>
