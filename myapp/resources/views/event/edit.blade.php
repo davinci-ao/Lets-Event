@@ -102,7 +102,7 @@
 							<img id="inputGroupFile02PR" src="#" alt="" width="200" height="200" />
 						</div>	
 						
-						<button type="submit" class="btn btn-primary">Edit</button>
+						<button type="submit" class="btn btn-primary">Save</button>
 					</form>
 				</div>
 			</div>
