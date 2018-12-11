@@ -39,7 +39,7 @@
 					@if ($user->role == 'student')
 						<p>Student number: {{$user->student_nr}}</p>
 					@elseif ($user->role == 'teacher')
-						<p>teacher code: {{$user->student_nr}}</p>
+						<p>Teacher code: {{$user->student_nr}}</p>
 					@endif
 				</div>
 			</div>

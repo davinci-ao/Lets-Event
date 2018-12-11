@@ -66,14 +66,17 @@ class EventController extends Controller
 		if ($validator->fails()) {
 			return back()->withErrors($validator)->withInput();
 		}
-		
+
 		$data['eventPicture'] = "";
 		$data['eventThumbnail'] = "";
 
+		// picture for index page
 		if ($request->file('eventThumbnail') != null) {
 			$thumbnailName = Storage::put('public/EventThumbnails', $request->file('eventThumbnail'));
 			$data['eventThumbnail'] = str_replace("public", "storage", $thumbnailName);
 		}
+		
+		// picture for show page
 		if ($request->file('eventPicture') != null) {
 			$pictureName = Storage::put('public/EventPictures', $request->file('eventPicture'));
 			$data['eventPicture'] = str_replace("public", "storage", $pictureName);
@@ -161,13 +164,19 @@ class EventController extends Controller
 				$tags = $this->saveTags($request->tags);
 				$event->categories()->sync($tags);
 			}
-			
-			if ($request->file('eventThumbnail') != null) {
+
+
+			$data['eventPicture'] = $event->viewpicture;
+			$data['eventThumbnail'] = $event->indexpicture;
+
+			// picture for index page
+			if ($request->file('eventThumbnail') != null || "") {
 				$thumbnailName = Storage::put('public/EventThumbnails', $request->file('eventThumbnail'));
 				$data['eventThumbnail'] = str_replace("public", "storage", $thumbnailName);
 			}
-			
-			if ($request->file('eventPicture') != null) {
+
+			// picture for show page
+			if ($request->file('eventPicture') != null || "") {
 				$pictureName = Storage::put('public/EventPictures', $request->file('eventPicture'));
 				$data['eventPicture'] = str_replace("public", "storage", $pictureName);
 			}
@@ -276,6 +285,7 @@ class EventController extends Controller
 			$category = new Category();
 			$cat = $category->where('name', $tags[$key])->get();
 			if ($cat->isNotEmpty()) {
+				$tags[$key] = $cat[0]->id;
 				continue;
 			}
 			$category = $category->createCategory($tags[$key]);
