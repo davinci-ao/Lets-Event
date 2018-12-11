@@ -1,22 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-
-	@if(Session::has('message'))
-		@if(Session::has('positive'))
-			<div class="alert alert-success hideMsg">
-		@else 
-			<div class="alert alert-danger hideMsg">
-		@endif		
-			{{ Session('message') }}
-		</div>
-	@endif
-			
+<div class="container">		
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="card">
-				<div class="card-header" ><h1 class='headEventName'>Users</h1></div>
+				<div class="card-header">
+					<h1 class='headEventName'>Users</h1>
+				</div>
 				<div class="card-body">
 					<table class="table">
 						<thead>
@@ -41,5 +32,4 @@
 		</div>
 	</div>
 </div>
-
 @endsection

@@ -1,21 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-@if (Session::has('message'))
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-8">
-			<div class="alert {{ Session::get('alert-class', 'alert-info') }} hideMsg">
-				{{ Session::get('message') }}
-			</div>
-		</div>
-	</div>
-</div>
-@endif
-
-<div class="container">
-	<div class="row justify-content-center">
-
 		<div class="col-md-8">
 			<div class="card">
 				<div class="card-header">
@@ -66,11 +53,7 @@
 				</div>
 			</div>
 			<div class="card">
-
-
 				<div class="card-body">
-
-
 					<div class="form-group ">
 						<label class="control-label col-sm-9 eventDataHeader">Host :</label> 
 						<p class="eventData">{{$organizer->firstname . ' ' . $organizer->lastname}}</p>
@@ -107,7 +90,6 @@
 					@endif
 				</div>
 			</div>
-
 		</div>
 		<div class="card attendees">
 			<div class="card-header">
@@ -119,25 +101,24 @@
 				@endif
 
 				@if ( $guests->pluck('id')->contains(Auth::user()->id) )
-				<form class="float-right" method="POST" action="{{ route('event.update', [$event->id, 'attend' => 'out'])}}">
-					@else 
+					<form class="float-right" method="POST" action="{{ route('event.update', [$event->id, 'attend' => 'out'])}}">
+				@else 
 					<form class="float-right" method="POST" action="{{ route('event.update', [$event->id, 'attend' => 'in'])}}">
-						@endif
+				@endif
 
 						@method('PUT')
 						@csrf
 
 						@if ( $guests->pluck('id')->contains(Auth::user()->id) )
-						<button type="submit" class="btn btn-danger">Write out of the event</button>
+							<button type="submit" class="btn btn-danger">Write out of the event</button>
 						@else 
 						@if (count($guests) == $event->maximum_members && count($guests) != 0)
-						<span class="text-danger">No more free space</span>
+							<span class="text-danger">No more free space</span>
 						@else
-						<button type="submit" class="btn btn-primary">Register for the event</button>
+							<button type="submit" class="btn btn-primary">Register for the event</button>
 						@endif
-						@endif
-
-					</form>
+				@endif
+			</form>
 			</div>
 			<div class="card-body">
 				<div class="form-group description ">

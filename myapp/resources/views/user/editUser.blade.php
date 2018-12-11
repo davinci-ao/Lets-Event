@@ -2,19 +2,6 @@
 
 @section('content')
 <div class="container">
-
-	@if(Session::has('message'))
-		<div class="alert alert-success hideMsg">
-			{{ Session('message') }}
-		</div>
-	@endif
-
-	@foreach ($errors->all() as $message) 
-		<div class="alert alert-danger hideMsg">
-			{{ $message }}
-		</div>
-	@endforeach
-
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 
@@ -26,7 +13,7 @@
 					<div class="card-body">
 
 						<form class="form-horizontal" action="{{ route('updateUser') }}" method="post">
-							@csrf()
+							@csrf
 
 
 							<div class="form-group row">
