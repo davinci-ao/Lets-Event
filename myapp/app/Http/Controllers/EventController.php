@@ -285,6 +285,7 @@ class EventController extends Controller
 			$category = new Category();
 			$cat = $category->where('name', $tags[$key])->get();
 			if ($cat->isNotEmpty()) {
+				$tags[$key] = $cat[0]->id;
 				continue;
 			}
 			$category = $category->createCategory($tags[$key]);
