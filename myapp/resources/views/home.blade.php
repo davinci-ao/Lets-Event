@@ -1,16 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-
-
-
 <div class="container">
 	<div class="card">
 		<div class="card-header">Notifications</div>
 		<div class="alert {{ Session::get('alert-class', 'alert-info') }}">
 			{{ $message }}
 		</div>
-		<div class="card-body"></div>
 	</div>
 	<div class="row justify-content-center">
 		<div class="col-md-7">
@@ -21,9 +17,9 @@
 						<tbody>
 							@foreach ($events as $event)
 							<tr class="row">
-								<td class="col-md-5"><a  href="{{ route('event.show', $event->id)}}" > {{ $event->name }}</a></td>
-								<td class="col-md-4">{{date('Y-m-d', $event->date_time)}}</td>
-								<td class="col-md-3">{{ date('G:i', $event->date_time) }}</td>
+								<td class="col-md-5"><a href="{{ route('event.show', $event->id)}}">{{ $event->name }}</a></td>
+								<td class="col-md-4">{{ date('Y-m-d', $event->date_time)}}</td>
+								<td class="col-md-3">{{ date('G:i', $event->date_time)  }}</td>
 							</tr>
 							@endforeach
 						</tbody>
@@ -49,8 +45,5 @@
 			</div>
 		</div>
 	</div>
-</div>
-</div>
-</div>
 </div>
 @endsection

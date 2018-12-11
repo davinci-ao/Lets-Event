@@ -2,25 +2,6 @@
 
 @section('content')
 <div class="container">
-
-	@if(Session::has('message'))
-		@if(Session::has('positive'))
-			<div class="alert alert-success hideMsg">
-				{{ Session('message') }}
-			</div>
-		@else 
-			<div class="alert alert-danger hideMsg">
-				{{ Session('message') }}
-			</div>
-		@endif		
-	@endif
-
-	@if(Session::has('failMessage'))
-		<div class="alert alert-danger hideMsg"> 
-			That event does not exist 
-		</div>
-	@endif
-
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 

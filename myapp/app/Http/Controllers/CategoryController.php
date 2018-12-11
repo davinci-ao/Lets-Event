@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Models\Category;
 use Illuminate\Http\Request;
 use Validator;
-use session;
 
 class CategoryController extends Controller
 {
@@ -16,8 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        return view('category.index', ['categories' => Category::paginate(8), 'user' => $user]);
+        return view('category.index', ['categories' => Category::paginate(8), 'user' => auth()->user()]);
     }
 
     /**
@@ -38,22 +36,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 
-            ['required',
-                'max:40',
-                function ($attribute, $value, $fail) {
-
-                    $category = new Category();
-                    $category = $category->where('name', $value)->get();
-
-                    if ( $category->isNotEmpty() ) {
-                        return $fail('Category creation failed, The category "' . ucfirst(strtolower($value)) . '" already exsist');
-                    }
-
-                }
-            ]
-        ]);
+        $validator = $this->validateCategory($request);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -96,23 +79,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'id' =>
-            ['required',
-                function ($attribute, $value, $fail) {
-                    $category = new Category();
-                    $category = $category->find($value);
-
-                    if ( $category->name === ucfirst(strtolower($value)) ) {
-                        return $fail('This category already exsist');
-                    }
-
-                    if (!isset($category->id)) {
-                        return $fail('Category not found');
-                    }
-                }],
-            'name' => 'required|max:40',
-        ]);
+        $validator = $this->validateCategory($request);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -121,7 +88,7 @@ class CategoryController extends Controller
         $category = new Category();
         $category->find($request->input('id'))->editCategory($request);
 
-        return redirect('/category');
+        return redirect('/category')->with('message', 'the category has been succesvol edited');
     }
 
     /**
@@ -135,5 +102,12 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id)->deleteCategory();
 
         return redirect('/category')->with('message', $category->name . " Has been deleted succesfully" );
+    }
+
+    private function validateCategory($request)
+    {
+        return $validator = Validator::make($request->all(), [
+            'name' => 'required|max:40|unique:categories,name',
+        ]);
     }
 }

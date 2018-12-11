@@ -1,28 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-@foreach ($errors->all() as $message)
-	<div class="container hideMsg">
-		<div class="row justify-content-center">
-			<div class="col-md-8">
-				<div class="alert alert-danger">
-		    		{{ $message }}
-		    	</div>
-	    	</div>
-		</div>
-	</div>
-@endforeach
-@if (Session::has('message'))
-	<div class="container hideMsg">
-		<div class="row justify-content-center">
-			<div class="col-md-8">
-				<div class="alert {{ Session::get('alert-class', 'alert-info') }} hideMsg">
-					{{ Session::get('message') }}
-				</div>
-			</div>
-		</div>
-	</div>
-@endif
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
@@ -102,7 +80,7 @@
 							<img id="inputGroupFile02PR" src="#" alt="" width="200" height="200" />
 						</div>	
 						
-						<button type="submit" class="btn btn-primary">Edit</button>
+						<button type="submit" class="btn btn-primary">Save</button>
 					</form>
 				</div>
 			</div>

@@ -94,6 +94,26 @@
 				</div>
 			</nav>
 	    <main class="py-4">
+	    	@if (Session::has('message') || $errors->any())
+				<div class="container">
+				    <div class="row justify-content-center">
+				        <div class="col-md-8">
+				        	@if (Session::has('message')) 
+					            <div class="alert alert-info hideMsg">
+					                {{ Session::get('message') }}
+					            </div>
+				            @endif
+
+				            @foreach ($errors->all() as $message) 
+						        <div class="alert alert-danger hideMsg">
+						            {{ $message }}
+						        </div>
+						    @endforeach
+				        </div>
+				    </div>
+				</div>
+			@endif
+
 			@yield('content')
 		</main>
 	</div>
