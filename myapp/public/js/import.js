@@ -33,6 +33,7 @@ $(document).ready(function(){
 
 		reader.onload = function(input) {
 			colums = [ [], [], [], [] ]; 
+			order = [0, 1, 2, 3];
 			
 			text = reader.result;
 			text = text.split('\n');
