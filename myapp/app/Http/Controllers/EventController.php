@@ -208,7 +208,7 @@ class EventController extends Controller
 	 */
 	public function destroy($id)
 	{
-		$event = Event::where('id', $id)->first();
+		$event = Event::findOrFail($id);
 
 		if (Auth::user()->role != "teacher") {
 			if ($event->user_id != Auth::user()->id) {
@@ -221,7 +221,7 @@ class EventController extends Controller
 		$event->users()->detach();
 		$event->categories()->detach();
 
-		Event::where('id', $id)->delete();
+		$event->delete();
 
 		return redirect()->route('event.index')->with('message', ' "' . $event->name . '" has been deleted succesfully');
 	}

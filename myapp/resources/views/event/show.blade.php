@@ -25,7 +25,7 @@
 					<form action="{{ route('event.destroy', $event->id)}}" method="POST" style="display:inline">
 						@method('DELETE')
 						@csrf
-						<button id="eventDeleteButton" class="btn btn-danger" onclick="return confirm('are you sure to delete this Event ?')"> Delete Event </button>
+						<button id="eventDeleteButton" class="btn btn-danger" onclick="return confirm('Are you sure to delete this Event?')"> Delete Event </button>
 					</form>
 					@endif
 					<a class="float-right btn btn-primary" href="{{ route('event.index') }}" >Back to overview</a>
