@@ -43,7 +43,9 @@ class User extends Authenticatable
 				'lastname' => $prefix . ' ' . $lastname,
 				'email' => $studentNumber. '@mydavinci.nl',
 				'password' => '',
-				'education_location_id' => 0
+				'education_location_id' => 1,
+				'role' => 'student',
+				'activated' => 'not activated'
 			]);
 		} catch (\Exception $e) {
 			return false;
