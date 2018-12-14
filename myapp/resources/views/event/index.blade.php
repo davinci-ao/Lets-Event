@@ -19,22 +19,45 @@
 							@foreach ($events as $event)
 							<tr class="row" id="trEventIndex">
 								<td class="tdEventIndex">
-									<div class="card-body eventIndexPicture center">
-										<a  href="{{ route('event.show', $event->id)}}" >
-											<img width="320" height="200"
-											@if($event->indexpicture == null)
-											src="{{ asset('misc/ThumbnailPlaceholder.png') }}" 
-											@else
-											src="/{{ $event->indexpicture }}"
-											@endif
-											alt="EventPicture" ></a>
-									</div>
-									<div class="card-body eventIndexName center">
-										<a  href="{{ route('event.show', $event->id)}}" > {{ $event->name }}</a> 
-										<p>{{ $event->shortdescription }}</p>
-										<p>{{date("Y-m-d ",$event->date_time)}}</p>
-									</div>
-									</a> 
+									<div class="container">
+										<div class="row justify-content-center">
+											<div class="col-md-8">
+												<div class="card-body eventIndexName center">
+													<a  href="{{ route('event.show', $event->id)}}" > {{ $event->name }}</a> 
+													<p>{{ $event->shortdescription }}</p>
+												</div>
+												<div class="eventIndexInfo">
+
+												<table class="table">
+													<tbody>
+														<tr class="trViewEvent">
+															<td class="tdStyle">{{date("Y-m-d ",$event->date_time)}}</td>
+														</tr>
+														@foreach ($event->categories()->where('event_id', $event->id)->get() as $category)
+														<tr class="trViewEvent">
+															<td class="tdStyle"><a href="#">{{$category->name}}</a></td>
+														</tr>
+														@endforeach
+													</tbody>
+												</table>
+													
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="card-body eventIndexPicture center">
+													<a  href="{{ route('event.show', $event->id)}}" >
+														<img width="320" height="200"
+														@if($event->indexpicture == null)
+														src="{{ asset('misc/ThumbnailPlaceholder.png') }}" 
+														@else
+														src="/{{ $event->indexpicture }}"
+														@endif
+														alt="EventPicture" >
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>	
 								</td>
 							</tr>
 							@endforeach
