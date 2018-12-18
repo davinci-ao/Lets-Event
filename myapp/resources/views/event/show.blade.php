@@ -100,7 +100,7 @@
 				{{ count($guests) }}/ {{ $event->maximum_members }}
 				@endif
 
-				@if ( $guests->pluck('id')->contains(Auth::user()->id) )
+				@if ( in_array(Auth()->user()->id, array_column($guests, 'id')) )
 					<form class="float-right" method="POST" action="{{ route('event.update', [$event->id, 'attend' => 'out'])}}">
 				@else 
 					<form class="float-right" method="POST" action="{{ route('event.update', [$event->id, 'attend' => 'in'])}}">
@@ -109,7 +109,7 @@
 						@method('PUT')
 						@csrf
 
-						@if ( $guests->pluck('id')->contains(Auth::user()->id) )
+						@if ( in_array(Auth()->user()->id, array_column($guests, 'id')) ) 
 							<button type="submit" class="btn btn-danger">Write out of the event</button>
 						@else 
 						@if (count($guests) == $event->maximum_members && count($guests) != 0)
@@ -122,7 +122,7 @@
 			</div>
 			<div class="card-body">
 				<div class="form-group description ">
-					@if($guests->isEmpty())
+					@if(count($guests) <= 0)
 					There are no attendees for this event
 					@else
 					<table class="table">
@@ -130,9 +130,9 @@
 							@foreach($guests as $guest)
 							<tr>
 								<td>
-									{{ $guest->firstname }} {{ $guest->lastname }}
-									@if ($event->user_id === $guest->id) 
-									<img title="Host" class="float-right" src="{{ asset('misc/CROWN_OG.jpg') }}" height="25" width="25"> 
+									{{ $guest['firstname'] }} {{ $guest['lastname'] }}
+									@if ($event->user_id === $guest['id']) 
+									<img title="Host" class="float-right" src="{{ asset('misc/CROWN_OG.jpg') }}" height="25" width="25">
 									@endif
 								</td>
 							</tr>
