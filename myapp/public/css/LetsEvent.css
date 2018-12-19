@@ -140,13 +140,23 @@ html, body {
 	border:none;
 }
 
+.tableBottom {
+	position: absolute;
+	bottom: 0;
+	margin: 0;
+}
+
+.tdStyle {
+	font-size: 0.9rem;
+}
+
 .indexButton{
 	float: right;
 }
 
 @media (min-width: 1025px) {
 	.eventIndexPicture{
-		float:right;
+		/*float:right;*/
 		display: block;
 		width:320px;
 		height: 200px;

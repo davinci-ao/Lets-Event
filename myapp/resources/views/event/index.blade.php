@@ -21,32 +21,47 @@
 								<td class="tdEventIndex">
 									<div class="container">
 										<div class="row justify-content-center">
-											<div class="col-md-8">
+											<div class="col-md-7">
 												<div class="card-body eventIndexName center">
 													<a  href="{{ route('event.show', $event->id)}}" > {{ $event->name }}</a> 
 													<p>{{ $event->shortdescription }}</p>
 												</div>
 												<div class="eventIndexInfo">
 
-												<table class="table">
+												<table class="table tableBottom">
 													<tbody>
 														<tr class="trViewEvent">
 															<td class="tdStyle">{{date("Y-m-d ",$event->date_time)}}</td>
 														</tr>
 														@foreach ($event->categories()->where('event_id', $event->id)->get() as $category)
+														@if ($loop->index < 4)
 														<tr class="trViewEvent">
-															<td class="tdStyle"><a href="#">{{$category->name}}</a></td>
+															<td class="tdStyle"><a href="{{route('category.show', $category->id)}}">{{$category->name}}</a></td>
 														</tr>
+														@endif
 														@endforeach
 													</tbody>
 												</table>
 													
 												</div>
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-5">
 												<div class="card-body eventIndexPicture center">
 													<a  href="{{ route('event.show', $event->id)}}" >
-														<img width="320" height="200"
+														<img
+														<?php 
+														$info = getimagesize($event->indexpicture);
+														$width = 280;
+														$ratio = $info[1] / $info[0];
+														$newHeight = (int)($ratio * 280);
+														if ($newHeight < 200) {
+															echo 'height="'.$newHeight.'"';
+														} else {
+															echo 'height=200';
+														}
+														
+														echo 'width="'.$width.'"';
+														?>
 														@if($event->indexpicture == null)
 														src="{{ asset('misc/ThumbnailPlaceholder.png') }}" 
 														@else
