@@ -34,9 +34,11 @@
 															<td class="tdStyle">{{date("Y-m-d ",$event->date_time)}}</td>
 														</tr>
 														@foreach ($event->categories()->where('event_id', $event->id)->get() as $category)
+														@if ($loop->index < 4)
 														<tr class="trViewEvent">
 															<td class="tdStyle"><a href="{{route('category.show', $category->id)}}">{{$category->name}}</a></td>
 														</tr>
+														@endif
 														@endforeach
 													</tbody>
 												</table>
