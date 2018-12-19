@@ -14,6 +14,7 @@ use Auth;
 
 class EventController extends Controller
 {
+	private $organizerId;
 
 	public function __construct()
 	{
@@ -108,9 +109,11 @@ class EventController extends Controller
 		}
 
 		$organizer = User::where('id', $event->user_id)->first();
+		$this->organizerId = $organizer->id;
 		$categories = $event->categories()->where('event_id', $id)->get();
 		$location = locations::where('id', $event->location_id)->first();
-		$guests = $event->users()->where('event_id', $id)->get();
+		$guests = $event->users()->where('event_id', $id)->get()->toArray();
+		usort($guests, array($this,'sortGuests' ));
 
 		return view('event.show', ['event' => $event, 'organizer' => $organizer, 'location' => $location, 'guests' => $guests, 'categories' => $categories]);
 	}
@@ -293,6 +296,14 @@ class EventController extends Controller
 			$tags[$key] = $category->id;
 		}
 		return $tags;
+	}
+
+	public function sortGuests($data)
+	{  
+		if ($data['id'] == $this->organizerId) {
+			return -1;
+		}
+		return 1;
 	}
 
 }
