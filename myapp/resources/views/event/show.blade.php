@@ -5,7 +5,7 @@
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="card">
-				<div class="card-header">
+				<div class="card-header" id="header">
 					<big> <strong>{{$event->name}}</strong></big>
 					@if($event->user_id === auth()->user()->id || auth()->user()->role == 'teacher')
 					<a id="eventEditButton" class="btn btn-warning" href="{{ route('event.edit', $event->id)}}"> Edit Event </a>
@@ -15,7 +15,7 @@
 						<button id="eventDeleteButton" class="btn btn-danger" onclick="return confirm('Are you sure to delete this Event?')"> Delete Event </button>
 					</form>
 					@endif
-					<a class="float-right btn btn-primary" href="{{ route('event.index') }}" >Back to overview</a>
+					<a id="backBtn" class="float-right btn btn-primary" href="{{ route('event.index') }}" >Back to overview</a>
 				</div>
 				<div class="card-header">
 					<h3>Description</h3>
