@@ -44,7 +44,7 @@
 							<tbody>
 								@foreach($categories as $category)
 								<tr class="trViewEvent">
-									<td><a href="{{route('category.show', $category->id)}}"> {{$category->name}} </a></td>
+									<td class="tdStyle"><a href="{{route('category.show', $category->id)}}"> {{$category->name}} </a></td>
 								</tr>
 								@endforeach
 							</tbody>
