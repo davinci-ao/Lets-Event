@@ -57,7 +57,7 @@
 														if ($newHeight < 200) {
 															echo 'height="'.$newHeight.'"';
 														} else {
-															echo 'height=200';
+															echo 'height="200"';
 														}
 														
 														echo 'width="'.$width.'"';

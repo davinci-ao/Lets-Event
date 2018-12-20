@@ -107,7 +107,7 @@ class CategoryController extends Controller
     private function validateCategory($request)
     {
         return $validator = Validator::make($request->all(), [
-            'name' => 'required|max:40|unique:categories,name',
+            'name' => 'required|max:20|unique:categories,name',
         ]);
     }
 }

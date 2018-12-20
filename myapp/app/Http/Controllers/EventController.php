@@ -247,7 +247,7 @@ class EventController extends Controller
 			  'eventLocation' => 'required|numeric|exists:locations,id',
 			  'eventDescription' => 'nullable|max:255',
 			  'shortdesc' => 'nullable|max:50',
-			  'tags.*' => 'nullable|max:40', //validates the array, each item in array is max 40
+			  'tags.*' => 'nullable|max:20', //validates the array, each item in array is max 20 length
 			  'dateTime' => 'required|is_later_than_today'
 		]);
 	}
