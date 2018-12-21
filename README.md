@@ -5,21 +5,17 @@ Lets Event project yugioh team
 * php  7.2.3
 * mysql 5.7.14
 
-First download the project and place it in your webserver
+First download the project and place it in your webserver.
 
+Then go in the folder myapp and open a commandline there (cmd on windows).
+Make sure you have composer installed and make sure php is placed in your path variable.
 
-Make your own .env file and make sure the values are set for the api key by running
-php artisan key:generate 
+Make your own .env file and make sure the values are set. For the app key run 'php artisan key:generate'.
 
-Make sure php is placed in your path variable
+Run 'composer install'.
 
-Then go in the folder myapp and open a commandline there (cmd on windows)
-Make sure you have composer installed and run composer install
+When composer is done run these commands:
 
-Then after that is done run the commands
+'php artisan migrate -seed' to create all the tables in the database and run the seeders to fill it with testdata (make sure your database connection is set in the .env file).
 
-php artisan migrate -seed
-makes the database and runs the seeders
-
-php artisan storage:link
-link the storage to public to allow users to upload tumbnails and pictures for their event(s)
+'php artisan storage:link' to link the storage to the map "public" to allow users to upload pictures for their event(s).
