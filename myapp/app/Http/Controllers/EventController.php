@@ -60,7 +60,6 @@ class EventController extends Controller
 	 */
 	public function store(Request $request)
 	{
-
 		$data = $this->toDefault($request->all());
 		$validator = $this->validateEvent($data);
 
