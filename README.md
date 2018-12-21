@@ -6,6 +6,8 @@ Lets Event project yugioh team
 * mysql 5.7.14
 
 First download the project and place it in your webserver
+
+
 Make your own .env file and make sure the values are set for the api key by running
 php artisan key:generate 
 
